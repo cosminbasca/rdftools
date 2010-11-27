@@ -1,7 +1,17 @@
+build.sh
+dist.sh
 rdfconvert.py
 setup.py
+setup_du.py
+.idea/encodings.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/rdftools.iml
+.idea/vcs.xml
+.idea/dictionaries/basca.xml
 rdftools/__init__.py
 rdftools/converter.c
+rdftools/converter.pyx
 rdftools/crdfio.pxd
 rdftools/raptorutil.py
 rdftools.egg-info/PKG-INFO
