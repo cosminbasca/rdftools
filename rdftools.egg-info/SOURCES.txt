@@ -1,0 +1,11 @@
+rdfconvert.py
+setup.py
+rdftools/__init__.py
+rdftools/converter.c
+rdftools/crdfio.pxd
+rdftools/raptorutil.py
+rdftools.egg-info/PKG-INFO
+rdftools.egg-info/SOURCES.txt
+rdftools.egg-info/dependency_links.txt
+rdftools.egg-info/requires.txt
+rdftools.egg-info/top_level.txt
