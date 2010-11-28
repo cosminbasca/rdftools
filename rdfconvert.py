@@ -22,7 +22,7 @@ def convert_files(files, dst_format, buffer_size):
     pool.join()
 
 def main():
-    usage = "usage: %prog [options] source"
+    usage = "usage: %prog [options] SOURCE"
     parser = OptionParser(usage=usage)
     parser.add_option('-d','--dst_fmt', type='string',
                       action='store', dest='dst_format', default='ntriples',
@@ -33,7 +33,7 @@ def main():
 
     (options, args) = parser.parse_args()
     if len(args) != 1:
-        parser.error("incorrect number of arguments")
+        parser.error("incorrect number of arguments (perhaps you did not specify the SOURCE, use --help for further details)")
 
     t0      = time.time()
     files   = []
