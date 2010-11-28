@@ -29,7 +29,7 @@ def main():
                       help='the RDF format of the destination file(s)')
     parser.add_option('-b','--buffer_size', type='long',
                       action='store', dest='buffer_size', default= 160,
-                      help='the number MB in the chunk')
+                      help='the size in MB of the input buffer (the parser will only parse XX MB at a time)')
 
     (options, args) = parser.parse_args()
     if len(args) != 1:
