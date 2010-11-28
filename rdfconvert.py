@@ -26,7 +26,12 @@ def main():
     parser = OptionParser(usage=usage)
     parser.add_option('-d','--dst_fmt', type='string',
                       action='store', dest='dst_format', default='ntriples',
-                      help='the RDF format of the destination file(s)')
+                      help='''the RDF format of the destination file(s)
+    Parsers: [rdfxml ntriples turtle trig guess rss-tag-soup rdfa grddl]
+    Serializers: [rdfxml rdfxml-abbrev turtle ntriples rss-1.0 dot json atom]
+
+    this may vary on your system, check raptor output after running ./configure !
+                      ''')
     parser.add_option('-b','--buffer_size', type='long',
                       action='store', dest='buffer_size', default= 160,
                       help='the size in MB of the input buffer (the parser will only parse XX MB at a time)')
