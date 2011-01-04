@@ -25,5 +25,5 @@ setup(
                              extra_compile_args = ['-fPIC']),
                    ],
     install_requires = ['cython>=0.13'],
-    scripts = ['rdfconvert.py'],
+    scripts = ['rdfconvert.py', 'genlubm.py'],
 )
