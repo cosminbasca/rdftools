@@ -1,5 +1,6 @@
 build.sh
 dist.sh
+genlubm.py
 install.sh
 libutil.py
 rdfconvert.py

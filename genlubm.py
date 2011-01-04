@@ -24,14 +24,21 @@ def main():
     parser.add_option('-o','--onto', type='string',
                       action='store', dest='onto', default='http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl',
                       help='ontology')
-
+    
     (options, args) = parser.parse_args()
-    if len(args) != 1:
-        parser.error("incorrect number of arguments (perhaps you did not specify the LUBM_PATH, use --help for further details)")
+
+    lubm_path = os.environ.get('LUBM_PATH', None)
+    if lubm_path:
+        pass
+    else:
+        if len(args) != 1 and lubm_path is None:
+            parser.error("incorrect number of arguments (perhaps you did not specify the LUBM_PATH, use --help for further details)")
+        lubm_path = args[0]
+    print 'Using LUBM path = ',lubm_path
 
     t0      = time.time()
     status, output = commands.getstatusoutput('java -cp %s edu.lehigh.swat.bench.uba.Generator -univ %s -index %s -seed %s -onto %s'%(
-        args[0], options.univ, options.index, options.seed, options.onto
+        lubm_path, options.univ, options.index, options.seed, options.onto
     ))
     if status:
         print "an error occured!"
