@@ -1,8 +1,8 @@
-__author__ = 'Cosmin Basca'
-__email__ = 'basca@ifi.uzh.ch; cosmin.basca@gmail.com'
-
 from libc.stdio cimport *
 from libc.stdlib cimport *
+
+__author__ = 'Cosmin Basca'
+__email__ = 'basca@ifi.uzh.ch; cosmin.basca@gmail.com'
 
 #-----------------------------------------------------------------------------------------------------------------------
 # the rdf raptor parser ----> must be 1.X

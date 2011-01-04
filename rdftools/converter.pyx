@@ -1,6 +1,3 @@
-#__author__ = 'Cosmin Basca'
-#__email__ = 'basca@ifi.uzh.ch; cosmin.basca@gmail.com'
-
 from crdfio cimport *
 from cython cimport *
 from cpython cimport *
@@ -9,6 +6,9 @@ from libc.stdlib cimport *
 import os
 import sys
 from raptorutil import *
+
+__author__ = 'Cosmin Basca'
+__email__ = 'basca@ifi.uzh.ch; cosmin.basca@gmail.com'
 
 #-----------------------------------------------------------------------------------------------------------------------
 # default (straight covertion)
@@ -155,7 +155,6 @@ cpdef convert_chunked(char* srcfname, char* dstformat, long io_buffer_size=160*M
 
     # START
     print 'Start parsing...'
-    #raptor_parser_parse_file(rdf_parser, uri, base_uri)
     raptor_parser_parse_start(rdf_parser, base_uri)
     with open(srcfname,'r+b') as SRC:
         while True:
