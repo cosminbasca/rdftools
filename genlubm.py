@@ -10,7 +10,7 @@ import commands
 
 
 def main():
-    usage = "usage: %prog [options] LUBM_PATH"
+    usage = "usage: %prog [options] LUBM_PATH (LUBM_PATH can also be set as an enrironment variable!)"
     parser = OptionParser(usage=usage)
     parser.add_option('-u','--univ', type='long',
                       action='store', dest='univ', default=1,
