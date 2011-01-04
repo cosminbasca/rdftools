@@ -5,7 +5,7 @@ __author__ = 'Cosmin Basca'
 __email__ = 'basca@ifi.uzh.ch; cosmin.basca@gmail.com'
 
 #-----------------------------------------------------------------------------------------------------------------------
-# the rdf raptor parser ----> must be 1.X
+# the rdf raptor parser ----> must be 2.X
 #-----------------------------------------------------------------------------------------------------------------------
 cdef extern from "raptor.h":
     ctypedef struct raptor_world:
