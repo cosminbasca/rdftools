@@ -11,10 +11,12 @@ setup_du.py
 .idea/rdftools.iml
 .idea/vcs.xml
 .idea/dictionaries/basca.xml
+dist/rdftools-0.0.2-py2.7-macosx-10.4-x86_64.egg
 rdftools/__init__.py
 rdftools/converter.c
 rdftools/converter.pyx
 rdftools/crdfio.pxd
+rdftools/raptor.h
 rdftools/raptorutil.py
 rdftools.egg-info/PKG-INFO
 rdftools.egg-info/SOURCES.txt
