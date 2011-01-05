@@ -17,7 +17,13 @@
                 <map>
                   <entry key="https://src.ifi.uzh.ch/ddis/sw/rdfstore/rdftools/branches">
                     <value>
-                      <list />
+                      <list>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1294165954162" />
+                          <option name="revision" value="305" />
+                          <option name="url" value="https://src.ifi.uzh.ch/ddis/sw/rdfstore/rdftools/branches/raptor2" />
+                        </SvnBranchItem>
+                      </list>
                     </value>
                   </entry>
                   <entry key="https://src.ifi.uzh.ch/ddis/sw/rdfstore/rdftools/tags">
