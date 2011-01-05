@@ -1,6 +1,8 @@
 build.sh
 dist.sh
+genlubm.py
 install.sh
+libutil.py
 rdfconvert.py
 setup.py
 setup_du.py
@@ -15,6 +17,7 @@ rdftools/__init__.py
 rdftools/converter.c
 rdftools/converter.pyx
 rdftools/crdfio.pxd
+rdftools/raptor.h
 rdftools/raptorutil.py
 rdftools.egg-info/PKG-INFO
 rdftools.egg-info/SOURCES.txt

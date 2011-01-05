@@ -21,17 +21,19 @@ def convert_files(files, dst_format, buffer_size):
     pool.close()
     pool.join()
 
+parsers = ['rdfxml', 'ntriples', 'turtle', 'trig', 'guess', 'rss-tag-soup', 'rdfa', 'nquads', 'grddl']
+serializers = ['rdfxml', 'rdfxml-abbrev', 'turtle', 'ntriples', 'rss-1.0', 'dot', 'html', 'json', 'atom', 'nquads']
+
 def main():
     usage = "usage: %prog [options] SOURCE"
     parser = OptionParser(usage=usage)
     parser.add_option('-d','--dst_fmt', type='string',
                       action='store', dest='dst_format', default='ntriples',
                       help='''the RDF format of the destination file(s)
-    Parsers: [rdfxml ntriples turtle trig guess rss-tag-soup rdfa grddl]
-    Serializers: [rdfxml rdfxml-abbrev turtle ntriples rss-1.0 dot json atom]
+    Available PARSERS = %s,    Available SERIALIZERS = %s
 
     this may vary on your system, check raptor output after running ./configure !
-                      ''')
+                      '''%(str(parsers), str(serializers)))
     parser.add_option('-b','--buffer_size', type='long',
                       action='store', dest='buffer_size', default= 160,
                       help='the size in MB of the input buffer (the parser will only parse XX MB at a time)')

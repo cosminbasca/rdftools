@@ -1,0 +1,8 @@
+the rdftools module contains a wrapper around the RAPTOR2 RDF library
+the followin scripts are provided:
+
+- rdfconvert.py
+    convert RDF from various formats to other formats
+
+- genlubm.py
+    call the LUBM generator, the classes can be located at LUBM_PATH (can also be set as an env var!)
