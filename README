@@ -6,3 +6,7 @@ the followin scripts are provided:
 
 - genlubm.py
     call the LUBM generator, the classes can be located at LUBM_PATH (can also be set as an env var!)
+    - LUBM 1.7 (patched) is bundled with the script, so no need to setup the path before running, just call the script in your desired location
+     :)
+
+# more tools to come
