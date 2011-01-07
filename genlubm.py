@@ -13,7 +13,7 @@ BUNDLED_LUBM_PATH = os.path.join(os.path.split(rdftools.__file__)[0],'Uba1.7')
 
 def get_lubm_path(args):
     lubm_path = BUNDLED_LUBM_PATH
-    if len(args) != 1:
+    if len(args) == 1:
         lubm_path = args[0]
     elif 'LUBM_PATH' in os.environ:
         lubm_path = os.environ.get('LUBM_PATH', None)

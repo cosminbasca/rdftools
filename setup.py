@@ -27,5 +27,6 @@ setup(
     install_requires = ['cython>=0.13'],
     include_package_data = True,
     exclude_package_data = { 'rdftools': ['*.c', '*.h', '*.pyx', '*.pxd'] },
+    zip_safe = False,
     scripts = ['rdfconvert.py', 'genlubm.py'],
 )
