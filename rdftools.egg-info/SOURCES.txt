@@ -25,3 +25,15 @@ rdftools.egg-info/SOURCES.txt
 rdftools.egg-info/dependency_links.txt
 rdftools.egg-info/requires.txt
 rdftools.egg-info/top_level.txt
+rdftools/Uba1.7/edu/lehigh/swat/bench/uba/DamlWriter.class
+rdftools/Uba1.7/edu/lehigh/swat/bench/uba/Generator$1.class
+rdftools/Uba1.7/edu/lehigh/swat/bench/uba/Generator$CourseInfo.class
+rdftools/Uba1.7/edu/lehigh/swat/bench/uba/Generator$InstanceCount.class
+rdftools/Uba1.7/edu/lehigh/swat/bench/uba/Generator$PropertyCount.class
+rdftools/Uba1.7/edu/lehigh/swat/bench/uba/Generator$PublicationInfo.class
+rdftools/Uba1.7/edu/lehigh/swat/bench/uba/Generator$RaInfo.class
+rdftools/Uba1.7/edu/lehigh/swat/bench/uba/Generator$TaInfo.class
+rdftools/Uba1.7/edu/lehigh/swat/bench/uba/Generator.class
+rdftools/Uba1.7/edu/lehigh/swat/bench/uba/OwlWriter.class
+rdftools/Uba1.7/edu/lehigh/swat/bench/uba/RdfWriter.class
+rdftools/Uba1.7/edu/lehigh/swat/bench/uba/Writer.class
