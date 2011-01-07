@@ -1,3 +1,4 @@
+README
 build.sh
 dist.sh
 genlubm.py

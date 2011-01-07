@@ -6,7 +6,7 @@ from setuptools.extension import Extension
 from Cython.Distutils import build_ext
 from libutil import get_lib_dir, get_include_dir
 
-__version__ = (0,0,2)
+__version__ = (0,0,4)
 str_ver = lambda : '%d.%d.%d'%(__version__[0],__version__[1],__version__[2])
 
 setup(
@@ -25,5 +25,9 @@ setup(
                              extra_compile_args = ['-fPIC']),
                    ],
     install_requires = ['cython>=0.13'],
+    include_package_data = True,
+    package_data = {
+        'rdftools': ['*.class']
+    },
     scripts = ['rdfconvert.py', 'genlubm.py'],
 )
