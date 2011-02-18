@@ -18,7 +18,6 @@ rdftools/__init__.py
 rdftools/converter.c
 rdftools/converter.pyx
 rdftools/crdfio.pxd
-rdftools/raptor.h
 rdftools/raptorutil.py
 rdftools.egg-info/PKG-INFO
 rdftools.egg-info/SOURCES.txt
