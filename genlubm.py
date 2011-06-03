@@ -65,12 +65,13 @@ def main():
     print 'Using LUBM path = ',lubm_path
 
     t0      = time.time()
-    status, output = commands.getstatusoutput('java -cp %s edu.lehigh.swat.bench.uba.Generator -univ %s -index %s -seed %s -onto %s'%(
-        lubm_path, options.univ, options.index, options.seed, options.onto
-    ))
-    if status:
-        print "an error occured!"
-        print output
+#    status, output = commands.getstatusoutput('java -cp %s edu.lehigh.swat.bench.uba.Generator -univ %s -index %s -seed %s -onto %s'%(
+#        lubm_path, options.univ, options.index, options.seed, options.onto
+#    ))
+#    if status:
+#        print "an error occured!"
+#        print output
+    genlubm(lubm_path, options.univ, options.index, options.seed, options.onto)
     print 'Took %s seconds'%(str(time.time()-t0))
 
 
