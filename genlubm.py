@@ -71,6 +71,7 @@ def main():
 #    if status:
 #        print "an error occured!"
 #        print output
+    
     genlubm(lubm_path, options.univ, options.index, options.seed, options.onto)
     print 'Took %s seconds'%(str(time.time()-t0))
 
