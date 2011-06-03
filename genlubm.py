@@ -36,9 +36,11 @@ def genlubm(lubm_path, univ, index, seed, onto):
         print '|',
         sys.stdout.flush()
 
+    max_unis = 10
+
     pool = Pool()
-    for idx in xrange(index, univ+index, 10):
-        pool.apply_async(execlubm,(lubm_path, univ, idx, seed, onto), callback = job_finished)
+    for idx in xrange(index, univ+index, max_unis):
+        pool.apply_async(execlubm,(lubm_path, max_unis, idx, seed, onto), callback = job_finished)
 
     pool.close()
     pool.join()
@@ -65,6 +67,7 @@ def main():
     print 'Using LUBM path = ',lubm_path
 
     t0      = time.time()
+    
 #    status, output = commands.getstatusoutput('java -cp %s edu.lehigh.swat.bench.uba.Generator -univ %s -index %s -seed %s -onto %s'%(
 #        lubm_path, options.univ, options.index, options.seed, options.onto
 #    ))
