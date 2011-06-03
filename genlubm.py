@@ -36,7 +36,7 @@ def genlubm(lubm_path, univ, index, seed, onto):
         print '|',
         sys.stdout.flush()
 
-    max_unis = 10
+    max_unis = 10 
 
     pool = Pool()
     for idx in xrange(index, univ+index, max_unis):
