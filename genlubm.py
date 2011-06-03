@@ -8,6 +8,7 @@ import sys
 import os
 import commands
 import rdftools
+from multiprocessing import Pool
 
 BUNDLED_LUBM_PATH = os.path.join(os.path.split(rdftools.__file__)[0],'Uba1.7')
 
@@ -19,6 +20,28 @@ def get_lubm_path(args):
         lubm_path = os.environ.get('LUBM_PATH', None)
 
     return BUNDLED_LUBM_PATH if not lubm_path else lubm_path
+
+
+def execlubm(lubm_path, univ, index, seed, onto):
+    status, output = commands.getstatusoutput('java -cp %s edu.lehigh.swat.bench.uba.Generator -univ %s -index %s -seed %s -onto %s'%(
+        lubm_path, univ, index, seed, onto
+    ))
+    if status:
+        print "an error occured!"
+        print output
+
+
+def genlubm(lubm_path, univ, index, seed, onto):
+    def job_finished(res):
+        print '|',
+        sys.stdout.flush()
+
+    pool = Pool()
+    for idx in xrange(index, univ+index, 10):
+        pool.apply_async(execlubm,(lubm_path, univ, idx, seed, onto), callback = job_finished)
+
+    pool.close()
+    pool.join()
 
 def main():
     usage = "usage: %prog [options] LUBM_PATH (LUBM_PATH can also be set as an enrironment variable!)"
