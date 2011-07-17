@@ -7,7 +7,7 @@ __email__ = 'basca@ifi.uzh.ch; cosmin.basca@gmail.com'
 #-----------------------------------------------------------------------------------------------------------------------
 # the rdf raptor parser ----> must be 2.X
 #-----------------------------------------------------------------------------------------------------------------------
-cdef extern from "raptor2/raptor.h":
+cdef extern from "raptor2/raptor.h" nogil:
     ctypedef struct raptor_world:
         pass
 
@@ -19,9 +19,15 @@ cdef extern from "raptor2/raptor.h":
 
     ctypedef struct raptor_uri:
         pass
+    
+    ctypedef struct raptor_sequence:
+        pass
 
     ctypedef enum raptor_term_type:
-        pass
+        RAPTOR_TERM_TYPE_UNKNOWN
+        RAPTOR_TERM_TYPE_URI
+        RAPTOR_TERM_TYPE_LITERAL
+        RAPTOR_TERM_TYPE_BLANK
 
     ctypedef struct raptor_term_literal_value:
         unsigned char *string
@@ -53,6 +59,7 @@ cdef extern from "raptor2/raptor.h":
         raptor_term* object
         raptor_term* graph
 
+    ctypedef int (*raptor_data_compare_handler)(void *data1, void *data2)
     ctypedef void (*raptor_statement_handler)(void *user_data, raptor_statement *statement)
 
     #--------------------------------------------------------------------------------------------------------
@@ -83,17 +90,36 @@ cdef extern from "raptor2/raptor.h":
     int raptor_serializer_start_to_file_handle(raptor_serializer *rdf_serializer, raptor_uri *uri, FILE *fh)
     int raptor_serializer_serialize_statement(raptor_serializer *rdf_serializer, raptor_statement *statement)
     int raptor_serializer_serialize_end(raptor_serializer *rdf_serializer)
-    
+
     #--------------------------------------------------------------------------------------------------------
     # uri
     #--------------------------------------------------------------------------------------------------------
     raptor_uri* raptor_new_uri(raptor_world *world, unsigned char *uri_string)
+    raptor_uri* raptor_new_uri_from_counted_string(raptor_world *world, unsigned char *uri_string, size_t length)
     void raptor_free_uri(raptor_uri *uri)
     raptor_uri* raptor_uri_copy(raptor_uri *uri)
     unsigned char* raptor_uri_filename_to_uri_string(char *filename)
-    
+    unsigned char* raptor_uri_as_string(raptor_uri *uri)
+    unsigned char* raptor_uri_to_string(raptor_uri *uri)
+    unsigned char* raptor_uri_as_counted_string(raptor_uri *uri, size_t *len_p)
+
     #--------------------------------------------------------------------------------------------------------
     # memory
     #--------------------------------------------------------------------------------------------------------
     void raptor_free_memory(void *ptr)
-    
+
+    #//--------------------------------------------------------------------------------------------------------
+    #// sequence
+    #//--------------------------------------------------------------------------------------------------------
+    void raptor_free_sequence(raptor_sequence *seq)
+    void* raptor_sequence_delete_at(raptor_sequence *seq, int idx)
+    int raptor_sequence_size(raptor_sequence *seq)
+    int raptor_sequence_set_at(raptor_sequence *seq, int idx, void *data)
+    int raptor_sequence_push(raptor_sequence *seq, void *data)
+    int raptor_sequence_shift(raptor_sequence *seq, void *data)
+    void* raptor_sequence_get_at(raptor_sequence *seq, int idx)
+    void* raptor_sequence_pop(raptor_sequence *seq)
+    void* raptor_sequence_unshift(raptor_sequence *seq)
+    void  raptor_sequence_sort(raptor_sequence *seq, raptor_data_compare_handler compare)
+    int raptor_sequence_print(raptor_sequence *seq, FILE *fh)
+    int raptor_sequence_join(raptor_sequence *dest, raptor_sequence *src)
