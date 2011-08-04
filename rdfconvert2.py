@@ -27,7 +27,7 @@ def convert(rdf2rdf_path, src, dst, clear):
         print "an error occured!"
         print cmd
         print output
-    if clear:
+    elif clear:
         os.remove(src)
 
 def get_dst_fname(src, dst_format):
