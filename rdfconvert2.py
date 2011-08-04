@@ -83,6 +83,7 @@ def main():
     elif os.path.exists(src):
         files = [src]
     print 'To process : ',files
+    print 'remove originals: ',options.clear
     convert_files(files, options.dst_format, rdf2rdf_path, options.clear)
 
     print 'Took %s seconds'%(str(time.time()-t0))
