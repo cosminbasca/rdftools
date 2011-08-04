@@ -30,15 +30,23 @@ def convert(rdf2rdf_path, src, dst):
         print "an error occured!"
         print output
 
+def get_dst_fname(src, dst_format):
+    ext = os.path.splitext(src)[-1]
+    dst_ext = rdftools.raptorutil.rdf_ext.get(dst_format, None)
+    if ext != dst_ext:
+        return '%s.%s'%(os.path.splitext(src)[0], dst_ext)
+    return None
 
-def convert_files(files, dst_format, buffer_size):
+def convert_files(files, dst_format, rdf2rdf_path):
     def job_finished(res):
-        print '|',
+        print '[done]',
         sys.stdout.flush()
 
     pool = Pool()
     for src in files:
-        pool.apply_async(convert_chunked,(src, dst_format, buffer_size), callback = job_finished)
+        dst = get_dst_fname(src, dst_format)
+        if dst:
+            pool.apply_async(convert,(rdf2rdf_path, src, dst), callback = job_finished)
 
     pool.close()
     pool.join()
@@ -60,6 +68,8 @@ def main():
     if len(args) != 1:
         parser.error("incorrect number of arguments (perhaps you did not specify the SOURCE, use --help for further details)")
 
+    rdf2rdf_path = get_rdf2rdf_path(args)
+
     t0      = time.time()
     files   = []
     src     = os.path.abspath(args[0])
@@ -68,7 +78,7 @@ def main():
     elif os.path.exists(src):
         files = [src]
     print 'To process : ',files
-    convert_files(files)
+    convert_files(files, options.dst_format, rdf2rdf_path)
 
     print 'Took %s seconds'%(str(time.time()-t0))
 

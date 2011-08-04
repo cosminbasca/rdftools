@@ -31,5 +31,5 @@ setup(
     include_package_data = True,
     exclude_package_data = { 'rdftools': ['*.c', '*.h', '*.pyx', '*.pxd'] },
     zip_safe = False,
-    scripts = ['rdfconvert.py', 'genlubm.py'],
+    scripts = ['rdfconvert.py','rdfconvert2.py','genlubm.py'],
 )
