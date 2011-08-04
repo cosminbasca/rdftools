@@ -12,29 +12,27 @@ from multiprocessing import Pool
 
 BUNDLED_RDF2RDF_PATH = os.path.join(os.path.split(rdftools.__file__)[0],'RDF2RDF')
 
-def get_rdf2rdf_path(args):
+def get_rdf2rdf_path():
     rdf2rdf_path = BUNDLED_RDF2RDF_PATH
-    if len(args) == 1:
-        rdf2rdf_path = args[0]
-    elif 'RDF2RDF_PATH' in os.environ:
-        rdf2rdf_path = os.environ.get('RDF2RDF_PATH', None)
+    if 'RDF2RDF_PATH' in os.environ:
+        rdf2rdf_path = os.environ.get('RDF2RDF_PATH', BUNDLED_RDF2RDF_PATH)
 
     return BUNDLED_RDF2RDF_PATH if not rdf2rdf_path else rdf2rdf_path
 
 
 def convert(rdf2rdf_path, src, dst, clear):
-    status, output = commands.getstatusoutput('java -jar %s/rdf2rdf-1.0.1-2.3.1.jar %s %s'%(
-        rdf2rdf_path, src, dst
-    ))
+    cmd = 'java -jar %s/rdf2rdf-1.0.1-2.3.1.jar %s %s'%(rdf2rdf_path, src, dst)
+    status, output = commands.getstatusoutput(cmd)
     if status:
         print "an error occured!"
+        print cmd
         print output
     if clear:
         os.remove(src)
 
 def get_dst_fname(src, dst_format):
     ext = os.path.splitext(src)[-1]
-    dst_ext = rdftools.raptorutil.rdf_ext.get(dst_format, None)
+    dst_ext = rdftools.raptorutil.rdf_ext.get(dst_format, [None])[0]
     if ext != dst_ext:
         return '%s.%s'%(os.path.splitext(src)[0], dst_ext)
     return None
@@ -70,7 +68,8 @@ def main():
     if len(args) != 1:
         parser.error("incorrect number of arguments (perhaps you did not specify the SOURCE, use --help for further details)")
 
-    rdf2rdf_path = get_rdf2rdf_path(args)
+    rdf2rdf_path = get_rdf2rdf_path()
+    print 'RDF2RDF path=',rdf2rdf_path
 
     t0      = time.time()
     files   = []
