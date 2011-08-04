@@ -30,6 +30,7 @@ def convert(rdf2rdf_path, src, dst, clear):
         return
 
     if clear:
+        print 'REMOVE : ',src
         os.remove(src)
 
 def get_dst_fname(src, dst_format):
