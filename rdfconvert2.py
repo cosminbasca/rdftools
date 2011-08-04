@@ -62,7 +62,7 @@ def main():
     usage = "usage: %prog [options] SOURCE"
     parser = OptionParser(usage=usage)
     parser.add_option('-c','--clear',
-                      action='store_false', dest='clear', default=False,
+                      action='store_true', dest='clear', default=False,
                       help='''clear the original files''')
     parser.add_option('-d','--dst_format', type='string',
                       action='store', dest='dst_format', default='ntriples',
