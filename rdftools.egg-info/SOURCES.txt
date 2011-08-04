@@ -5,6 +5,7 @@ genlubm.py
 install.sh
 libutil.py
 rdfconvert.py
+rdfconvert2.py
 setup.py
 setup_du.py
 .idea/encodings.xml
@@ -25,6 +26,8 @@ rdftools.egg-info/dependency_links.txt
 rdftools.egg-info/not-zip-safe
 rdftools.egg-info/requires.txt
 rdftools.egg-info/top_level.txt
+rdftools/RDF2RDF/rdf2rdf-1.0.1-2.3.1.jar
+rdftools/RDF2RDF/readme.txt
 rdftools/Uba1.7/edu/lehigh/swat/bench/uba/DamlWriter.class
 rdftools/Uba1.7/edu/lehigh/swat/bench/uba/Generator$1.class
 rdftools/Uba1.7/edu/lehigh/swat/bench/uba/Generator$CourseInfo.class

@@ -22,13 +22,15 @@ def get_rdf2rdf_path(args):
     return BUNDLED_RDF2RDF_PATH if not rdf2rdf_path else rdf2rdf_path
 
 
-def convert(rdf2rdf_path, src, dst):
+def convert(rdf2rdf_path, src, dst, clear):
     status, output = commands.getstatusoutput('java -jar %s/rdf2rdf-1.0.1-2.3.1.jar %s %s'%(
         rdf2rdf_path, src, dst
     ))
     if status:
         print "an error occured!"
         print output
+    if clear:
+        os.remove(src)
 
 def get_dst_fname(src, dst_format):
     ext = os.path.splitext(src)[-1]
@@ -37,7 +39,7 @@ def get_dst_fname(src, dst_format):
         return '%s.%s'%(os.path.splitext(src)[0], dst_ext)
     return None
 
-def convert_files(files, dst_format, rdf2rdf_path):
+def convert_files(files, dst_format, rdf2rdf_path, clear):
     def job_finished(res):
         print '[done]',
         sys.stdout.flush()
@@ -46,7 +48,7 @@ def convert_files(files, dst_format, rdf2rdf_path):
     for src in files:
         dst = get_dst_fname(src, dst_format)
         if dst:
-            pool.apply_async(convert,(rdf2rdf_path, src, dst), callback = job_finished)
+            pool.apply_async(convert,(rdf2rdf_path, src, dst, clear), callback = job_finished)
 
     pool.close()
     pool.join()
@@ -57,8 +59,8 @@ serializers = ['rdfxml', 'rdfxml-abbrev', 'turtle', 'ntriples', 'rss-1.0', 'dot'
 def main():
     usage = "usage: %prog [options] SOURCE"
     parser = OptionParser(usage=usage)
-    parser.add_option('-c','--clear', type='bool',
-                      action='store', dest='clear', default=False,
+    parser.add_option('-c','--clear',
+                      action='store_false', dest='clear', default=False,
                       help='''clear the original files''')
     parser.add_option('-d','--dst_format', type='string',
                       action='store', dest='dst_format', default='ntriples',
@@ -78,7 +80,7 @@ def main():
     elif os.path.exists(src):
         files = [src]
     print 'To process : ',files
-    convert_files(files, options.dst_format, rdf2rdf_path)
+    convert_files(files, options.dst_format, rdf2rdf_path, options.clear)
 
     print 'Took %s seconds'%(str(time.time()-t0))
 
