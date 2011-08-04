@@ -37,7 +37,7 @@ def convert(rdf2rdf_path, src, dst, clear):
 def get_dst_fname(src, dst_format):
     ext = os.path.splitext(src)[-1]
     dst_ext = rdftools.raptorutil.rdf_ext.get(dst_format, [None])[0]
-    if ext != dst_ext:
+    if ext != '.%s'%dst_ext:
         return '%s.%s'%(os.path.splitext(src)[0], dst_ext)
     return None
 
