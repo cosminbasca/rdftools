@@ -37,6 +37,10 @@ def get_dst_fname(src, dst_format):
         return '%s.%s'%(os.path.splitext(src)[0], dst_ext)
     return None
 
+def to_process(src, dst_format):
+    return get_dst_fname(src, dst_format) is not None
+
+
 def convert_files(files, dst_format, rdf2rdf_path, clear):
     def job_finished(res):
         print '[done]',
@@ -75,7 +79,7 @@ def main():
     files   = []
     src     = os.path.abspath(args[0])
     if  os.path.isdir(src):
-        files = [os.path.join(src, f) for f in os.listdir(src)]
+        files = [os.path.join(src, f) for f in os.listdir(src) if to_process(f, options.dst_format)]
     elif os.path.exists(src):
         files = [src]
     print 'To process : ',files
