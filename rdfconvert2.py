@@ -42,6 +42,8 @@ def get_dst_fname(src, dst_format):
     return None
 
 def to_process(src, dst_format):
+    if os.path.isdir(src):
+        return False
     return get_dst_fname(src, dst_format) is not None
 
 
