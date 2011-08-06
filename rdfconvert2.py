@@ -21,7 +21,6 @@ def get_rdf2rdf_path():
 
 
 def convert(rdf2rdf_path, src, dst, clear):
-    print rdf2rdf_path, src, dst, clear
     cmd = 'java -jar %s/rdf2rdf-1.0.1-2.3.1.jar %s %s'%(rdf2rdf_path, src, dst)
     status, output = commands.getstatusoutput(cmd)
     print 'STATUS = ',status
