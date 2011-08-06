@@ -24,7 +24,8 @@ def convert(rdf2rdf_path, src, dst, clear):
     print rdf2rdf_path, src, dst, clear
     cmd = 'java -jar %s/rdf2rdf-1.0.1-2.3.1.jar %s %s'%(rdf2rdf_path, src, dst)
     status, output = commands.getstatusoutput(cmd)
-    if status:
+    print 'STATUS = ',status
+    if status or output.strip('\n').strip().split('\n')[0].find('Exception:') >= 0:
         print "an error occured!"
         print cmd
         print output
