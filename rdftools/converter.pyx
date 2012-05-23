@@ -206,7 +206,7 @@ cdef class RDFParser:
     cdef raptor_parser* rap_parser
     cdef unsigned char* uri_string
     cdef raptor_uri* base_uri
-    cdef list results
+    cdef public list results
 
     def __cinit__(self, src, base_uri = None, format = None):
         cdef raptor_world* world = raptor_new_world()
@@ -227,10 +227,10 @@ cdef class RDFParser:
             raptor_parser_parse_chunk(self.rap_parser, NULL, 0, 1)
             raptor_free_parser(self.rap_parser)
 
-    cpdef inline clear_buffer(self):
+    cpdef clear_buffer(self):
         del self.results[:]
 
-    cpdef inline list parse(self, bytes data):
+    cpdef list parse(self, bytes data):
         del self.results[:] # clear the results
         raptor_parser_parse_chunk(self.rap_parser, <unsigned char*>data, len(data), 0)
         return self.results

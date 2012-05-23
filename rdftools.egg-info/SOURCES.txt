@@ -1,5 +1,6 @@
 README
 build.sh
+clean.sh
 dist.sh
 genlubm.py
 install.sh
