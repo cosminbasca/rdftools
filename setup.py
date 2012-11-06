@@ -27,7 +27,7 @@ setup(
     cmdclass = {'build_ext': build_ext},
     packages = ["rdftools"],
     ext_modules = [extension('converter'    ,['raptor2'])],
-    install_requires = ['cython==0.17.0'],
+    install_requires = ['cython>=0.17.0'],
     include_package_data = True,
     exclude_package_data = { 'rdftools': ['*.c', '*.h', '*.pyx', '*.pxd'] },
     zip_safe = False,
