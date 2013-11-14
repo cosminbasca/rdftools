@@ -39,6 +39,11 @@ def get_void_stats(source_file, initial_capacity = INIT_CAPACITY_HIGH):
         if not sbf_properties.check(p):
             sbf_properties.add(p)
             stats['properties'] += 1
-        if not sbf_objects.check(s):
-            sbf_objects.add(s)
+        if not sbf_objects.check(o):
+            sbf_objects.add(o)
             stats['distinct_objects'] += 1
+        # classes
+        if p=='http://www.w3.org/1999/02/22-rdf-syntax-ns#type' and \
+            not sbf_classes.check(o):
+            sbf_classes.add(o)
+            stats['classes'] += 1
