@@ -8,7 +8,6 @@ __email__ = 'basca@ifi.uzh.ch; cosmin.basca@gmail.com'
 # the rdf raptor parser ----> must be 2.X
 #-----------------------------------------------------------------------------------------------------------------------
 cdef extern from "raptor2/raptor2.h" nogil:
-#cdef extern from "raptor2/raptor2.h" nogil:
     ctypedef struct raptor_world:
         pass
 
@@ -16,6 +15,9 @@ cdef extern from "raptor2/raptor2.h" nogil:
         pass
 
     ctypedef struct raptor_serializer:
+        pass
+
+    ctypedef struct raptor_locator:
         pass
 
     ctypedef struct raptor_uri:
