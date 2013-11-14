@@ -6,44 +6,10 @@ import argparse
 import time
 import sys
 import os
-import commands
-import rdftools
 from multiprocessing import Pool
 from rdftools.__version__ import str_version
-
-BUNDLED_RDF2RDF_PATH = os.path.join(os.path.split(rdftools.__file__)[0],'RDF2RDF')
-
-#-----------------------------------------------------------------------------------------------------------------------
-#
-# path to RDF2RDF (kept inside installed package)
-#
-#-----------------------------------------------------------------------------------------------------------------------
-def get_rdf2rdf_path():
-    rdf2rdf_path = BUNDLED_RDF2RDF_PATH
-    if 'RDF2RDF_PATH' in os.environ:
-        rdf2rdf_path = os.environ.get('RDF2RDF_PATH', BUNDLED_RDF2RDF_PATH)
-
-    return BUNDLED_RDF2RDF_PATH if not rdf2rdf_path else rdf2rdf_path
-
-
-#-----------------------------------------------------------------------------------------------------------------------
-#
-# the java convert function wrapper
-#
-#-----------------------------------------------------------------------------------------------------------------------
-def convert(rdf2rdf_path, src, dst, clear):
-    cmd = 'java -jar %s/rdf2rdf-1.0.1-2.3.1.jar %s %s'%(rdf2rdf_path, src, dst)
-    status, output = commands.getstatusoutput(cmd)
-    print 'STATUS = ',status
-    if status or output.strip('\n').strip().split('\n')[0].find('Exception:') >= 0:
-        print "an error occured!"
-        print cmd
-        print output
-        return
-
-    if clear:
-        print 'REMOVE : ',src
-        os.remove(src)
+from rdftools.rdf2rdf import *
+from rdftools.raptorutil import rdf_ext
 
 #-----------------------------------------------------------------------------------------------------------------------
 #
@@ -52,7 +18,7 @@ def convert(rdf2rdf_path, src, dst, clear):
 #-----------------------------------------------------------------------------------------------------------------------
 def dest_file_name(src, dst_format):
     ext = os.path.splitext(src)[-1]
-    dst_ext = rdftools.raptorutil.rdf_ext.get(dst_format, [None])[0]
+    dst_ext = rdf_ext.get(dst_format, [None])[0]
     if ext != '.%s'%dst_ext:
         return '%s.%s'%(os.path.splitext(src)[0], dst_ext)
     return None
@@ -76,7 +42,7 @@ def convert_files(files, dst_format, rdf2rdf_path, clear):
     for src in files:
         dst = dest_file_name(src, dst_format)
         if dst:
-            pool.apply_async(convert,(rdf2rdf_path, src, dst, clear), callback = job_finished)
+            pool.apply_async(exec_rdf2rdf,(rdf2rdf_path, src, dst, clear), callback = job_finished)
 
     pool.close()
     pool.join()
@@ -129,7 +95,7 @@ optional arguments:
                         the destination format to convert to
   --version             the current version
     """
-    parser = argparse.ArgumentParser(description='rdf converter (2), makes use of RDF2RDF - requires java')
+    parser = argparse.ArgumentParser(description='rdf converter (2), makes use of RDF2RDF bundled: %s - requires java'%BUNDLED_RDF2RDF_PATH)
 
     parser.add_argument('source', metavar='SOURCE', type=str,
                        help='the source file or location (of files) to be converted')
