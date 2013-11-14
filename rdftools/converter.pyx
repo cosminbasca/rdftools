@@ -8,7 +8,6 @@ import os
 import sys
 from raptorutil import *
 
-
 __author__ = 'Cosmin Basca'
 __email__ = 'basca@ifi.uzh.ch; cosmin.basca@gmail.com'
 
@@ -231,7 +230,9 @@ def get_source_files(location, ext='nt'):
 # get an rdf stream of statements
 #
 #-----------------------------------------------------------------------------------------------------------------------
-def rdf_stream(src, format=None, buffer_size=524288):
+DEFAULT_BUFFER_SIZE = 512 * KB
+
+def rdf_stream(src, format=None, buffer_size=DEFAULT_BUFFER_SIZE):
     parser = RDFParser(src, None, format)
     with open(src, 'r+') as SRC:
         for chunk in read_chunk(SRC, buffer_size):

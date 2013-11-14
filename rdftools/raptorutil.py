@@ -15,8 +15,10 @@ rdf_ext = {
 }
 
 NOEXTENSION = '~'
-MB = 1024*1024  # 1 MegaByte
-GB = 1024*MB    # 1 GigaByte
+
+KB = 1024           # 1 Kilobyte
+MB = 1048576        # 1 MegaByte
+GB = 1073741824     # 1 GigaByte
 
 def get_parser_type(fname, default='rdfdxml'):
     fext = os.path.splitext(fname)[1][1:]

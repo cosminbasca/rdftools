@@ -26,7 +26,8 @@ setup(
     packages = ["rdftools"],
     ext_modules = [extension('converter'    ,['raptor2'])],
     install_requires =[
-        'cython>=0.19.2'
+        'cython>=0.19.2',
+        'cybloom>=0.6.2',
     ],
     include_package_data = True,
     exclude_package_data = {

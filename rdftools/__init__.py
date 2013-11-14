@@ -5,3 +5,4 @@ from converter import *
 from raptorutil import *
 from lubm import *
 from rdf2rdf import *
+from void import *
