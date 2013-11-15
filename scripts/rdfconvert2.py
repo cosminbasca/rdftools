@@ -84,7 +84,7 @@ def main():
 usage: rdfconvert2.py [-h] [--clear] [--dst_format DST_FORMAT] [--version]
                       SOURCE
 
-rdf converter (2), makes use of RDF2RDF - requires java
+rdf converter (2), makes use of rdf2rdf - requires java
 
 positional arguments:
   SOURCE                the source file or location (of files) to be converted
@@ -97,7 +97,7 @@ optional arguments:
                         the destination format to convert to
   --version             the current version
     """
-    parser = argparse.ArgumentParser(description='rdf converter (2), makes use of RDF2RDF bundled: %s - requires java'%BUNDLED_RDF2RDF_PATH)
+    parser = argparse.ArgumentParser(description='rdf converter (2), makes use of rdf2rdf bundled: %s - requires java'%BUNDLED_RDF2RDF_PATH)
 
     parser.add_argument('source', metavar='SOURCE', type=str,
                        help='the source file or location (of files) to be converted')
@@ -111,7 +111,7 @@ optional arguments:
     args = parser.parse_args()
 
     rdf2rdf_path = get_rdf2rdf_path()
-    print 'using RDF2RDF path=',rdf2rdf_path
+    print 'using rdf2rdf path=',rdf2rdf_path
 
     if args.version:
         print 'using version %s'%str_version

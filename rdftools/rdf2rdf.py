@@ -3,11 +3,11 @@ import commands
 
 __author__ = 'basca'
 
-BUNDLED_RDF2RDF_PATH = os.path.join(os.path.split(__file__)[0],'RDF2RDF')
+BUNDLED_RDF2RDF_PATH = os.path.join(os.path.split(__file__)[0],'rdf2rdf')
 
 #-----------------------------------------------------------------------------------------------------------------------
 #
-# path to RDF2RDF (kept inside installed package)
+# path to rdf2rdf (kept inside installed package)
 #
 #-----------------------------------------------------------------------------------------------------------------------
 def get_rdf2rdf_path():

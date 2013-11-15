@@ -10,7 +10,7 @@ def main():
     """
     usage: genvoid.py [-h] [--data DATA] [--dataset_id DATASET_ID]
 
-generate a VoiD descriptor using the MXPARSER java package
+generate a VoiD descriptor using the nxparser java package
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -18,7 +18,7 @@ optional arguments:
   --dataset_id DATASET_ID
                         dataset id
     """
-    parser = argparse.ArgumentParser(description='generate a VoiD descriptor using the MXPARSER java package')
+    parser = argparse.ArgumentParser(description='generate a VoiD descriptor using the nxparser java package')
 
     parser.add_argument('--data', dest='data', action='store', type=str, default = None,
                        help='the input data file to pass the NX void generator')
@@ -27,7 +27,7 @@ optional arguments:
 
     args = parser.parse_args()
     print 'start java gateway...'
-    gateway = JavaGateway.launch_gateway(classpath='.:/Users/basca/env/opt/jvm/jars/MXPARSER-1.2.3.jar')
+    gateway = JavaGateway.launch_gateway(classpath='.:/Users/basca/env/opt/jvm/jars/nxparser-1.2.3.jar')
     jvm = gateway.jvm
     print 'get VoiD object...'
     statsEngine = jvm.org.semanticweb.yars.stats.VoiD()
