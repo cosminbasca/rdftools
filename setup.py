@@ -28,6 +28,7 @@ setup(
     install_requires =[
         'cython>=0.19.2',
         'cybloom>=0.7.2',
+        'py4j>=0.8',
     ],
     include_package_data = True,
     exclude_package_data = {
@@ -37,7 +38,8 @@ setup(
     scripts = [
         'scripts/rdfconvert.py',
         'scripts/rdfconvert2.py',
-        'scripts/genlubm.py'
+        'scripts/genlubm.py',
         'scripts/genvoid.py'
+        'scripts/genvoid2.py'
     ],
 )

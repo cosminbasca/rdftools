@@ -2,6 +2,7 @@ from collections import defaultdict
 from cybloom import ScalableBloomFilter, Sketch
 from converter import rdf_stream, MB
 from util import log_time
+import sys
 
 __author__ = 'basca'
 
@@ -50,11 +51,11 @@ Class- and property-based partitions
 
 @log_time(None)
 def get_void_stats_fragment(source_file, initial_capacity = INIT_CAPACITY_HIGH):
-    #sbf_entities = ScalableBloomFilter(initial_capacity, FP_ERR_RATE)
-    #sbf_classes = ScalableBloomFilter(INIT_CAPACITY_LOW, FP_ERR_RATE)
-    #sbf_properties = ScalableBloomFilter(INIT_CAPACITY_LOW, FP_ERR_RATE)
-    #sbf_subjects = ScalableBloomFilter(INIT_CAPACITY_HIGH, FP_ERR_RATE)
-    #sbf_objects = ScalableBloomFilter(INIT_CAPACITY_HIGH, FP_ERR_RATE)
+    sbf_entities = ScalableBloomFilter(initial_capacity, FP_ERR_RATE)
+    sbf_classes = ScalableBloomFilter(INIT_CAPACITY_LOW, FP_ERR_RATE)
+    sbf_properties = ScalableBloomFilter(INIT_CAPACITY_LOW, FP_ERR_RATE)
+    sbf_subjects = ScalableBloomFilter(INIT_CAPACITY_HIGH, FP_ERR_RATE)
+    sbf_objects = ScalableBloomFilter(INIT_CAPACITY_HIGH, FP_ERR_RATE)
 
     stats = {
         'properties'        : 0,
@@ -69,23 +70,27 @@ def get_void_stats_fragment(source_file, initial_capacity = INIT_CAPACITY_HIGH):
     #class_partitions = defaultdict(lambda : ScalableBloomFilter(INIT_CAPACITY_MED, FP_ERR_RATE))
     #property_partitions = defaultdict(lambda : ScalableBloomFilter(INIT_CAPACITY_MED, FP_ERR_RATE))
 
-    for rdf_statement in rdf_stream(source_file, buffer_size=16*MB):
+    for i,rdf_statement in enumerate(rdf_stream(source_file, buffer_size=128*MB)):
         s,p,o = rdf_statement[:3]
+        if i % 100000 == 0 and i > 0:
+            print '[processed %d triples]'%i
+            sys.stdout.flush()
 
-        #stats['triples'] += 1
-        #if not sbf_subjects.check(s):
-        #    sbf_subjects.add(s)
-        #    stats['distinct_subjects'] += 1
-        #if not sbf_properties.check(p):
-        #    sbf_properties.add(p)
-        #    stats['properties'] += 1
-        #if not sbf_objects.check(o):
-        #    sbf_objects.add(o)
-        #    stats['distinct_objects'] += 1
-        ## classes
-        #if p=='http://www.w3.org/1999/02/22-rdf-syntax-ns#type' and \
-        #    not sbf_classes.check(o):
-        #    sbf_classes.add(o)
-        #    stats['classes'] += 1
-        ## partitions
+        stats['triples'] += 1
+        if not sbf_subjects.check(s):
+            sbf_subjects.add(s)
+            stats['distinct_subjects'] += 1
+        if not sbf_properties.check(p):
+            sbf_properties.add(p)
+            stats['properties'] += 1
+        if not sbf_objects.check(o):
+            sbf_objects.add(o)
+            stats['distinct_objects'] += 1
+        # classes
+        if p=='http://www.w3.org/1999/02/22-rdf-syntax-ns#type' and \
+            not sbf_classes.check(o):
+            sbf_classes.add(o)
+            stats['classes'] += 1
+        # partitions
 
+    print 'stats -> ',stats

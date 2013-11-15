@@ -49,4 +49,3 @@ scripts/genlubm.py
 scripts/genvoid.py
 scripts/rdfconvert.py
 scripts/rdfconvert2.py
-scripts/genlubm.pyscripts/genvoid.py
