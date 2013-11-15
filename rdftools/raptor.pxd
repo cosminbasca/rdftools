@@ -111,9 +111,9 @@ cdef extern from "raptor2/raptor2.h" nogil:
     #--------------------------------------------------------------------------------------------------------
     void raptor_free_memory(void *ptr)
 
-    #//--------------------------------------------------------------------------------------------------------
-    #// sequence
-    #//--------------------------------------------------------------------------------------------------------
+    #--------------------------------------------------------------------------------------------------------
+    # sequence
+    #--------------------------------------------------------------------------------------------------------
     void raptor_free_sequence(raptor_sequence *seq)
     void* raptor_sequence_delete_at(raptor_sequence *seq, int idx)
     int raptor_sequence_size(raptor_sequence *seq)
@@ -126,3 +126,8 @@ cdef extern from "raptor2/raptor2.h" nogil:
     void  raptor_sequence_sort(raptor_sequence *seq, raptor_data_compare_handler compare)
     int raptor_sequence_print(raptor_sequence *seq, FILE *fh)
     int raptor_sequence_join(raptor_sequence *dest, raptor_sequence *src)
+
+    #--------------------------------------------------------------------------------------------------------
+    # term
+    #--------------------------------------------------------------------------------------------------------
+    unsigned char*  raptor_term_to_string(raptor_term *term)

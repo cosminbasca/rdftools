@@ -141,8 +141,14 @@ cdef inline bytes raptor_term_to_bytes(raptor_term* term):
     elif term.type == RAPTOR_TERM_TYPE_BLANK:
         _rep = PyBytes_FromStringAndSize(<char*>term.value.literal.string, term.value.literal.string_len)
     else:
-        _rep = <bytes>''
+        _rep = None
     return _rep
+
+#cdef inline bytes raptor_term_to_bytes(raptor_term* term):
+#    if term == NULL:
+#        return None
+#    cdef unsigned char* _nt = raptor_term_to_string(term)
+#    return <bytes>_nt if _nt != NULL else None
 
 #-----------------------------------------------------------------------------------------------------------------------
 #
@@ -151,10 +157,12 @@ cdef inline bytes raptor_term_to_bytes(raptor_term* term):
 #-----------------------------------------------------------------------------------------------------------------------
 cdef inline void parse_handler(void *user_data, raptor_statement* statement):
     cdef RDFParser parser = <RDFParser>user_data
-    parser.results.append( (raptor_term_to_bytes(statement.subject) ,
-                            raptor_term_to_bytes(statement.predicate),
-                            raptor_term_to_bytes(statement.object),
-                            raptor_term_to_bytes(statement.graph)) )
+    parser.results.append( (
+        raptor_term_to_bytes(statement.subject),
+        raptor_term_to_bytes(statement.predicate),
+        raptor_term_to_bytes(statement.object),
+        raptor_term_to_bytes(statement.graph),
+    ) )
 
 #-----------------------------------------------------------------------------------------------------------------------
 #
