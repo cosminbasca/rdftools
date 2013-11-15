@@ -204,9 +204,9 @@ def read_chunk(file, buffer_size):
         chunk = file.read(buffer_size)
         if len(chunk) == 0:
             break
-        # read til EOL
-        while len(chunk) > 0 and chunk[len(chunk)-1] != '\n':
-            chunk += file.read(1)
+        ## read til EOL
+        #while len(chunk) > 0 and chunk[len(chunk)-1] != '\n':
+        #    chunk += file.read(1)
         yield chunk
 
 #-----------------------------------------------------------------------------------------------------------------------
@@ -236,8 +236,10 @@ DEFAULT_BUFFER_SIZE = 512 * KB
 
 def rdf_stream(src, format=None, buffer_size=DEFAULT_BUFFER_SIZE):
     parser = RDFParser(src, None, format)
-    with io.open(src, 'rb+') as SRC:
-        for chunk in read_chunk(SRC, buffer_size):
+    with io.open(src, 'rb+', buffering= 1 * MB) as SRC:
+        while True:
+            chunk = SRC.read(buffer_size)
+            if not chunk: break
             for stmt in  parser.parse(chunk):
                 yield stmt
 

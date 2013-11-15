@@ -1,8 +1,8 @@
 from collections import defaultdict
 import os
 from pprint import pformat
-from cybloom import ScalableBloomFilter, Sketch
-from converter import rdf_stream, MB
+from cybloom import ScalableBloomFilter
+from converter import rdf_stream, MB, KB
 from util import log_time
 import sys
 
@@ -18,40 +18,6 @@ INIT_CAPACITY_XTRA_LOW = 1000   # 10K
 # analyze void from file, returns a VoID dict stats
 #
 #-----------------------------------------------------------------------------------------------------------------------
-
-examples = '''
-
-CAN BE APPROXIMATES
-
-:DBpedia a void:Dataset;
-    void:triples 1000000000;
-    void:entities 3400000;
-    .
-
-
-void:Linkset is a subclass of void:Dataset,
-:DBpedia2DBLP a void:Linkset;
-    void:target :DBpedia;
-    void:target :DBLP;
-    void:linkPredicate owl:sameAs;
-    void:triples 10000;
-    .
-
-
-
-Class- and property-based partitions
-:DBpedia a void:Dataset;
-    void:classPartition [
-        void:class foaf:Person;
-        void:entities 312000;
-    ];
-    void:propertyPartition [
-        void:property foaf:name;
-        void:triples 312000;
-    ];
-    .
-'''
-
 class UniqueCounter(object):
     def __init__(self, init_capacity, err_rate = FP_ERR_RATE):
         self.unique_count = 0
@@ -98,8 +64,7 @@ def get_void_stats_fragment(source_file,
     part_properties = PartitionCounter(capacity_triples, FP_ERR_RATE)
 
     t_count = 0
-    for t_count,rdf_statement in enumerate(rdf_stream(source_file, buffer_size=128*MB)):
-        s,p,o = rdf_statement[:3]
+    for s,p,o,c in rdf_stream(source_file, buffer_size=16*MB):
         if t_count % 10000 == 0 and t_count > 0:
             print '[processed %d triples]'%t_count
             sys.stdout.flush()
@@ -111,6 +76,7 @@ def get_void_stats_fragment(source_file,
             sbf_classes.add(o)
             part_classes.add(o, '%s %s'%(s,p))
         part_properties.add(p, '%s %s'%(s,o))
+        t_count += 1
 
     stats['triples']                = t_count
     stats['properties']             = sbf_properties.unique_count
