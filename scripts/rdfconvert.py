@@ -16,6 +16,7 @@ from pprint import pformat
 # parallel processor
 #
 #-----------------------------------------------------------------------------------------------------------------------
+@log_time(None)
 def convert_files(files, dst_format, buffer_size):
     def job_finished(res):
         print '|',
@@ -81,7 +82,6 @@ def main():
     if args.version:
         print 'using version %s'%str_version
     else:
-        t0      = time.time()
         files   = []
         src     = os.path.abspath(args.source)
         if  os.path.isdir(src):
@@ -94,8 +94,6 @@ def main():
         convert_files(files, args.dst_format, args.buffer_size * MB)
 
         if args.clear: [os.remove(f) for f in files]
-
-        print 'Took %s seconds'%(str(time.time()-t0))
 
 
 if __name__ == '__main__':

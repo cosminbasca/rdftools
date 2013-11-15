@@ -35,6 +35,8 @@ def main():
     """
     parser = argparse.ArgumentParser(description='generate void statistics for RDF files')
 
+    parser.add_argument('source', metavar='SOURCE', type=str,
+                       help='the source file or location (of files) to be converted')
     #parser.add_argument('--univ', dest='univ', action='store', type=long, default=1,
     #                   help='number of universities to generate')
     #parser.add_argument('--index', dest='index', action='store', type=long, default=0,
@@ -51,13 +53,7 @@ def main():
     if args.version:
         print 'using version %s'%str_version
     else:
-        lubm_path = get_lubm_path(args)
-        print 'using LUBM path = ',lubm_path
-
-        t0      = time.time()
-
-        generate_lubm(lubm_path, args.univ, args.index, args.seed, args.ontology)
-        print 'Took %s seconds'%(str(time.time()-t0))
+        get_void_stats_fragment(args.source)
 
 
 if __name__ == '__main__':

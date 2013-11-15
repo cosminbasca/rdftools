@@ -27,7 +27,7 @@ setup(
     ext_modules = [extension('converter'    ,['raptor2'])],
     install_requires =[
         'cython>=0.19.2',
-        'cybloom>=0.6.2',
+        'cybloom>=0.7.2',
     ],
     include_package_data = True,
     exclude_package_data = {
@@ -38,5 +38,6 @@ setup(
         'scripts/rdfconvert.py',
         'scripts/rdfconvert2.py',
         'scripts/genlubm.py'
+        'scripts/genvoid.py'
     ],
 )

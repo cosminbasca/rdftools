@@ -8,12 +8,14 @@ import sys
 from multiprocessing import Pool
 from rdftools.__version__ import str_version
 from rdftools.lubm import *
+from rdftools.util import log_time
 
 #-----------------------------------------------------------------------------------------------------------------------
 #
 # parallel LUBM generation
 #
 #-----------------------------------------------------------------------------------------------------------------------
+@log_time(None)
 def generate_lubm(lubm_path, univ, index, seed, onto):
     def job_finished(res):
         print '|',
@@ -67,10 +69,7 @@ def main():
         lubm_path = get_lubm_path(args)
         print 'using LUBM path = ',lubm_path
 
-        t0      = time.time()
-
         generate_lubm(lubm_path, args.univ, args.index, args.seed, args.ontology)
-        print 'Took %s seconds'%(str(time.time()-t0))
 
 
 if __name__ == '__main__':

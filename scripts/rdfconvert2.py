@@ -10,6 +10,7 @@ from multiprocessing import Pool
 from rdftools.__version__ import str_version
 from rdftools.rdf2rdf import *
 from rdftools.raptorutil import rdf_ext
+from rdftools.util import log_time
 
 #-----------------------------------------------------------------------------------------------------------------------
 #
@@ -33,6 +34,7 @@ def to_process(src, dst_format):
 # parallel processor
 #
 #-----------------------------------------------------------------------------------------------------------------------
+@log_time(None)
 def convert_files(files, dst_format, rdf2rdf_path, clear):
     def job_finished(res):
         print '[done]',
@@ -114,7 +116,6 @@ optional arguments:
     if args.version:
         print 'using version %s'%str_version
     else:
-        t0      = time.time()
         files   = []
         src     = os.path.abspath(args.source)
         if  os.path.isdir(src):
@@ -125,8 +126,6 @@ optional arguments:
         if args.clear:
             print 'will remove original files after conversion'
         convert_files(files, args.dst_format, rdf2rdf_path, args.clear)
-
-        print 'Took %s seconds'%(str(time.time()-t0))
 
 
 if __name__ == '__main__':

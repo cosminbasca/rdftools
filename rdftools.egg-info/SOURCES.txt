@@ -19,8 +19,12 @@ dist/rdftools-0.0.4-py2.7-macosx-10.4-x86_64.egg
 rdftools/__init__.py
 rdftools/__version__.py
 rdftools/converter.pyx
+rdftools/lubm.py
 rdftools/raptor.pxd
 rdftools/raptorutil.py
+rdftools/rdf2rdf.py
+rdftools/util.py
+rdftools/void.py
 rdftools.egg-info/PKG-INFO
 rdftools.egg-info/SOURCES.txt
 rdftools.egg-info/dependency_links.txt
@@ -42,5 +46,7 @@ rdftools/Uba1.7/edu/lehigh/swat/bench/uba/OwlWriter.class
 rdftools/Uba1.7/edu/lehigh/swat/bench/uba/RdfWriter.class
 rdftools/Uba1.7/edu/lehigh/swat/bench/uba/Writer.class
 scripts/genlubm.py
+scripts/genvoid.py
 scripts/rdfconvert.py
 scripts/rdfconvert2.py
+scripts/genlubm.pyscripts/genvoid.py

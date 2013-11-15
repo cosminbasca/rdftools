@@ -1,1 +1,2 @@
 cython>=0.19.2
+cybloom>=0.7.2
