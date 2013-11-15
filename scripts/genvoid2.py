@@ -1,9 +1,21 @@
 import argparse
-from pprint import pprint
-import shutil
 from py4j.java_gateway import JavaGateway
+from rdftools.nxparser import BUNDLED_NXPARSER_JAR
 
 __author__ = 'basca'
+
+def gen_void(jvm, data, dataset_id):
+    print 'get VoiD object...'
+    statsEngine = jvm.org.semanticweb.yars.stats.VoiD()
+    assert data is not None, 'data input file must be present'
+
+    print 'get input'
+    _input  = jvm.java.io.FileInputStream(data)
+    print 'get output'
+    _output = jvm.java.io.FileOutputStream('%s.void.xml'%data)
+
+    print 'gen void'
+    statsEngine.analyseVoid(_input,dataset_id,_output)
 
 #noinspection PyBroadException
 def main():
@@ -27,19 +39,9 @@ optional arguments:
 
     args = parser.parse_args()
     print 'start java gateway...'
-    gateway = JavaGateway.launch_gateway(classpath='.:/Users/basca/env/opt/jvm/jars/nxparser-1.2.3.jar')
+    gateway = JavaGateway.launch_gateway(classpath='.:%s'%BUNDLED_NXPARSER_JAR)
     jvm = gateway.jvm
-    print 'get VoiD object...'
-    statsEngine = jvm.org.semanticweb.yars.stats.VoiD()
-    assert args.data is not None, 'data input file must be present'
-
-    print 'get input'
-    _input  = jvm.java.io.FileInputStream(args.data)
-    print 'get output'
-    _output = jvm.java.io.FileOutputStream('%s.void.xml'%args.data)
-
-    print 'gen void'
-    statsEngine.analyseVoid(_input,args.dataset_id,_output)
+    gen_void(jvm, args.data, args.dataset_id)
     print 'done'
 
 if __name__ == '__main__':
