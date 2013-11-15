@@ -3,7 +3,7 @@ import commands
 
 __author__ = 'basca'
 
-BUNDLED_LUBM_PATH = os.path.join(os.path.split(__file__)[0],'Uba1.7')
+BUNDLED_LUBM_PATH = os.path.join(os.path.split(__file__)[0],'deps','Uba1.7')
 LUBM_ONTO = 'http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl'
 
 #-----------------------------------------------------------------------------------------------------------------------
