@@ -58,11 +58,12 @@ def main():
 
 
 PROFILE = False
+#PROFILE = True
 
 if __name__ == '__main__':
     if PROFILE:
         import cProfile
         command = """main()"""
-        cProfile.runctx( command, globals(), locals(), filename="genvoid.profile" )
+        cProfile.runctx( command, globals(), locals())
     else:
         main()

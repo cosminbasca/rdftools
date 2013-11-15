@@ -8,10 +8,11 @@ import sys
 
 __author__ = 'basca'
 
-FP_ERR_RATE = 0.001
+FP_ERR_RATE = 0.05
 INIT_CAPACITY_HIGH = 100000000  # 100 million
-INIT_CAPACITY_MED = 10000000  # 10 million
-INIT_CAPACITY_LOW = 10000   #
+INIT_CAPACITY_MED = 10000000    # 10 million
+INIT_CAPACITY_LOW = 10000       # 10K
+INIT_CAPACITY_XTRA_LOW = 1000   # 10K
 #-----------------------------------------------------------------------------------------------------------------------
 #
 # analyze void from file, returns a VoID dict stats
@@ -72,11 +73,15 @@ class PartitionCounter(object):
 
 
 @log_time(None)
-def get_void_stats_fragment(source_file):
-    sbf_classes     = UniqueCounter(INIT_CAPACITY_LOW, FP_ERR_RATE)
-    sbf_properties  = UniqueCounter(INIT_CAPACITY_LOW, FP_ERR_RATE)
-    sbf_subjects    = UniqueCounter(INIT_CAPACITY_HIGH, FP_ERR_RATE)
-    sbf_objects     = UniqueCounter(INIT_CAPACITY_HIGH, FP_ERR_RATE)
+def get_void_stats_fragment(source_file,
+                            capacity_classes    = INIT_CAPACITY_XTRA_LOW,
+                            capacity_properties = INIT_CAPACITY_XTRA_LOW,
+                            capacity_triples    = INIT_CAPACITY_MED):
+
+    sbf_classes     = UniqueCounter(capacity_classes, FP_ERR_RATE)
+    sbf_properties  = UniqueCounter(capacity_properties, FP_ERR_RATE)
+    sbf_subjects    = UniqueCounter(capacity_triples, FP_ERR_RATE)
+    sbf_objects     = UniqueCounter(capacity_triples, FP_ERR_RATE)
 
     stats = {
         'properties'            : 0,
@@ -89,8 +94,8 @@ def get_void_stats_fragment(source_file):
         'partition_properties'  : None,
     }
 
-    part_classes    = PartitionCounter(INIT_CAPACITY_HIGH, FP_ERR_RATE)
-    part_properties = PartitionCounter(INIT_CAPACITY_HIGH, FP_ERR_RATE)
+    part_classes    = PartitionCounter(capacity_triples, FP_ERR_RATE)
+    part_properties = PartitionCounter(capacity_triples, FP_ERR_RATE)
 
     t_count = 0
     for t_count,rdf_statement in enumerate(rdf_stream(source_file, buffer_size=128*MB)):
