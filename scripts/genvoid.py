@@ -56,5 +56,13 @@ def main():
         get_void_stats_fragment(args.source)
 
 
+
+PROFILE = False
+
 if __name__ == '__main__':
-    main()
+    if PROFILE:
+        import cProfile
+        command = """main()"""
+        cProfile.runctx( command, globals(), locals(), filename="genvoid.profile" )
+    else:
+        main()

@@ -93,7 +93,7 @@ def get_void_stats_fragment(source_file):
     part_properties = PartitionCounter(INIT_CAPACITY_HIGH, FP_ERR_RATE)
 
     t_count = 0
-    for t_count,rdf_statement in enumerate(rdf_stream(source_file, buffer_size=64*MB)):
+    for t_count,rdf_statement in enumerate(rdf_stream(source_file, buffer_size=128*MB)):
         s,p,o = rdf_statement[:3]
         if t_count % 10000 == 0 and t_count > 0:
             print '[processed %d triples]'%t_count
