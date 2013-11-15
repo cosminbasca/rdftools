@@ -1,4 +1,5 @@
 from collections import defaultdict
+import io
 import os
 from pprint import pformat
 from cybloom import ScalableBloomFilter
@@ -62,8 +63,8 @@ def get_void_stats_fragment(source_file,
 
     part_classes    = PartitionCounter(capacity_triples, FP_ERR_RATE)
     part_properties = PartitionCounter(capacity_triples, FP_ERR_RATE)
-
     t_count = 0
+
     for s,p,o,c in rdf_stream(source_file, buffer_size=16*MB):
         if t_count % 10000 == 0 and t_count > 0:
             print '[processed %d triples]'%t_count
