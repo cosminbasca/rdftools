@@ -29,6 +29,7 @@ setup(
         'cython>=0.19.2',
         'cybloom>=0.7.2',
         'py4j>=0.8',
+        'pyyaml>=3.10',
     ],
     include_package_data = True,
     exclude_package_data = {

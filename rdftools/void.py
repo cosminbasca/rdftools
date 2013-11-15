@@ -6,6 +6,7 @@ from cybloom import ScalableBloomFilter
 from converter import rdf_stream, MB, KB
 from util import log_time
 import sys
+from yaml import load, dump
 
 __author__ = 'basca'
 
@@ -66,7 +67,7 @@ def get_void_stats_fragment(source_file,
     t_count = 0
 
     for s,p,o,c in rdf_stream(source_file, buffer_size=16*MB):
-        if t_count % 10000 == 0 and t_count > 0:
+        if t_count % 50000 == 0 and t_count > 0:
             print '[processed %d triples]'%t_count
             sys.stdout.flush()
 
@@ -88,3 +89,5 @@ def get_void_stats_fragment(source_file,
     stats['partition_properties']   = part_properties.counts()
 
     print 'stats -> %s'%pformat(stats)
+    with io.open('%s.yaml'%source_file, 'w+') as OUT:
+        dump(stats, OUT)
