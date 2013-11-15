@@ -13,9 +13,7 @@ LUBM_ONTO = 'http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl'
 #-----------------------------------------------------------------------------------------------------------------------
 def get_lubm_path(args):
     lubm_path = BUNDLED_LUBM_PATH
-    if len(args) == 1:
-        lubm_path = args[0]
-    elif 'LUBM_PATH' in os.environ:
+    if 'LUBM_PATH' in os.environ:
         lubm_path = os.environ.get('LUBM_PATH', None)
     return BUNDLED_LUBM_PATH if not lubm_path else lubm_path
 

@@ -32,8 +32,6 @@ rdftools.egg-info/dependency_links.txt
 rdftools.egg-info/not-zip-safe
 rdftools.egg-info/requires.txt
 rdftools.egg-info/top_level.txt
-rdftools/deps/RDF2RDF/rdf2rdf-1.0.1-2.3.1.jar
-rdftools/deps/RDF2RDF/readme.txt
 rdftools/deps/Uba1.7/edu/lehigh/swat/bench/uba/DamlWriter.class
 rdftools/deps/Uba1.7/edu/lehigh/swat/bench/uba/Generator$1.class
 rdftools/deps/Uba1.7/edu/lehigh/swat/bench/uba/Generator$CourseInfo.class
