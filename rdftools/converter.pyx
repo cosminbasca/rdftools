@@ -1,3 +1,5 @@
+import io
+
 from cython cimport *
 from cpython cimport *
 from libc.stdio cimport *
@@ -234,7 +236,7 @@ DEFAULT_BUFFER_SIZE = 512 * KB
 
 def rdf_stream(src, format=None, buffer_size=DEFAULT_BUFFER_SIZE):
     parser = RDFParser(src, None, format)
-    with open(src, 'r+') as SRC:
+    with io.open(src, 'rb+', buffering=4*MB) as SRC:
         for chunk in read_chunk(SRC, buffer_size):
             for stmt in  parser.parse(chunk):
                 yield stmt

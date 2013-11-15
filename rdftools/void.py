@@ -1,4 +1,6 @@
 from collections import defaultdict
+import os
+from pprint import pformat
 from cybloom import ScalableBloomFilter, Sketch
 from converter import rdf_stream, MB
 from util import log_time
@@ -49,48 +51,68 @@ Class- and property-based partitions
     .
 '''
 
+class UniqueCounter(object):
+    def __init__(self, init_capacity, err_rate = FP_ERR_RATE):
+        self.unique_count = 0
+        self.sbf = ScalableBloomFilter(init_capacity, err_rate)
+
+    def add(self, item):
+        if not self.sbf.add(item):
+            self.unique_count +=1
+
+class PartitionCounter(object):
+    def __init__(self, init_capacity, err_rate = FP_ERR_RATE):
+        self.unique_counts = defaultdict(lambda : UniqueCounter(init_capacity, err_rate))
+
+    def add(self, key, value):
+        self.unique_counts[key].add(value)
+
+    def counts(self):
+        return dict([(k, uc.unique_count) for k, uc in self.unique_counts.items()])
+
+
 @log_time(None)
-def get_void_stats_fragment(source_file, initial_capacity = INIT_CAPACITY_HIGH):
-    sbf_entities = ScalableBloomFilter(initial_capacity, FP_ERR_RATE)
-    sbf_classes = ScalableBloomFilter(INIT_CAPACITY_LOW, FP_ERR_RATE)
-    sbf_properties = ScalableBloomFilter(INIT_CAPACITY_LOW, FP_ERR_RATE)
-    sbf_subjects = ScalableBloomFilter(INIT_CAPACITY_HIGH, FP_ERR_RATE)
-    sbf_objects = ScalableBloomFilter(INIT_CAPACITY_HIGH, FP_ERR_RATE)
+def get_void_stats_fragment(source_file):
+    sbf_classes     = UniqueCounter(INIT_CAPACITY_LOW, FP_ERR_RATE)
+    sbf_properties  = UniqueCounter(INIT_CAPACITY_LOW, FP_ERR_RATE)
+    sbf_subjects    = UniqueCounter(INIT_CAPACITY_HIGH, FP_ERR_RATE)
+    sbf_objects     = UniqueCounter(INIT_CAPACITY_HIGH, FP_ERR_RATE)
 
     stats = {
-        'properties'        : 0,
-        'triples'           : 0,
-        'entities'          : 0,
-        'distinct_objects'  : 0,
-        'distinct_subjects' : 0,
-        'classes'           : 0,
-        'doc_path'          : source_file,
+        'properties'            : 0,
+        'triples'               : 0,
+        'objects'               : 0,
+        'subjects'              : 0,
+        'classes'               : 0,
+        'doc_path'              : os.path.abspath(source_file),
+        'partition_classes'     : None,
+        'partition_properties'  : None,
     }
 
-    #class_partitions = defaultdict(lambda : ScalableBloomFilter(INIT_CAPACITY_MED, FP_ERR_RATE))
-    #property_partitions = defaultdict(lambda : ScalableBloomFilter(INIT_CAPACITY_MED, FP_ERR_RATE))
+    part_classes    = PartitionCounter(INIT_CAPACITY_HIGH, FP_ERR_RATE)
+    part_properties = PartitionCounter(INIT_CAPACITY_HIGH, FP_ERR_RATE)
 
-    for i,rdf_statement in enumerate(rdf_stream(source_file, buffer_size=128*MB)):
+    t_count = 0
+    for t_count,rdf_statement in enumerate(rdf_stream(source_file, buffer_size=64*MB)):
         s,p,o = rdf_statement[:3]
-        if i % 100000 == 0 and i > 0:
-            print '[processed %d triples]'%i
+        if t_count % 10000 == 0 and t_count > 0:
+            print '[processed %d triples]'%t_count
             sys.stdout.flush()
 
-        stats['triples'] += 1
-        if not sbf_subjects.check(s):
-            sbf_subjects.add(s)
-            stats['distinct_subjects'] += 1
-        if not sbf_properties.check(p):
-            sbf_properties.add(p)
-            stats['properties'] += 1
-        if not sbf_objects.check(o):
-            sbf_objects.add(o)
-            stats['distinct_objects'] += 1
-        # classes
-        if p=='http://www.w3.org/1999/02/22-rdf-syntax-ns#type' and \
-            not sbf_classes.check(o):
+        sbf_subjects.add(s)
+        sbf_properties.add(p)
+        sbf_objects.add(o)
+        if p=='http://www.w3.org/1999/02/22-rdf-syntax-ns#type':
             sbf_classes.add(o)
-            stats['classes'] += 1
-        # partitions
+            part_classes.add(o, '%s %s'%(s,p))
+        part_properties.add(p, '%s %s'%(s,o))
 
-    print 'stats -> ',stats
+    stats['triples']                = t_count
+    stats['properties']             = sbf_properties.unique_count
+    stats['classes']                = sbf_classes.unique_count
+    stats['subjects']               = sbf_subjects.unique_count
+    stats['objects']                = sbf_objects.unique_count
+    stats['partition_classes']      = part_classes.counts()
+    stats['partition_properties']   = part_properties.counts()
+
+    print 'stats -> %s'%pformat(stats)

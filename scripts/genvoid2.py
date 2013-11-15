@@ -1,9 +1,11 @@
 import argparse
 from py4j.java_gateway import JavaGateway
+from rdftools.util import log_time
 from rdftools.nxparser import BUNDLED_NXPARSER_JAR
 
 __author__ = 'basca'
 
+@log_time(None)
 def gen_void(jvm, data, dataset_id):
     print 'get VoiD object...'
     statsEngine = jvm.org.semanticweb.yars.stats.VoiD()
