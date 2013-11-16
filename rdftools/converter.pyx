@@ -4,6 +4,7 @@ from cython cimport *
 from cpython cimport *
 from libc.stdio cimport *
 from libc.stdlib cimport *
+from libc.string cimport *
 from raptor cimport *
 
 import os
@@ -104,9 +105,10 @@ cpdef convert_chunked(char* source_file, char* dest_format, long io_buffer_size=
     with open(source_file,'r+b') as SRC:
         while True:
             chunk = SRC.read(io_buffer_size)
-            if len(chunk) == 0: break
-            while chunk[len(chunk)-1] != '\n':
-                chunk += SRC.read(1)
+            if len(chunk) == 0:
+                break
+            #while chunk[len(chunk)-1] != '\n':
+            #    chunk += SRC.read(1)
             print '.',
             sys.stdout.flush()
             raptor_parser_parse_chunk(rdf_parser, <unsigned char*>chunk, len(chunk), 0)
@@ -130,25 +132,27 @@ cpdef convert_chunked(char* source_file, char* dest_format, long io_buffer_size=
 # raptor term to string
 #
 #-----------------------------------------------------------------------------------------------------------------------
-cdef inline bytes raptor_term_to_bytes(raptor_term* term):
+cdef inline str to_ntriples(raptor_term* term):
     if term == NULL:
         return None
-    cdef bytes _rep = None
+    cdef str _rep = None
+    cdef char* _tmp = NULL
+    cdef size_t _len = 0
     if term.type == RAPTOR_TERM_TYPE_URI:
-        _rep = raptor_uri_as_string(term.value.uri)
+        _tmp = <char*>raptor_uri_as_string(term.value.uri)
+        _rep = '<%s>'%(PyString_FromStringAndSize(_tmp, strlen(_tmp)))
     elif term.type == RAPTOR_TERM_TYPE_LITERAL:
-        _rep = PyBytes_FromStringAndSize(<char*>term.value.blank.string, term.value.blank.string_len)
+        _rep = '"%s"'%(PyString_FromStringAndSize(<char*>term.value.literal.string, term.value.literal.string_len))
+        if term.value.literal.language != NULL:
+            _rep = '%s@%s'%(_rep, PyString_FromStringAndSize(<char*>term.value.literal.language, strlen(<char*>term.value.literal.language)))
+        elif term.value.literal.datatype != NULL:
+            _tmp = <char*>raptor_uri_as_counted_string(term.value.literal.datatype, &_len)
+            _rep = '%s^^<%s>'%(_rep, PyString_FromStringAndSize(<char*>_tmp, _len))
     elif term.type == RAPTOR_TERM_TYPE_BLANK:
-        _rep = PyBytes_FromStringAndSize(<char*>term.value.literal.string, term.value.literal.string_len)
+        _rep = '_:%s'%(PyString_FromStringAndSize(<char*>term.value.blank.string, term.value.blank.string_len))
     else:
         _rep = None
     return _rep
-
-#cdef inline bytes raptor_term_to_bytes(raptor_term* term):
-#    if term == NULL:
-#        return None
-#    cdef unsigned char* _nt = raptor_term_to_string(term)
-#    return <bytes>_nt if _nt != NULL else None
 
 #-----------------------------------------------------------------------------------------------------------------------
 #
@@ -158,10 +162,10 @@ cdef inline bytes raptor_term_to_bytes(raptor_term* term):
 cdef inline void parse_handler(void *user_data, raptor_statement* statement):
     cdef RDFParser parser = <RDFParser>user_data
     parser.results.append( (
-        raptor_term_to_bytes(statement.subject),
-        raptor_term_to_bytes(statement.predicate),
-        raptor_term_to_bytes(statement.object),
-        raptor_term_to_bytes(statement.graph),
+        to_ntriples(statement.subject),
+        to_ntriples(statement.predicate),
+        to_ntriples(statement.object),
+        to_ntriples(statement.graph),
     ) )
 
 #-----------------------------------------------------------------------------------------------------------------------
@@ -176,6 +180,8 @@ cdef class RDFParser:
     cdef public list results
 
     def __cinit__(self, src, base_uri = None, format = None):
+        self.results  = []
+
         cdef raptor_world* world = raptor_new_world()
         self.uri_string = raptor_uri_filename_to_uri_string(src)
         if not base_uri:
@@ -183,7 +189,6 @@ cdef class RDFParser:
 
         source_format = get_parser_type(src) if not format else format
         self.rap_parser = raptor_new_parser(world, source_format)
-        self.results  = []
         raptor_parser_set_statement_handler(self.rap_parser, <void*>self, <raptor_statement_handler>parse_handler)
         raptor_parser_parse_start(self.rap_parser, self.base_uri)
 
@@ -198,7 +203,7 @@ cdef class RDFParser:
         del self.results[:]
 
     cpdef list parse(self, bytes data):
-        del self.results[:] # clear the results
+        del self.results[:]
         raptor_parser_parse_chunk(self.rap_parser, <unsigned char*>data, len(data), 0)
         return self.results
 
@@ -244,10 +249,10 @@ DEFAULT_BUFFER_SIZE = 512 * KB
 
 def rdf_stream(src, format=None, buffer_size=DEFAULT_BUFFER_SIZE):
     parser = RDFParser(src, None, format)
-    with io.open(src, 'rb+', buffering= 1 * MB) as SRC:
+    with io.open(src, 'rb+', buffering= DEFAULT_BUFFER_SIZE) as SRC:
         while True:
             chunk = SRC.read(buffer_size)
-            if not chunk: break
+            if not chunk:
+                break
             for stmt in  parser.parse(chunk):
                 yield stmt
-
