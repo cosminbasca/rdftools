@@ -154,6 +154,28 @@ cdef inline str to_ntriples(raptor_term* term):
         _rep = None
     return _rep
 
+
+cdef inline str to_str(raptor_term* term):
+    if term == NULL:
+        return None
+    cdef str _rep = None
+    cdef char* _tmp = NULL
+    cdef size_t _len = 0
+    if term.type == RAPTOR_TERM_TYPE_URI:
+        _tmp = <char*>raptor_uri_as_string(term.value.uri)
+        _rep = PyString_FromStringAndSize(_tmp, strlen(_tmp))
+    elif term.type == RAPTOR_TERM_TYPE_LITERAL:
+        _rep = PyString_FromStringAndSize(<char*>term.value.literal.string, term.value.literal.string_len)
+        if term.value.literal.language != NULL:
+            _rep = '%s@%s'%(_rep, PyString_FromStringAndSize(<char*>term.value.literal.language, strlen(<char*>term.value.literal.language)))
+        elif term.value.literal.datatype != NULL:
+            _tmp = <char*>raptor_uri_as_counted_string(term.value.literal.datatype, &_len)
+            _rep = '%s^^%s'%(_rep, PyString_FromStringAndSize(<char*>_tmp, _len))
+    elif term.type == RAPTOR_TERM_TYPE_BLANK:
+        _rep = '_:%s'%(PyString_FromStringAndSize(<char*>term.value.blank.string, term.value.blank.string_len))
+    else:
+        _rep = None
+    return _rep
 #-----------------------------------------------------------------------------------------------------------------------
 #
 # the raptor parse handler
@@ -162,10 +184,10 @@ cdef inline str to_ntriples(raptor_term* term):
 cdef inline void parse_handler(void *user_data, raptor_statement* statement):
     cdef RDFParser parser = <RDFParser>user_data
     parser.results.append( (
-        to_ntriples(statement.subject),
-        to_ntriples(statement.predicate),
-        to_ntriples(statement.object),
-        to_ntriples(statement.graph),
+        to_str(statement.subject),
+        to_str(statement.predicate),
+        to_str(statement.object),
+        to_str(statement.graph),
     ) )
 
 #-----------------------------------------------------------------------------------------------------------------------
