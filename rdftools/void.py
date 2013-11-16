@@ -98,6 +98,7 @@ def get_void_stats_fragment(source_file,
     stats['partition_classes']      = part_classes.counts()
     stats['partition_properties']   = part_properties.counts()
 
-    print 'stats -> %s'%pformat(stats)
     with io.open('%s.yaml'%source_file, 'w+') as OUT:
         dump(stats, OUT)
+
+    return stats

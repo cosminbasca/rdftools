@@ -3,6 +3,7 @@ __author__ = 'Cosmin Basca'
 __email__ = 'basca@ifi.uzh.ch; cosmin.basca@gmail.com'
 
 import argparse
+from pprint import pformat
 #from multiprocessing import Pool
 from rdftools.__version__ import str_version
 from rdftools.void import *
@@ -23,7 +24,11 @@ def main():
     if args.version:
         print 'using version %s'%str_version
     else:
-        get_void_stats_fragment(args.source)
+        stats = get_void_stats_fragment(args.source)
+        print '-----------------------------------------------------------------------------'
+        print 'Collected Statistics (VoID)'
+        print pformat(stats)
+        print '-----------------------------------------------------------------------------'
 
 PROFILE = False
 #PROFILE = True
