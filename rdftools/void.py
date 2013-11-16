@@ -84,7 +84,7 @@ def get_void_stats_fragment(source_file,
         sbf_subjects_add(s)
         sbf_properties_add(p)
         sbf_objects_add(o)
-        if p=='<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>':
+        if p=='http://www.w3.org/1999/02/22-rdf-syntax-ns#type':
             sbf_classes_add(o)
             part_classes_add(o, '%s %s'%(s,p))
         part_properties_add(p, '%s %s'%(s,o))
