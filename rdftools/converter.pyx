@@ -1,4 +1,5 @@
 import io
+from time import time
 
 from cython cimport *
 from cpython cimport *
@@ -225,8 +226,11 @@ cdef class RDFParser:
         del self.results[:]
 
     cpdef list parse(self, bytes data):
-        del self.results[:]
-        raptor_parser_parse_chunk(self.rap_parser, <unsigned char*>data, len(data), 0)
+        # the preparation is quite fast
+        self.results = []
+        cdef unsigned char* _data = <unsigned char*>data
+        # this seems to have a bit of a lag...
+        raptor_parser_parse_chunk(self.rap_parser, _data, len(data), 0)
         return self.results
 
 #-----------------------------------------------------------------------------------------------------------------------
@@ -273,7 +277,7 @@ def rdf_stream(src, format=None, buffer_size=DEFAULT_BUFFER_SIZE):
     parser = RDFParser(src, None, format)
     with io.open(src, 'rb+', buffering= DEFAULT_BUFFER_SIZE) as SRC:
         while True:
-            chunk = SRC.read(buffer_size)
+            chunk = SRC.read(buffer_size) # this step is quite fast!
             if not chunk:
                 break
             for stmt in  parser.parse(chunk):
