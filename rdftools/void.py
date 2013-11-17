@@ -2,7 +2,9 @@ from collections import defaultdict
 import io
 import os
 from cybloom import ScalableBloomFilter, Sketch
+from py4j.java_gateway import JavaGateway
 from converter import rdf_stream, MB, KB
+from rdftools import BUNDLED_NXPARSER_JAR
 from util import log_time
 import sys
 from yaml import dump
@@ -83,8 +85,23 @@ def get_void_stats_fragment(source_file, capacity_triples=INIT_CAPACITY_MED):
         'partition_properties'  : None,
     }
 
-
+    # -----------------------------------------------------------------------------
+    # using NX parser
+    #gateway = JavaGateway.launch_gateway(classpath='.:%s'%BUNDLED_NXPARSER_JAR)
+    #jvm = gateway.jvm
+    #source_is = jvm.java.io.FileInputStream(source_file)
+    #nxparser = jvm.org.semanticweb.yars.nx.parser.NxParser(source_is)
+    #while nxparser.hasNext():
+    #    node = nxparser.next()
+    #    s = str(node[0].toString())
+    #    p = str(node[1].toString())
+    #    o = str(node[2].toString())
+    # too slow when called from python ...
+    # -----------------------------------------------------------------------------
+    # using the RAPTOR parser
     for s,p,o,c in rdf_stream(source_file, buffer_size=64*MB):
+    # -----------------------------------------------------------------------------
+
         if t_count % 50000 == 0 and t_count > 0:
             print '[processed %d triples]'%t_count
             sys.stdout.flush()
