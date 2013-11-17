@@ -177,6 +177,62 @@ cdef inline str to_str(raptor_term* term):
     else:
         _rep = None
     return _rep
+
+
+
+#-----------------------------------------------------------------------------------------------------------------------
+#
+# PARSER visitor based API
+#
+#-----------------------------------------------------------------------------------------------------------------------
+cdef inline void parse_visitor_handle(void *user_data, raptor_statement* statement):
+    cdef object visitor = <object>user_data
+    visitor(
+        to_str(statement.subject),
+        to_str(statement.predicate),
+        to_str(statement.object),
+        to_str(statement.graph)
+    )
+
+
+cpdef parse(char* source_file, object visitor, char* base_uri=NULL):
+    assert hasattr(visitor, '__call__'), 'visitor must be callable'
+
+    source_format = get_parser_type(source_file)
+    print 'parsing [%s] (%s)'%(source_file, source_format)
+
+    # LOCAL VARS
+    cdef raptor_world *world                = NULL
+    cdef raptor_parser* rdf_parser          = NULL
+    cdef unsigned char *uri_string          = raptor_uri_filename_to_uri_string(source_file)
+    cdef raptor_uri *uri                    = NULL
+    cdef raptor_uri *r_base_uri               = NULL
+
+    # INIT
+    world = raptor_new_world()
+    if base_uri is NULL:
+        r_base_uri = raptor_new_uri(world, uri_string)
+    uri = raptor_new_uri(world, uri_string)
+
+    # PARSER
+    rdf_parser = raptor_new_parser(world, source_format)
+    raptor_parser_set_statement_handler(rdf_parser, <void*>visitor, <raptor_statement_handler>parse_visitor_handle)
+
+    # START
+    print '[start parsing ...]'
+    raptor_parser_parse_file(rdf_parser, uri, r_base_uri)
+
+    print '[done parsing]'
+    raptor_free_parser(rdf_parser)
+
+    raptor_free_memory(uri_string)
+    raptor_free_uri(uri)
+    if r_base_uri is not NULL:
+        raptor_free_uri(r_base_uri)
+
+    raptor_free_world(world)
+
+
 #-----------------------------------------------------------------------------------------------------------------------
 #
 # the raptor parse handler
@@ -202,7 +258,7 @@ cdef class RDFParser:
     cdef raptor_uri* base_uri
     cdef public list results
 
-    def __cinit__(self, src, base_uri = None, format = None):
+    def __cinit__(self, src, base_uri = None, format = None, **kwargs):
         self.results  = []
 
         cdef raptor_world* world = raptor_new_world()
@@ -232,6 +288,8 @@ cdef class RDFParser:
         # this seems to have a bit of a lag...
         raptor_parser_parse_chunk(self.rap_parser, _data, len(data), 0)
         return self.results
+
+
 
 #-----------------------------------------------------------------------------------------------------------------------
 #

@@ -24,7 +24,8 @@ def main():
     if args.version:
         print 'using version %s'%str_version
     else:
-        stats = get_void_stats_fragment(args.source)
+        #stats = get_void_stats_fragment(args.source)
+        stats = get_void_stats_fragment_visitor(args.source)
         print '-----------------------------------------------------------------------------'
         print 'Collected Statistics (VoID)'
         print pformat(stats)
