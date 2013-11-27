@@ -24,7 +24,10 @@ setup(
     author_email = 'basca@ifi.uzh.ch',
     cmdclass = {'build_ext': build_ext},
     packages = ["rdftools"],
-    ext_modules = [extension('converter'    ,['raptor2'])],
+    ext_modules = [
+        extension('converter'    ,['raptor2']),
+        extension('gcityhash'    ,['cityhash'],     language='c++')
+    ],
     install_requires =[
         'cython>=0.19.2',
         'cybloom>=0.7.2',

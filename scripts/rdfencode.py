@@ -6,16 +6,16 @@ import argparse
 from pprint import pformat
 #from multiprocessing import Pool
 from rdftools.__version__ import str_version
-from rdftools.void import *
+from rdftools.encoder import *
 
 
 def main():
     """
     """
-    parser = argparse.ArgumentParser(description='generate void statistics for RDF files')
+    parser = argparse.ArgumentParser(description='encode the RDF file(s)')
 
     parser.add_argument('source', metavar='SOURCE', type=str,
-                       help='the source file or location (of files) to be converted')
+                       help='the source file or location (of files) to be encoded')
     parser.add_argument('--version', dest='version', action='store_true',
                        help='the current version')
 
@@ -24,11 +24,8 @@ def main():
     if args.version:
         print 'using version %s'%str_version
     else:
-        stats = get_void_stats_fragment(args.source)
-        print '-----------------------------------------------------------------------------'
-        print 'Collected Statistics (VoID)'
-        print pformat(stats)
-        print '-----------------------------------------------------------------------------'
+        encode_rdf(args.source)
+        print 'done'
 
 PROFILE = False
 #PROFILE = True

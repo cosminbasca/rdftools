@@ -19,6 +19,9 @@ dist/rdftools-0.0.4-py2.7-macosx-10.4-x86_64.egg
 rdftools/__init__.py
 rdftools/__version__.py
 rdftools/converter.pyx
+rdftools/encoder.py
+rdftools/gcityhash.pxd
+rdftools/gcityhash.pyx
 rdftools/lubm.py
 rdftools/nxparser.py
 rdftools/raptor.pxd
@@ -52,3 +55,4 @@ scripts/genvoid.py
 scripts/genvoid2.py
 scripts/rdfconvert.py
 scripts/rdfconvert2.py
+scripts/rdfencode.py

@@ -17,5 +17,8 @@ def extension(name, libs, language='c', options=[]):
 
 setup(
     cmdclass = {'build_ext': build_ext},
-    ext_modules = [extension('converter'    ,['raptor2'])]
+    ext_modules = [
+        extension('converter'    ,['raptor2']),
+        extension('gcityhash'    ,['cityhash'],     language='c++')
+    ]
 )
