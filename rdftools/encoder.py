@@ -28,6 +28,7 @@ def encode(sbf_add, sbf_check, value):
             return '%s'%_key
         else:
             # we have a collision
+            print '[collision detected]'
             _key += randint(0, MIL)
 
 
@@ -37,7 +38,7 @@ def encode_rdf(source_file, capacity_triples=INIT_CAPACITY_MED):
         def __init__(self):
             self.rdf_literals        = ScalableBloomFilter(capacity_triples, FP_ERR_RATE)
             self.t_count             = 0
-            self.out_file            = io.open('%s.ent'%source_file, 'w+', buffering=512*KB)
+            self.out_file            = io.open('%s.ent'%source_file, 'wb+', buffering=512*KB)
 
             # loop optimisations
             self.rdf_literals_add    = self.rdf_literals.add
