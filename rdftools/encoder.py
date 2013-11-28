@@ -18,32 +18,36 @@ INIT_CAPACITY_MED = 10* MIL     # 10 million
 INIT_CAPACITY_LOW = 10000       # 10K
 INIT_CAPACITY_XTRA_LOW = 1000   # 10K
 
-def encode(sbf_add, sbf_check, value):
+def encode(keys, key_literals, value):
     _key = city64(value)
     while True:
-        _value = '%s%d'%(value, _key)
-        if not sbf_check(_value):
+        key = '%d'%_key
+        mapping = '%s->%s'%(key, value)
+        if not keys.check(key):
             # no collision
-            sbf_add(_value)
-            return '%s'%_key
+            keys.add(key)
+            key_literals.add(mapping)
+            return key
         else:
-            # we have a collision
-            print '[collision detected]'
-            _key += randint(0, MIL)
+            # a possible collision
+            if not key_literals.check(mapping):
+                print '[collision detected]'
+                _key += randint(0, MIL)
+            else:
+                return key
 
 
 @log_time(None)
 def encode_rdf(source_file, capacity_triples=INIT_CAPACITY_MED):
     class Visitor(object):
         def __init__(self):
-            self.rdf_literals        = ScalableBloomFilter(capacity_triples, FP_ERR_RATE)
-            self.t_count             = 0
-            self.out_file            = io.open('%s.ent'%source_file, 'wb+', buffering=512*KB)
+            self.keys           = ScalableBloomFilter(capacity_triples, FP_ERR_RATE)
+            self.key_literals   = ScalableBloomFilter(capacity_triples, FP_ERR_RATE)
+            self.t_count        = 0
+            self.out_file       = io.open('%s.ent'%source_file, 'wb+', buffering=512*KB)
 
             # loop optimisations
-            self.rdf_literals_add    = self.rdf_literals.add
-            self.rdf_literals_check  = self.rdf_literals.check
-            self.write               = self.out_file.write
+            self.write          = self.out_file.write
 
         def __del__(self):
             self.out_file.close()
@@ -54,9 +58,9 @@ def encode_rdf(source_file, capacity_triples=INIT_CAPACITY_MED):
                 sys.stdout.flush()
 
             self.write('%s %s %s\n'%(
-                encode(self.rdf_literals_add, self.rdf_literals_check, s),
-                encode(self.rdf_literals_add, self.rdf_literals_check, p),
-                encode(self.rdf_literals_add, self.rdf_literals_check, o)
+                encode(self.keys, self.key_literals, s),
+                encode(self.keys, self.key_literals, p),
+                encode(self.keys, self.key_literals, o)
             ))
 
             self.t_count += 1
