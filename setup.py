@@ -42,6 +42,7 @@ setup(
     scripts = [
         'scripts/rdfconvert.py',
         'scripts/rdfconvert2.py',
+        'scripts/rdfencode.py',
         'scripts/genlubm.py',
         'scripts/genvoid.py',
         'scripts/genvoid2.py',

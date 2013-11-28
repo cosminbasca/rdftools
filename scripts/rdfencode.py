@@ -11,6 +11,16 @@ from rdftools.encoder import *
 
 def main():
     """
+usage: rdfencode.py [-h] [--version] SOURCE
+
+encode the RDF file(s)
+
+positional arguments:
+  SOURCE      the source file or location (of files) to be encoded
+
+optional arguments:
+  -h, --help  show this help message and exit
+  --version   the current version
     """
     parser = argparse.ArgumentParser(description='encode the RDF file(s)')
 
