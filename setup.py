@@ -26,7 +26,7 @@ setup(
     packages = ["rdftools"],
     ext_modules = [
         extension('converter'    ,['raptor2']),
-        extension('gcityhash'    ,['cityhash'],     language='c++')
+        extension('gcityhash'    ,['cityhash'],     language='c++',  options=['-Wno-sign-compare'])
     ],
     install_requires =[
         'cython>=0.19.2',

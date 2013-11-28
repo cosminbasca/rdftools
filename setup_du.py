@@ -19,6 +19,6 @@ setup(
     cmdclass = {'build_ext': build_ext},
     ext_modules = [
         extension('converter'    ,['raptor2']),
-        extension('gcityhash'    ,['cityhash'],     language='c++')
+        extension('gcityhash'    ,['cityhash'],     language='c++',  options=['-Wno-sign-compare'])
     ]
 )
