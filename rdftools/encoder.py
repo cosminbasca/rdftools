@@ -67,3 +67,12 @@ def encode_rdf(source_file, capacity_triples=INIT_CAPACITY_MED):
 
     visitor = Visitor()
     parse(source_file, visitor)
+
+
+"""
+parallel impl:
+
+PARSER + ENCODER components they read in files + output (filename, {k:v, k:v, ...}) tuples
+
+one WRITER component with the 2 SBF, checking for collisions! + WRITE to filename
+"""
