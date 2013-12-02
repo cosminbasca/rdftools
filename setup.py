@@ -46,5 +46,6 @@ setup(
         'scripts/genlubm.py',
         'scripts/genvoid.py',
         'scripts/genvoid2.py',
+        'scripts/ntround.py',
     ],
 )
