@@ -14,8 +14,6 @@ setup_du.py
 .idea/testrunner.xml
 .idea/vcs.xml
 .idea/dictionaries/basca.xml
-dist/rdftools-0.0.2-py2.7-macosx-10.4-x86_64.egg
-dist/rdftools-0.0.4-py2.7-macosx-10.4-x86_64.egg
 rdftools/__init__.py
 rdftools/__version__.py
 rdftools/converter.pyx
@@ -53,6 +51,7 @@ rdftools/deps/rdf2rdf/readme.txt
 scripts/genlubm.py
 scripts/genvoid.py
 scripts/genvoid2.py
+scripts/ntround.py
 scripts/rdfconvert.py
 scripts/rdfconvert2.py
 scripts/rdfencode.py

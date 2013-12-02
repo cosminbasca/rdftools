@@ -7,17 +7,10 @@ __author__ = 'basca'
 # enum simulation
 #
 # ================================================================================================
-def enum(**enums):
-    """simulate enume pattern, from here: http://stackoverflow.com/questions/36932/whats-the-best-way-to-implement-an-enum-in-python
-    example
-    >>> Numbers = enum(ONE=1, TWO=2, THREE='three')
-    >>> Numbers.ONE
-    1
-    >>> Numbers.TWO
-    2
-    >>> Numbers.THREE
-    'three
-    """
+def enum(*sequential, **named):
+    enums = dict(zip(sequential, range(len(sequential))), **named)
+    reverse = dict((value, key) for key, value in enums.iteritems())
+    enums['reverse_mapping'] = reverse
     return type('Enum', (), enums)
 
 
