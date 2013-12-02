@@ -9,3 +9,4 @@ from .void import *
 from .util import *
 from .converter import *
 from .encoder import *
+from .gcityhash import *
