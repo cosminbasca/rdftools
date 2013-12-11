@@ -1,13 +1,11 @@
+from cybloom import ScalableBloomFilter, Sketch
 from collections import defaultdict
 import io
 import os
-from cybloom import ScalableBloomFilter, Sketch
-from py4j.java_gateway import JavaGateway
-from converter import rdf_stream, MB, KB, parse
-from rdftools import BUNDLED_NXPARSER_JAR
-from util import log_time
 import sys
 from yaml import dump
+from rdftools.rdfparse import rdf_stream, MB, KB, parse
+from rdftools.util import log_time
 
 __author__ = 'basca'
 

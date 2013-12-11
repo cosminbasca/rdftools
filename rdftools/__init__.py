@@ -7,6 +7,6 @@ from .rdf2rdf import *
 from .nxparser import *
 from .void import *
 from .util import *
-from .converter import *
+from .rdfparse import *
 from .encoder import *
 from .gcityhash import *

@@ -5,11 +5,15 @@ from setuptools import setup
 from setuptools.extension import Extension
 from Cython.Distutils import build_ext
 from libutil import get_lib_dir, get_include_dir
-from rdftools.__version__ import str_version
 
-def extension(name, libs, language='c', options=[]):
-    return Extension('rdftools.%s'%name,
-                     ['rdftools/%s.pyx'%name,],
+str_version = None
+execfile('rdftools/__version__.py')
+
+def extension(name, libs, language='c', options=[], c_sources=[]):
+    extension_name = 'rdftools.%s'%name
+    extension_path = 'rdftools/%s.pyx'%('/'.join(name.split('.')))
+    return Extension(extension_name,
+                     [extension_path,] + c_sources,
                      language           = language,
                      libraries          = list(libs),
                      library_dirs 	    = get_lib_dir(),
@@ -24,15 +28,16 @@ setup(
     author_email = 'basca@ifi.uzh.ch',
     cmdclass = {'build_ext': build_ext},
     packages = ["rdftools"],
+    package_dir = {"rdftools":"rdftools"},
     ext_modules = [
-        extension('converter'    ,['raptor2']),
+        extension('rdfparse'     ,['raptor2']),
         extension('gcityhash'    ,['cityhash'],     language='c++',  options=['-Wno-sign-compare'])
     ],
     install_requires =[
         'cython>=0.19.2',
-        'cybloom>=0.7.2',
         'py4j>=0.8',
         'pyyaml>=3.10',
+        'cybloom>=0.7.2',
     ],
     include_package_data = True,
     exclude_package_data = {

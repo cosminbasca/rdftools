@@ -1,13 +1,10 @@
-from collections import defaultdict
 import io
-import os
-from converter import rdf_stream, MB, KB, parse
 from util import log_time
 import sys
-from yaml import dump
 from cybloom import ScalableBloomFilter
-from gcityhash import city64
 from random import randint
+from rdftools.rdfparse import rdf_stream, MB, KB, parse
+from rdftools.gcityhash import city64
 
 __author__ = 'basca'
 

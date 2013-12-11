@@ -1,16 +1,12 @@
-import io
-from time import time
-
-from cython cimport *
 from cpython cimport *
 from libc.stdio cimport *
 from libc.stdlib cimport *
 from libc.string cimport *
 from raptor cimport *
 
-import os
+import io
 import sys
-from raptorutil import *
+from rdftools.raptorutil import *
 
 __author__ = 'Cosmin Basca'
 __email__ = 'basca@ifi.uzh.ch; cosmin.basca@gmail.com'
@@ -34,7 +30,7 @@ cpdef convert(char* source_file, char* dest_format, char* base_uri=NULL):
     cdef raptor_serializer* rdf_serializer  = NULL
     cdef unsigned char *uri_string          = raptor_uri_filename_to_uri_string(source_file)
     cdef raptor_uri *uri                    = NULL
-    cdef raptor_uri *r_base_uri               = NULL
+    cdef raptor_uri *r_base_uri             = NULL
 
     # INIT
     world = raptor_new_world()

@@ -16,7 +16,6 @@ setup_du.py
 .idea/dictionaries/basca.xml
 rdftools/__init__.py
 rdftools/__version__.py
-rdftools/converter.pyx
 rdftools/encoder.py
 rdftools/gcityhash.pxd
 rdftools/gcityhash.pyx
@@ -25,6 +24,7 @@ rdftools/nxparser.py
 rdftools/raptor.pxd
 rdftools/raptorutil.py
 rdftools/rdf2rdf.py
+rdftools/rdfparse.pyx
 rdftools/util.py
 rdftools/void.py
 rdftools.egg-info/PKG-INFO
