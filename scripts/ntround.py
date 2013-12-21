@@ -63,7 +63,7 @@ optional arguments:
     parser.add_argument('--prefix', dest='prefix', action='store', type=str, default='rounded',
                        help='the prefix used for files that are transformed, cannot be the enpty string!')
     parser.add_argument('--precision', dest='precision', action='store', type=long, default=0,
-                       help='the precision to round to, if 0, floating point numbers are rounded to floats')
+                       help='the precision to round to, if 0, floating point numbers are rounded to long')
 
     args = parser.parse_args()
 
