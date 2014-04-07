@@ -16,21 +16,21 @@ __email__ = 'basca@ifi.uzh.ch; cosmin.basca@gmail.com'
 # default (straight covertion)
 #
 #-----------------------------------------------------------------------------------------------------------------------
-cdef inline void serialize_handler(void *user_data, raptor_statement* statement):
-    raptor_serializer_serialize_statement(<raptor_serializer*>user_data, statement)
+cdef inline void serialize_handler(void *user_data, raptor_statement*statement):
+    raptor_serializer_serialize_statement(<raptor_serializer*> user_data, statement)
 
-cpdef convert(char* source_file, char* dest_format, char* base_uri=NULL):
+cpdef convert(char*source_file, char*dest_format, char*base_uri=NULL):
     source_format = get_parser_type(source_file)
-    dest_file  = '%s.%s'%(os.path.splitext(source_file)[0], get_rdfext(dest_format))
-    print 'converting [%s] (%s) ====> [%s] (%s)'%(source_file, source_format, dest_file, dest_format)
+    dest_file = '%s.%s' % (os.path.splitext(source_file)[0], get_rdfext(dest_format))
+    print 'converting [%s] (%s) ====> [%s] (%s)' % (source_file, source_format, dest_file, dest_format)
 
     # LOCAL VARS
-    cdef raptor_world *world                = NULL
-    cdef raptor_parser* rdf_parser          = NULL
-    cdef raptor_serializer* rdf_serializer  = NULL
-    cdef unsigned char *uri_string          = raptor_uri_filename_to_uri_string(source_file)
-    cdef raptor_uri *uri                    = NULL
-    cdef raptor_uri *r_base_uri             = NULL
+    cdef raptor_world *world = NULL
+    cdef raptor_parser*rdf_parser = NULL
+    cdef raptor_serializer*rdf_serializer = NULL
+    cdef unsigned char *uri_string = raptor_uri_filename_to_uri_string(source_file)
+    cdef raptor_uri *uri = NULL
+    cdef raptor_uri *r_base_uri = NULL
 
     # INIT
     world = raptor_new_world()
@@ -44,7 +44,7 @@ cpdef convert(char* source_file, char* dest_format, char* base_uri=NULL):
 
     # PARSER
     rdf_parser = raptor_new_parser(world, source_format)
-    raptor_parser_set_statement_handler(rdf_parser, rdf_serializer, <raptor_statement_handler>serialize_handler)
+    raptor_parser_set_statement_handler(rdf_parser, rdf_serializer, <raptor_statement_handler> serialize_handler)
 
     # START
     print 'Start parsing...'
@@ -68,19 +68,19 @@ cpdef convert(char* source_file, char* dest_format, char* base_uri=NULL):
 # chunked conversion
 #
 #-----------------------------------------------------------------------------------------------------------------------
-cpdef convert_chunked(char* source_file, char* dest_format, long io_buffer_size=160*MB, char* base_uri=NULL):
+cpdef convert_chunked(char*source_file, char*dest_format, long io_buffer_size=160 * MB, char*base_uri=NULL):
     source_format = get_parser_type(source_file)
-    dest_file  = '%s.%s'%(os.path.splitext(source_file)[0], get_rdfext(dest_format))
-    print 'converting [%s] (%s) ====> [%s] (%s)'%(source_file, source_format, dest_file, dest_format)
-    print 'buffer size = %d MB'%(io_buffer_size/MB)
+    dest_file = '%s.%s' % (os.path.splitext(source_file)[0], get_rdfext(dest_format))
+    print 'converting [%s] (%s) ====> [%s] (%s)' % (source_file, source_format, dest_file, dest_format)
+    print 'buffer size = %d MB' % (io_buffer_size / MB)
 
     # LOCAL VARS
-    cdef raptor_world *world                = NULL
-    cdef raptor_parser* rdf_parser          = NULL
-    cdef raptor_serializer* rdf_serializer  = NULL
-    cdef unsigned char *uri_string          = raptor_uri_filename_to_uri_string(source_file)
-    cdef raptor_uri *uri                    = NULL
-    cdef raptor_uri *r_base_uri               = NULL
+    cdef raptor_world *world = NULL
+    cdef raptor_parser*rdf_parser = NULL
+    cdef raptor_serializer*rdf_serializer = NULL
+    cdef unsigned char *uri_string = raptor_uri_filename_to_uri_string(source_file)
+    cdef raptor_uri *uri = NULL
+    cdef raptor_uri *r_base_uri = NULL
 
     # INIT
     world = raptor_new_world()
@@ -94,12 +94,12 @@ cpdef convert_chunked(char* source_file, char* dest_format, long io_buffer_size=
 
     # PARSER
     rdf_parser = raptor_new_parser(world, source_format)
-    raptor_parser_set_statement_handler(rdf_parser, rdf_serializer, <raptor_statement_handler>serialize_handler)
+    raptor_parser_set_statement_handler(rdf_parser, rdf_serializer, <raptor_statement_handler> serialize_handler)
 
     # START
     print 'Start parsing...'
     raptor_parser_parse_start(rdf_parser, r_base_uri)
-    with open(source_file,'r+b') as SRC:
+    with open(source_file, 'r+b') as SRC:
         while True:
             chunk = SRC.read(io_buffer_size)
             if len(chunk) == 0:
@@ -108,7 +108,7 @@ cpdef convert_chunked(char* source_file, char* dest_format, long io_buffer_size=
             #    chunk += SRC.read(1)
             print '.',
             sys.stdout.flush()
-            raptor_parser_parse_chunk(rdf_parser, <unsigned char*>chunk, len(chunk), 0)
+            raptor_parser_parse_chunk(rdf_parser, <unsigned char*> chunk, len(chunk), 0)
     raptor_parser_parse_chunk(rdf_parser, NULL, 0, 1)
 
     print 'Done converting'
@@ -129,47 +129,48 @@ cpdef convert_chunked(char* source_file, char* dest_format, long io_buffer_size=
 # raptor term to string
 #
 #-----------------------------------------------------------------------------------------------------------------------
-cdef inline str to_ntriples(raptor_term* term):
+cdef inline str to_ntriples(raptor_term*term):
     if term == NULL:
         return None
     cdef str _rep = None
-    cdef char* _tmp = NULL
+    cdef char*_tmp = NULL
     cdef size_t _len = 0
     if term.type == RAPTOR_TERM_TYPE_URI:
-        _tmp = <char*>raptor_uri_as_string(term.value.uri)
-        _rep = '<%s>'%(PyString_FromStringAndSize(_tmp, strlen(_tmp)))
+        _tmp = <char*> raptor_uri_as_string(term.value.uri)
+        _rep = '<%s>' % (PyString_FromStringAndSize(_tmp, strlen(_tmp)))
     elif term.type == RAPTOR_TERM_TYPE_LITERAL:
-        _rep = '"%s"'%(PyString_FromStringAndSize(<char*>term.value.literal.string, term.value.literal.string_len))
+        _rep = '"%s"' % (PyString_FromStringAndSize(<char*> term.value.literal.string, term.value.literal.string_len))
         if term.value.literal.language != NULL:
-            _rep = '%s@%s'%(_rep, PyString_FromStringAndSize(<char*>term.value.literal.language, strlen(<char*>term.value.literal.language)))
+            _rep = '%s@%s' % (_rep, PyString_FromStringAndSize(<char*> term.value.literal.language,
+                                                               strlen(<char*> term.value.literal.language)))
         elif term.value.literal.datatype != NULL:
-            _tmp = <char*>raptor_uri_as_counted_string(term.value.literal.datatype, &_len)
-            _rep = '%s^^<%s>'%(_rep, PyString_FromStringAndSize(<char*>_tmp, _len))
+            _tmp = <char*> raptor_uri_as_counted_string(term.value.literal.datatype, &_len)
+            _rep = '%s^^<%s>' % (_rep, PyString_FromStringAndSize(<char*> _tmp, _len))
     elif term.type == RAPTOR_TERM_TYPE_BLANK:
-        _rep = '_:%s'%(PyString_FromStringAndSize(<char*>term.value.blank.string, term.value.blank.string_len))
+        _rep = '_:%s' % (PyString_FromStringAndSize(<char*> term.value.blank.string, term.value.blank.string_len))
     else:
         _rep = None
     return _rep
 
-
-cdef inline str to_str(raptor_term* term):
+cdef inline str to_str(raptor_term*term):
     if term == NULL:
         return None
     cdef str _rep = None
-    cdef char* _tmp = NULL
+    cdef char*_tmp = NULL
     cdef size_t _len = 0
     if term.type == RAPTOR_TERM_TYPE_URI:
-        _tmp = <char*>raptor_uri_as_string(term.value.uri)
+        _tmp = <char*> raptor_uri_as_string(term.value.uri)
         _rep = PyString_FromStringAndSize(_tmp, strlen(_tmp))
     elif term.type == RAPTOR_TERM_TYPE_LITERAL:
-        _rep = PyString_FromStringAndSize(<char*>term.value.literal.string, term.value.literal.string_len)
+        _rep = PyString_FromStringAndSize(<char*> term.value.literal.string, term.value.literal.string_len)
         if term.value.literal.language != NULL:
-            _rep = '%s@%s'%(_rep, PyString_FromStringAndSize(<char*>term.value.literal.language, strlen(<char*>term.value.literal.language)))
+            _rep = '%s@%s' % (_rep, PyString_FromStringAndSize(<char*> term.value.literal.language,
+                                                               strlen(<char*> term.value.literal.language)))
         elif term.value.literal.datatype != NULL:
-            _tmp = <char*>raptor_uri_as_counted_string(term.value.literal.datatype, &_len)
-            _rep = '%s^^%s'%(_rep, PyString_FromStringAndSize(<char*>_tmp, _len))
+            _tmp = <char*> raptor_uri_as_counted_string(term.value.literal.datatype, &_len)
+            _rep = '%s^^%s' % (_rep, PyString_FromStringAndSize(<char*> _tmp, _len))
     elif term.type == RAPTOR_TERM_TYPE_BLANK:
-        _rep = '_:%s'%(PyString_FromStringAndSize(<char*>term.value.blank.string, term.value.blank.string_len))
+        _rep = '_:%s' % (PyString_FromStringAndSize(<char*> term.value.blank.string, term.value.blank.string_len))
     else:
         _rep = None
     return _rep
@@ -181,8 +182,8 @@ cdef inline str to_str(raptor_term* term):
 # PARSER visitor based API
 #
 #-----------------------------------------------------------------------------------------------------------------------
-cdef inline void parse_visitor_handle(void *user_data, raptor_statement* statement):
-    cdef object visitor = <object>user_data
+cdef inline void parse_visitor_handle(void *user_data, raptor_statement*statement):
+    cdef object visitor = <object> user_data
     visitor(
         to_str(statement.subject),
         to_str(statement.predicate),
@@ -190,19 +191,18 @@ cdef inline void parse_visitor_handle(void *user_data, raptor_statement* stateme
         to_str(statement.graph)
     )
 
-
-cpdef parse(char* source_file, object visitor, char* base_uri=NULL):
+cpdef parse(char*source_file, object visitor, char*base_uri=NULL):
     assert hasattr(visitor, '__call__'), 'visitor must be callable'
 
     source_format = get_parser_type(source_file)
-    print 'parsing [%s] (%s)'%(source_file, source_format)
+    print 'parsing [%s] (%s)' % (source_file, source_format)
 
     # LOCAL VARS
-    cdef raptor_world *world                = NULL
-    cdef raptor_parser* rdf_parser          = NULL
-    cdef unsigned char *uri_string          = raptor_uri_filename_to_uri_string(source_file)
-    cdef raptor_uri *uri                    = NULL
-    cdef raptor_uri *r_base_uri               = NULL
+    cdef raptor_world *world = NULL
+    cdef raptor_parser*rdf_parser = NULL
+    cdef unsigned char *uri_string = raptor_uri_filename_to_uri_string(source_file)
+    cdef raptor_uri *uri = NULL
+    cdef raptor_uri *r_base_uri = NULL
 
     # INIT
     world = raptor_new_world()
@@ -212,7 +212,7 @@ cpdef parse(char* source_file, object visitor, char* base_uri=NULL):
 
     # PARSER
     rdf_parser = raptor_new_parser(world, source_format)
-    raptor_parser_set_statement_handler(rdf_parser, <void*>visitor, <raptor_statement_handler>parse_visitor_handle)
+    raptor_parser_set_statement_handler(rdf_parser, <void*> visitor, <raptor_statement_handler> parse_visitor_handle)
 
     # START
     print '[start parsing ...]'
@@ -234,14 +234,14 @@ cpdef parse(char* source_file, object visitor, char* base_uri=NULL):
 # the raptor parse handler
 #
 #-----------------------------------------------------------------------------------------------------------------------
-cdef inline void parse_handler(void *user_data, raptor_statement* statement):
-    cdef RDFParser parser = <RDFParser>user_data
-    parser.results.append( (
+cdef inline void parse_handler(void *user_data, raptor_statement*statement):
+    cdef RDFParser parser = <RDFParser> user_data
+    parser.results.append((
         to_str(statement.subject),
         to_str(statement.predicate),
         to_str(statement.object),
         to_str(statement.graph),
-    ) )
+    ))
 
 #-----------------------------------------------------------------------------------------------------------------------
 #
@@ -249,22 +249,22 @@ cdef inline void parse_handler(void *user_data, raptor_statement* statement):
 #
 #-----------------------------------------------------------------------------------------------------------------------
 cdef class RDFParser:
-    cdef raptor_parser* rap_parser
-    cdef unsigned char* uri_string
-    cdef raptor_uri* base_uri
+    cdef raptor_parser*rap_parser
+    cdef unsigned char*uri_string
+    cdef raptor_uri*base_uri
     cdef public list results
 
     def __cinit__(self, src, base_uri = None, format = None, **kwargs):
-        self.results  = []
+        self.results = []
 
-        cdef raptor_world* world = raptor_new_world()
+        cdef raptor_world*world = raptor_new_world()
         self.uri_string = raptor_uri_filename_to_uri_string(src)
         if not base_uri:
             self.base_uri = raptor_new_uri_from_counted_string(world, self.uri_string, len(self.uri_string))
 
         source_format = get_parser_type(src) if not format else format
         self.rap_parser = raptor_new_parser(world, source_format)
-        raptor_parser_set_statement_handler(self.rap_parser, <void*>self, <raptor_statement_handler>parse_handler)
+        raptor_parser_set_statement_handler(self.rap_parser, <void*> self, <raptor_statement_handler> parse_handler)
         raptor_parser_parse_start(self.rap_parser, self.base_uri)
 
     def __dealloc__(self):
@@ -280,7 +280,7 @@ cdef class RDFParser:
     cpdef list parse(self, bytes data):
         # the preparation is quite fast
         self.results = []
-        cdef unsigned char* _data = <unsigned char*>data
+        cdef unsigned char*_data = <unsigned char*> data
         # this seems to have a bit of a lag...
         raptor_parser_parse_chunk(self.rap_parser, _data, len(data), 0)
         return self.results
@@ -311,12 +311,14 @@ def get_source_files(location, ext='nt'):
     sources = None
     if os.path.exists(location):
         if os.path.isdir(location):
-            sources = [os.path.join(location, f) for f in os.listdir(location) if os.path.splitext(f)[1][1:].upper() == ext.upper()]
+            sources = [os.path.join(location, f) for f in os.listdir(location) if
+                       os.path.splitext(f)[1][1:].upper() == ext.upper()]
         else:
             sources = [location]
     else:
         dir = os.path.split(location)[0]
-        sources = [os.path.join(location, f) for f in os.listdir(dir) if os.path.splitext(f)[1][1:].upper() == ext.upper()]
+        sources = [os.path.join(location, f) for f in os.listdir(dir) if
+                   os.path.splitext(f)[1][1:].upper() == ext.upper()]
     sources.sort()
     return sources
 
@@ -329,10 +331,10 @@ DEFAULT_BUFFER_SIZE = 512 * KB
 
 def rdf_stream(src, format=None, buffer_size=DEFAULT_BUFFER_SIZE):
     parser = RDFParser(src, None, format)
-    with io.open(src, 'rb+', buffering= DEFAULT_BUFFER_SIZE) as SRC:
+    with io.open(src, 'rb+', buffering=DEFAULT_BUFFER_SIZE) as SRC:
         while True:
-            chunk = SRC.read(buffer_size) # this step is quite fast!
+            chunk = SRC.read(buffer_size)  # this step is quite fast!
             if not chunk:
                 break
-            for stmt in  parser.parse(chunk):
+            for stmt in parser.parse(chunk):
                 yield stmt

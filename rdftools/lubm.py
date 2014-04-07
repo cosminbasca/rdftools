@@ -3,7 +3,7 @@ import commands
 
 __author__ = 'basca'
 
-BUNDLED_LUBM_PATH = os.path.join(os.path.split(__file__)[0],'deps','Uba1.7')
+BUNDLED_LUBM_PATH = os.path.join(os.path.split(__file__)[0], 'deps', 'Uba1.7')
 LUBM_ONTO = 'http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl'
 
 #-----------------------------------------------------------------------------------------------------------------------
@@ -24,9 +24,10 @@ def get_lubm_path(args):
 #
 #-----------------------------------------------------------------------------------------------------------------------
 def exec_lubm(lubm_path, univ, index, seed, onto):
-    status, output = commands.getstatusoutput('java -cp %s edu.lehigh.swat.bench.uba.Generator -univ %s -index %s -seed %s -onto %s'%(
-        lubm_path, univ, index, seed, onto
-    ))
+    status, output = commands.getstatusoutput(
+        'java -cp %s edu.lehigh.swat.bench.uba.Generator -univ %s -index %s -seed %s -onto %s' % (
+            lubm_path, univ, index, seed, onto
+        ))
     if status:
         print "an error occured!"
         print output

@@ -24,7 +24,6 @@ cpdef inline tuple city128seed(bytes value, tuple seed):
 cpdef inline uint64 city128to64(tuple digest):
     return Hash128to64(digest)
 
-
 cdef class City64:
     def __cinit__(self, bytes value = None):
         self.digest64 = city64(value) if value else 0
@@ -38,7 +37,6 @@ cdef class City64:
     property digest:
         def __get__(self):
             return self.digest64
-
 
 cdef class City128:
     def __cinit__(self, bytes value = None):

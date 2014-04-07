@@ -5,7 +5,7 @@ from libcpp.pair cimport pair
 cdef extern from "city.h" nogil:
     ctypedef uint32_t uint32
     ctypedef uint64_t uint64
-    ctypedef pair[unsigned long,unsigned long] uint128
+    ctypedef pair[unsigned long, unsigned long] uint128
 
     uint64 CityHash64(const char *buf, size_t len)
     uint64 CityHash64WithSeed(const char *buf, size_t len, uint64 seed)
@@ -27,7 +27,6 @@ cdef class City64:
     cdef public uint64 digest64
 
     cpdef update(self, bytes value)
-
 
 cdef class City128:
     cdef public tuple digest128
