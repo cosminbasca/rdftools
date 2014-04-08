@@ -2,3 +2,4 @@ cython>=0.19.2
 py4j>=0.8
 pyyaml>=3.10
 cybloom>=0.7.2
+sh>=1.09
