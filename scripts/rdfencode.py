@@ -21,7 +21,7 @@ def main():
         print 'using version %s' % str_version
     else:
         encoder = RdfEncoder(args.source)
-        encoder.run()
+        encoder()
         print 'done'
 
 

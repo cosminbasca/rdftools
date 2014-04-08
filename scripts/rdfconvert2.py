@@ -24,7 +24,8 @@ def main():
     if args.version:
         print 'using rdftools version %s' % str_version
     else:
-        Rdf2Rdf.pconvert(args.source, args.dst_format, clear_source=args.clear)
+        rdf_converter = Rdf2Rdf()
+        rdf_converter(args.source, args.dst_format, clear_source=args.clear)
         print 'done'
 
 

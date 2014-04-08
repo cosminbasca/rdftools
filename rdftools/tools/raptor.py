@@ -1,7 +1,6 @@
 import os
 import sys
 from multiprocessing import Pool
-from rdftools.util import log_time
 from rdftools.tools import RdfTool
 from rdftools.rdfparse import convert_chunked
 from rdftools.raptorutil import supported, get_parser_type, MB
@@ -35,9 +34,7 @@ class RaptorRdf(RdfTool):
         'nquads'
     ]
 
-    @staticmethod
-    @log_time(None)
-    def pconvert(source, destination_format, buffer_size=32, clear=False):
+    def _run(self, source, destination_format, buffer_size=32, clear=False):
         buffer_size = buffer_size * MB
         files = []
         src = os.path.abspath(source)

@@ -1,5 +1,5 @@
 import argparse
-from rdftools.tools import NxParser
+from rdftools.tools import NxVoid
 from rdftools.__version__ import str_version
 
 __author__ = 'basca'
@@ -20,8 +20,8 @@ def main():
     if args.version:
         print 'using rdftools version %s' % str_version
     else:
-        nxparser = NxParser()
-        nxparser.gen_void(args.data, args.dataset_id)
+        void_generator = NxVoid()
+        void_generator(args.data, args.dataset_id)
         print 'done'
 
 

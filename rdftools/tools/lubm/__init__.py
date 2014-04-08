@@ -2,7 +2,6 @@ import os
 import sh
 import sys
 from multiprocessing import Pool
-from rdftools.util import log_time
 from rdftools.tools.base import RdfTool
 
 __author__ = 'basca'
@@ -58,9 +57,7 @@ class Lubm(RdfTool):
             print 'an error occured, while running lubm'
             print output
 
-    @staticmethod
-    @log_time(None)
-    def pgenerate(num_universities, index, generator_seed):
+    def _run(self, num_universities, index, generator_seed):
         """
         a paralel version of the `generate` method
 

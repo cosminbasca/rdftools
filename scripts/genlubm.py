@@ -26,9 +26,9 @@ def main():
     if args.version:
         print 'using rdftools version %s' % str_version
     else:
-        lubm = Lubm(ontology=args.ontology)
-        print 'using LUBM classpath = ', lubm.classpath
-        lubm.pgenerate(args.univ, args.index, args.seed)
+        lubm_generator = Lubm(ontology=args.ontology)
+        print 'using LUBM classpath = ', lubm_generator.classpath
+        lubm_generator(args.univ, args.index, args.seed)
         print 'done'
 
 

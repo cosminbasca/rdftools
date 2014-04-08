@@ -1,5 +1,4 @@
 import os
-from rdftools.util import log_time
 from rdftools.tools.base import RdfTool
 from rdftools.raptorutil import rdf_ext
 from py4j.java_gateway import JavaGateway
@@ -17,7 +16,7 @@ def dest_file_name(src, dst_format):
     return None
 
 
-class NxParser(RdfTool):
+class NxVoid(RdfTool):
     def __init__(self):
         global _CLASSPATH
         self._classpath = _CLASSPATH
@@ -49,9 +48,7 @@ class NxParser(RdfTool):
             cp = os.environ.get(self.env_var, None)
         return cp if cp else self._classpath
 
-
-    @log_time(None)
-    def gen_void(self, source, dataset_id):
+    def _run(self, source, dataset_id):
         """
         generate void statistics from source data using the nxparser library
         :param source: the source file(s)

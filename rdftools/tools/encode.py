@@ -43,7 +43,7 @@ class RdfEncoder(ParserVisitorTool):
     def __del__(self):
         self.out_file.close()
 
-    def __call__(self, s, p, o, c):
+    def on_visit(self, s, p, o, c):
         if self.t_count % 50000 == 0 and self.t_count > 0:
             print '[processed %d triples]' % self.t_count
             sys.stdout.flush()

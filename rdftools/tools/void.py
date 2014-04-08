@@ -77,7 +77,7 @@ class Void(ParserVisitorTool):
     def rdf_type(self):
         return 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
 
-    def __call__(self, s, p, o, c):
+    def on_visit(self, s, p, o, c):
         if self.t_count % 50000 == 0 and self.t_count > 0:
             print '[processed %d triples]' % self.t_count
             sys.stdout.flush()

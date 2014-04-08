@@ -26,7 +26,8 @@ def main():
     if args.version:
         print 'using rdftools version %s' % str_version
     else:
-        NtFloatRounder.pround_files(args.path, prefix=args.prefix, precision=args.precision)
+        rounder = NtFloatRounder()
+        rounder(args.path, prefix=args.prefix, precision=args.precision)
         print 'done'
 
 

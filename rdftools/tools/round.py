@@ -44,10 +44,7 @@ class NtFloatRounder(RdfTool):
         else:
             print '[ok]'
 
-
-    @staticmethod
-    @log_time(None)
-    def pround_files(path, prefix='rounded', precision=0):
+    def _run(self, path, prefix='rounded', precision=0):
         """
         parallel rounding of ntriples files in given path
         :param path: the ntriple files location

@@ -1,9 +1,9 @@
-import os
-from rdftools.tools.base import RdfTool
 import sh
-from multiprocessing import Pool
+import os
 import sys
+from multiprocessing import Pool
 from rdftools.raptorutil import rdf_ext
+from rdftools.tools.base import RdfTool
 
 __author__ = 'basca'
 
@@ -72,8 +72,7 @@ class Rdf2Rdf(RdfTool):
             print 'REMOVE : ', source
             os.remove(source)
 
-    @staticmethod
-    def pconvert(source, destination_format, clear_source=False):
+    def _run(self, source, destination_format, clear_source=False):
         """
         parallel version of the `convert` method
         :param source: (rdf) files to convert (source path)

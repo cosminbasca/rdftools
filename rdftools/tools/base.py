@@ -4,8 +4,17 @@ from abc import ABCMeta, abstractmethod
 
 __author__ = 'basca'
 
+
 class RdfTool(object):
     __metaclass__ = ABCMeta
+
+    @abstractmethod
+    def _run(self, *args, **kwargs):
+        pass
+
+    @log_time(None)
+    def __call__(self, *args, **kwargs):
+        return self._run(*args, **kwargs)
 
 
 class ParserVisitorTool(RdfTool):
@@ -15,14 +24,14 @@ class ParserVisitorTool(RdfTool):
         self.source_file = source_file
 
     @abstractmethod
-    def __call__(self, s, p, o, c):
+    def on_visit(self, s, p, o, c):
         pass
 
     @abstractmethod
-    def get_results(self):
+    def get_results(self, *args, **kwargs):
         return None
 
     @log_time(None)
-    def run(self):
-        parse(self.source_file, self)
-        return self.get_results()
+    def _run(self, *args, **kwargs):
+        parse(self.source_file, self.on_visit)
+        return self.get_results(*args, **kwargs)

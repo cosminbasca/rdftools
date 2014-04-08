@@ -21,8 +21,8 @@ def main():
     if args.version:
         print 'using version %s' % str_version
     else:
-        void = Void(args.source)
-        stats = void.run()
+        void_generator = Void(args.source)
+        stats = void_generator()
         print '-----------------------------------------------------------------------------'
         print 'Collected Statistics (VoID)'
         print pformat(stats)
