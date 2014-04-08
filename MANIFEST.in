@@ -1,0 +1,7 @@
+recursive-exclude dist *
+exclude *.sh
+exclude *.csv
+exclude *.prof
+exclude *.log
+exclude *.pdf
+exclude dependencies.txt

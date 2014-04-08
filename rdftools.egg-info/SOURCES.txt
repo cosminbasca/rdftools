@@ -1,12 +1,8 @@
+MANIFEST.in
 README
-build.sh
-clean.sh
-dist.sh
-install.sh
 libutil.py
 setup.py
 setup_du.py
-dist/rdftools-0.2.8.tar.gz
 rdftools/__init__.py
 rdftools/__version__.py
 rdftools/gcityhash.pxd
