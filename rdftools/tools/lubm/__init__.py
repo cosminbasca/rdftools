@@ -1,18 +1,20 @@
 import os
-from rdftools.tools.base import ExternalTool
 import sh
-from multiprocessing import Pool
 import sys
+from multiprocessing import Pool
+from rdftools.util import log_time
+from rdftools.tools.base import RdfTool
 
 __author__ = 'basca'
 
 _CLASSPATH = os.path.join(os.path.split(__file__)[0], 'classpath')
 
 
-class Lubm(ExternalTool):
-    def __init__(self):
+class Lubm(RdfTool):
+    def __init__(self, ontology=None):
         global _CLASSPATH
         self._classpath = _CLASSPATH
+        self._ontology = ontology if ontology else 'http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl'
 
     @property
     def ontology(self):
@@ -20,7 +22,7 @@ class Lubm(ExternalTool):
         the lubm ontology, used internally by the generator
         :return: the lubm ontology
         """
-        return 'http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl'
+        return self._ontology
 
     @property
     def env_var(self):
@@ -57,6 +59,7 @@ class Lubm(ExternalTool):
             print output
 
     @staticmethod
+    @log_time(None)
     def pgenerate(num_universities, index, generator_seed):
         """
         a paralel version of the `generate` method

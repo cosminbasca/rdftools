@@ -1,5 +1,5 @@
 import os
-from rdftools.tools.base import ExternalTool
+from rdftools.tools.base import RdfTool
 import sh
 from multiprocessing import Pool
 import sys
@@ -18,7 +18,13 @@ def dest_file_name(src, dst_format):
     return None
 
 
-class Rdf2Rdf(ExternalTool):
+def to_process(src, dst_format):
+    if os.path.isdir(src):
+        return False
+    return dest_file_name(src, dst_format) is not None
+
+
+class Rdf2Rdf(RdfTool):
     def __init__(self):
         global _CLASSPATH
         self._classpath = _CLASSPATH
@@ -67,14 +73,24 @@ class Rdf2Rdf(ExternalTool):
             os.remove(source)
 
     @staticmethod
-    def pconvert(files, destination_format, clear_source=False):
+    def pconvert(source, destination_format, clear_source=False):
         """
         parallel version of the `convert` method
-        :param files: (rdf) files to convert
+        :param source: (rdf) files to convert (source path)
         :param destination_format: the destination format
         :param clear_source: if set, delete the source files. Default = False
         :return: None
         """
+
+        files = []
+        src = os.path.abspath(source)
+        if os.path.isdir(src):
+            files = [os.path.join(src, f) for f in os.listdir(src) if to_process(f, destination_format)]
+        elif os.path.exists(src):
+            files = [src]
+        print 'to process : ', files
+        if clear_source:
+            print 'will remove original files after conversion'
 
         def job_finished(res):
             print '[done]',

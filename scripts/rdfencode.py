@@ -3,47 +3,27 @@ __author__ = 'Cosmin Basca'
 __email__ = 'basca@ifi.uzh.ch; cosmin.basca@gmail.com'
 
 import argparse
-from pprint import pformat
-#from multiprocessing import Pool
 from rdftools.__version__ import str_version
-from rdftools.encoder import *
+from rdftools.tools.encode import *
 
 
 def main():
-    """
-usage: rdfencode.py [-h] [--version] SOURCE
-
-encode the RDF file(s)
-
-positional arguments:
-  SOURCE      the source file or location (of files) to be encoded
-
-optional arguments:
-  -h, --help  show this help message and exit
-  --version   the current version
-    """
     parser = argparse.ArgumentParser(description='encode the RDF file(s)')
 
     parser.add_argument('source', metavar='SOURCE', type=str,
-                       help='the source file or location (of files) to be encoded')
+                        help='the source file or location (of files) to be encoded')
     parser.add_argument('--version', dest='version', action='store_true',
-                       help='the current version')
+                        help='the current version')
 
     args = parser.parse_args()
 
     if args.version:
-        print 'using version %s'%str_version
+        print 'using version %s' % str_version
     else:
-        encode_rdf(args.source)
+        encoder = RdfEncoder(args.source)
+        encoder.run()
         print 'done'
 
-PROFILE = False
-#PROFILE = True
 
 if __name__ == '__main__':
-    if PROFILE:
-        import cProfile
-        command = """main()"""
-        cProfile.runctx( command, globals(), locals())
-    else:
-        main()
+    main()
