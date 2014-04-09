@@ -11,7 +11,7 @@ import os
 import sh
 from abc import ABCMeta, abstractmethod
 from tempfile import mkdtemp
-from rdftools.tools import Lubm
+from rdftools.tools import Lubm, RaptorRdf
 from rdftools.util import working_directory
 
 __author__ = 'basca'
@@ -20,8 +20,13 @@ __author__ = 'basca'
 class DataGenerator(object):
     __metaclass__ = ABCMeta
 
-    def __init__(self, output_path, **kwargs):
+    def __init__(self, output_path, sites, **kwargs):
         self._output_path = output_path
+        self._sites = sites
+
+    @property
+    def sites(self):
+        return self._sites
 
     @property
     def output_path(self):
@@ -36,15 +41,18 @@ class DataGenerator(object):
         pass
 
     def __call__(self, *args, **kwargs):
+        print 'prepare ... '
         self._prepare(*args, **kwargs)
+        print 'generate ... '
         self._generate(*args, **kwargs)
+        print 'done'
 
 
 class LubmGenerator(DataGenerator):
     __metaclass__ = ABCMeta
 
-    def __init__(self, output_path, temp_folder=None, universities=10, index=0, **kwargs):
-        super(LubmGenerator, self).__init__(output_path, **kwargs)
+    def __init__(self, output_path, sites, temp_folder=None, universities=10, index=0, **kwargs):
+        super(LubmGenerator, self).__init__(output_path, sites, **kwargs)
         self.temp_folder = temp_folder if temp_folder else mkdtemp()
         self._universities = universities
         self._index = index
@@ -54,6 +62,9 @@ class LubmGenerator(DataGenerator):
         lubm_generator = Lubm()
         print 'generate the LUBM data ... '
         lubm_generator(self._universities, self._index)
+        print 'convert OWL LUBM to NT ... '
+        rdf_converter = RaptorRdf()
+        rdf_converter('.', destination_format='nt', buffer_size=64, clear=True)
 
 
     def _generate(self, *args, **kwargs):
@@ -69,7 +80,5 @@ class LubmGenerator(DataGenerator):
         with working_directory(self.temp_folder):
             print 'generating data [working directory = %s]' % (sh.pwd())
             super(LubmGenerator, self).__call__(*args, **kwargs)
-            print 'cleanup LUBM files ... '
-            sh.rm('*.owl')
-            print 'distribution generated in [%s]' % (sh.pwd())
+
 
