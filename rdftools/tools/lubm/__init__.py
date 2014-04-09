@@ -57,7 +57,7 @@ class Lubm(RdfTool):
             print 'an error occured, while running lubm'
             print output
 
-    def _run(self, num_universities, index, generator_seed):
+    def _run(self, num_universities, index=0, generator_seed=0):
         """
         a paralel version of the `generate` method
 

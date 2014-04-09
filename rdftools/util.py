@@ -1,4 +1,6 @@
+from contextlib import contextmanager
 from time import time
+import sh
 
 __author__ = 'basca'
 
@@ -35,3 +37,11 @@ def log_time(logger=None):
         return wrapper_func
 
     return wrapper
+
+
+@contextmanager
+def working_directory(dir):
+    _cwd = sh.pwd()
+    sh.cd(dir)
+    yield
+    sh.cd(_cwd)
