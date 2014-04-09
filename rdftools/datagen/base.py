@@ -11,7 +11,7 @@ import os
 import sh
 from abc import ABCMeta, abstractmethod
 from tempfile import mkdtemp
-from tools import Lubm
+from rdftools.tools import Lubm
 from rdftools.util import working_directory
 
 __author__ = 'basca'
