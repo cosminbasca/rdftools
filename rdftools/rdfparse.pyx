@@ -47,10 +47,10 @@ cpdef convert(char*source_file, char*dest_format, char*base_uri=NULL):
     raptor_parser_set_statement_handler(rdf_parser, rdf_serializer, <raptor_statement_handler> serialize_handler)
 
     # START
-    print 'Start parsing...'
+    # print 'Start parsing...'
     raptor_parser_parse_file(rdf_parser, uri, r_base_uri)
 
-    print 'Done converting'
+    # print 'Done converting'
     raptor_free_parser(rdf_parser)
     raptor_serializer_serialize_end(rdf_serializer)
     raptor_free_serializer(rdf_serializer)

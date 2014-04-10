@@ -52,7 +52,7 @@ class LubmHorizontal(LubmGenerator):
             with io.open(uni_rdf, mode='r', buffering=1024 * 1024 * 16) as UNI:
                 for i, triple in enumerate(UNI):
                     site = site_index[i]
-                    site_files[site].write('%s\n'%triple)
+                    site_files[site].write('%s'%triple)
 
         # close site files
         [site_rdf.close() for site_rdf in site_files]
