@@ -58,6 +58,7 @@ class Lubm(RdfTool):
         :param index: the index at whitch the generation process starts
         :param generator_seed:  a seed used by the generator
         """
+        print '[generate] Lubm num_unis=%s, index=%s'%(num_universities, index)
         output = sh.java('-cp', self.classpath, 'edu.lehigh.swat.bench.uba.Generator', '-univ', num_universities,
                          '-index', index,
                          '-seed', generator_seed, '-onto', self.ontology)
