@@ -51,10 +51,11 @@ class DataGenerator(object):
 class LubmGenerator(DataGenerator):
     __metaclass__ = ABCMeta
 
-    def __init__(self, output_path, sites, universities=10, index=0, **kwargs):
+    def __init__(self, output_path, sites, universities=10, index=0, clean=True, **kwargs):
         super(LubmGenerator, self).__init__(output_path, sites, **kwargs)
         self._universities = universities
         self._index = index
+        self._clean = clean
 
     def _prepare(self, *args, **kwargs):
         # prepare the lubm data
@@ -78,6 +79,7 @@ class LubmGenerator(DataGenerator):
         print 'generating data [working directory = %s]' % (sh.pwd().strip())
         super(LubmGenerator, self).__call__(*args, **kwargs)
         # clean the generated universities
-        sh.rm('University*.nt')
+        if self._clean:
+            sh.rm('University*.nt')
 
 
