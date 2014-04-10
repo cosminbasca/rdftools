@@ -50,6 +50,7 @@ setup(
         'scripts/rdfconvert2.py',
         'scripts/rdfencode.py',
         'scripts/genlubm.py',
+        'scripts/genlubmdistro.py',
         'scripts/genvoid.py',
         'scripts/genvoid2.py',
         'scripts/ntround.py',

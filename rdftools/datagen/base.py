@@ -72,6 +72,9 @@ class LubmGenerator(DataGenerator):
         print 'universities = %s' % universities_rdf
         self._create_distribution(universities_rdf)
 
+    def site_path(self, site_num):
+        return os.path.join(self.output_path, 'site_%s.nt' % site_num)
+
     @abstractmethod
     def _create_distribution(self, universities_rdf):
         pass

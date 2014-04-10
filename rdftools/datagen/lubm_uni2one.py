@@ -11,7 +11,7 @@ class LubmUni2One(LubmGenerator):
         for i in xrange(self._sites):
             unis = sites_index[sites_index == i]
             if unis.size > 0:
-                with io.open('site_%s.nt', mode='w+', buffering=1024 * 1024 * 16) as SITE:
+                with io.open(self.site_path(i), mode='w+', buffering=1024 * 1024 * 16) as SITE:
                     for uni_rdf in [universities_rdf[idx] for idx in unis]:
                         with io.open(uni_rdf, mode='r', buffering=1024 * 1024 * 16) as UNI:
                             triples = UNI.read()

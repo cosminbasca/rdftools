@@ -44,7 +44,7 @@ class LubmHorizontal(LubmGenerator):
 
     def _create_distribution(self, universities_rdf):
         # open site files
-        site_files = [io.open('site_%s.nt', mode='w+', buffering=1024 * 1024 * 16) for _ in self.sites]
+        site_files = [io.open(self.site_path(i), mode='w+', buffering=1024 * 1024 * 16) for i in self.sites]
 
         for uni_rdf in universities_rdf:
             site_index = HashPartitioner(uni_rdf, num_sites=self.sites, permutation=self._permutation)()
