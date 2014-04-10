@@ -75,7 +75,7 @@ class LubmGenerator(DataGenerator):
         pass
 
     def __call__(self, *args, **kwargs):
-        print 'generating data [working directory = %s]' % (sh.pwd())
+        print 'generating data [working directory = %s]' % (sh.pwd().strip())
         super(LubmGenerator, self).__call__(*args, **kwargs)
 
 
