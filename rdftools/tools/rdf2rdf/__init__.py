@@ -24,6 +24,11 @@ def to_process(src, dst_format):
     return dest_file_name(src, dst_format) is not None
 
 
+def convert_file(source, dst_format, clr_src=False):
+    rdf2rdf = Rdf2Rdf()
+    rdf2rdf.convert(source, dst_format, clear_source=clr_src)
+
+
 class Rdf2Rdf(RdfTool):
     def __init__(self):
         global _CLASSPATH
@@ -94,10 +99,6 @@ class Rdf2Rdf(RdfTool):
         def job_finished(res):
             print '[done]',
             sys.stdout.flush()
-
-        def convert_file(source, dst_format, clr_src=False):
-            rdf2rdf = Rdf2Rdf()
-            rdf2rdf.convert(source, dst_format, clear_source=clr_src)
 
         pool = Pool()
         for src in files:

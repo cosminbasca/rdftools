@@ -8,6 +8,11 @@ from rdftools.tools import RdfTool
 __author__ = 'basca'
 
 
+def round_file(nt_file, rounded_nt_file, prec):
+    ntfloat_rounder = NtFloatRounder(precision=prec)
+    ntfloat_rounder.round_file(nt_file, rounded_nt_file)
+
+
 class NtFloatRounder(RdfTool):
     def __init__(self, precision=0):
         self._round_pattern = '"%.' + str(precision) + 'f"' if precision > 0 else '"%d"'
@@ -59,10 +64,6 @@ class NtFloatRounder(RdfTool):
         else:
             base, name = os.path.split(path)
             data_files = [(os.path.join(base, name), os.path.join(base, '%s_%s' % (prefix, name)))]
-
-        def round_file(nt_file, rounded_nt_file, prec):
-            ntfloat_rounder = NtFloatRounder(precision=prec)
-            ntfloat_rounder.round_file(nt_file, rounded_nt_file)
 
         pool = Pool()
         for ntfile, round_ntfile in data_files:

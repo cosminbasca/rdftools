@@ -9,6 +9,11 @@ __author__ = 'basca'
 _CLASSPATH = os.path.join(os.path.split(__file__)[0], 'classpath')
 
 
+def gen_uni(num_unis, idx, seed):
+    lubm = Lubm()
+    lubm.generate(num_unis, idx, seed)
+
+
 class Lubm(RdfTool):
     def __init__(self, ontology=None):
         global _CLASSPATH
@@ -70,10 +75,6 @@ class Lubm(RdfTool):
         def job_finished(res):
             print '|',
             sys.stdout.flush()
-
-        def gen_uni(num_unis, idx, seed):
-            lubm = Lubm()
-            lubm.generate(num_unis, idx, seed)
 
         max_unis = 10
 
