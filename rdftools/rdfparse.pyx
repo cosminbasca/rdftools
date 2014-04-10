@@ -71,7 +71,7 @@ cpdef convert(char*source_file, char*dest_format, char*base_uri=NULL):
 cpdef convert_chunked(char*source_file, char*dest_format, long io_buffer_size=160 * MB, char*base_uri=NULL):
     source_format = get_parser_type(source_file)
     dest_file = '%s.%s' % (os.path.splitext(source_file)[0], get_rdfext(dest_format))
-    print '[converting] buffer = %d MB,  %s (%s) ==> %s (%s), ' % (
+    print '[converting] buffer = %d MB,  %s (%s) ==> %s (%s) ' % (
     io_buffer_size / MB, source_file, source_format, dest_file, dest_format)
 
     # LOCAL VARS
@@ -97,7 +97,7 @@ cpdef convert_chunked(char*source_file, char*dest_format, long io_buffer_size=16
     raptor_parser_set_statement_handler(rdf_parser, rdf_serializer, <raptor_statement_handler> serialize_handler)
 
     # START
-    print '[start] ...'
+    # print '[start] ...'
     raptor_parser_parse_start(rdf_parser, r_base_uri)
     with open(source_file, 'r+b') as SRC:
         while True:
@@ -111,7 +111,7 @@ cpdef convert_chunked(char*source_file, char*dest_format, long io_buffer_size=16
             raptor_parser_parse_chunk(rdf_parser, <unsigned char*> chunk, len(chunk), 0)
     raptor_parser_parse_chunk(rdf_parser, NULL, 0, 1)
 
-    print '[done]'
+    # print '[done]'
     raptor_free_parser(rdf_parser)
     raptor_serializer_serialize_end(rdf_serializer)
     raptor_free_serializer(rdf_serializer)

@@ -75,7 +75,7 @@ class Lubm(RdfTool):
         """
 
         def job_finished(res):
-            print '|',
+            print '.',
             sys.stdout.flush()
 
         max_unis = 10
@@ -101,7 +101,7 @@ class Lubm(RdfTool):
 
             univ = 'University%d.nt'%uni
 
-            output = sh.cat(' '.join(ufiles), '>', univ)
+            output = sh.cat(' '.join(ufiles), _out=univ)
             if output.exit_code > 0:
                 print 'Error : ',output
             else:
