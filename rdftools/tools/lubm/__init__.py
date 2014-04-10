@@ -1,8 +1,10 @@
 import os
 import sh
 import sys
+import re
 from multiprocessing import Pool
 from rdftools.tools.base import RdfTool
+from rdftools.tools.raptor import RaptorRdf
 
 __author__ = 'basca'
 
@@ -84,4 +86,33 @@ class Lubm(RdfTool):
 
         pool.close()
         pool.join()
+
+        # convert all to ntriples
+        print 'converting to ntriples ... '
+        rdf_converter = RaptorRdf()
+        rdf_converter('.', destination_format='ntriples', buffer_size=64, clear=True)
+
+        # now concatenate all files belonging to 1 university together
+        files = os.listdir('.')
+        sfiles = ' '.join(files)
+        uni_files = lambda uni: re.findall('University%d_[0-9]+\.nt'%uni, sfiles)
+        for uni in xrange(num_universities):
+            ufiles = uni_files(uni)
+
+            univ = 'University%d.nt'%uni
+
+            output = sh.cat(' '.join(ufiles), '>', univ)
+            if output.exit_code > 0:
+                print 'Error : ',output
+            else:
+                print 'concat ',univ,
+                sys.stdout.flush()
+                for f in ufiles:
+                    _output= sh.rm(f)
+                    print '.',
+                    sys.stdout.flush()
+                print ' [ok]'
+
+        print 'done'
+
 

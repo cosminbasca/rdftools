@@ -62,10 +62,6 @@ class LubmGenerator(DataGenerator):
         lubm_generator = Lubm()
         print 'generate the LUBM data ... '
         lubm_generator(self._universities, self._index)
-        print 'convert OWL LUBM to NT ... '
-        rdf_converter = RaptorRdf()
-        rdf_converter('.', destination_format='nt', buffer_size=64, clear=True)
-
 
     def _generate(self, *args, **kwargs):
         universities_rdf = [f for f in os.listdir('.') if os.path.isfile(f) and f.endswith('.owl')]

@@ -34,7 +34,7 @@ class RaptorRdf(RdfTool):
         'nquads'
     ]
 
-    def _run(self, source, destination_format, buffer_size=32, clear=False):
+    def _run(self, source, destination_format='ntriples', buffer_size=32, clear=False):
         buffer_size = buffer_size * MB
         files = []
         src = os.path.abspath(source)
