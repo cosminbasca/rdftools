@@ -64,7 +64,7 @@ class LubmGenerator(DataGenerator):
         lubm_generator(self._universities, self._index)
 
     def _generate(self, *args, **kwargs):
-        universities_rdf = [f for f in os.listdir('.') if os.path.isfile(f) and f.endswith('.owl')]
+        universities_rdf = [f for f in os.listdir('.') if os.path.isfile(f) and f.startswith('University')]
         print 'universities = %s' % universities_rdf
         self._create_distribution(universities_rdf)
 

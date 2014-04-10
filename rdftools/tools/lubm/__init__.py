@@ -1,4 +1,5 @@
 import os
+import io
 import sh
 import sys
 import re
@@ -75,8 +76,9 @@ class Lubm(RdfTool):
         """
 
         def job_finished(res):
-            print '.',
-            sys.stdout.flush()
+            # print '.',
+            # sys.stdout.flush()
+            pass
 
         max_unis = 10
 
@@ -99,19 +101,11 @@ class Lubm(RdfTool):
         for uni in xrange(num_universities):
             ufiles = uni_files(uni)
 
-            univ = 'University%d.nt'%uni
-
-            output = sh.cat(' '.join(ufiles), _out=univ)
-            if output.exit_code > 0:
-                print 'Error : ',output
-            else:
-                print 'concat ',univ,
-                sys.stdout.flush()
-                for f in ufiles:
-                    _output= sh.rm(f)
-                    print '.',
-                    sys.stdout.flush()
-                print ' [ok]'
+            with io.open('University%d.nt'%uni, 'w+') as UNI:
+                for upart in ufiles:
+                    with io.open(upart, 'r+') as UPART:
+                        UNI.write(UPART.read())
+                    sh.rm(upart)
 
         print 'done'
 

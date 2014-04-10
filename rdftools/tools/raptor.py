@@ -43,13 +43,14 @@ class RaptorRdf(RdfTool):
                      supported(f) and get_parser_type(f) != destination_format]
         elif os.path.exists(src):
             files = [src]
-        print 'To process : ', files
+        # print 'To process : ', files
         if clear:
             print 'will remove original files after conversion'
 
         def job_finished(res):
-            print '|',
-            sys.stdout.flush()
+            # print '|',
+            # sys.stdout.flush()
+            pass
 
         pool = Pool()
         for src in files:
