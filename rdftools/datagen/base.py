@@ -64,7 +64,7 @@ class LubmGenerator(DataGenerator):
         lubm_generator(self._universities, self._index)
 
     def _generate(self, *args, **kwargs):
-        universities_rdf = [f for f in os.listdir('.') if os.path.isfile(f) and f.startswith('University')]
+        universities_rdf = [f for f in os.listdir(self.output_path) if os.path.isfile(f) and f.startswith('University')]
         print 'universities = %s' % universities_rdf
         self._create_distribution(universities_rdf)
 
@@ -78,8 +78,6 @@ class LubmGenerator(DataGenerator):
     def __call__(self, *args, **kwargs):
         print 'generating data [working directory = %s]' % (sh.pwd().strip())
         super(LubmGenerator, self).__call__(*args, **kwargs)
-        # clean the generated universities
-        if self._clean:
-            sh.rm('University*.nt')
+        [os.remove(os.path.join(self.output_path, 'University%s.nt' % i)) for i in xrange(self._universities)]
 
 
