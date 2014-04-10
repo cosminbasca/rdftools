@@ -94,7 +94,7 @@ class Lubm(RdfTool):
         # convert all to ntriples
         print 'converting to ntriples ... '
         rdf_converter = RaptorRdf()
-        rdf_converter('.', destination_format='ntriples', buffer_size=64, clear=True)
+        rdf_converter('.', destination_format='ntriples', buffer_size=16, clear=True)
 
         # now concatenate all files belonging to 1 university together
         files = os.listdir('.')

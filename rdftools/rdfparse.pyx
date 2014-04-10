@@ -6,6 +6,7 @@ from raptor cimport *
 
 import io
 import sys
+import os
 from rdftools.raptorutil import *
 
 __author__ = 'Cosmin Basca'
@@ -72,7 +73,7 @@ cpdef convert_chunked(char*source_file, char*dest_format, long io_buffer_size=16
     source_format = get_parser_type(source_file)
     dest_file = '%s.%s' % (os.path.splitext(source_file)[0], get_rdfext(dest_format))
     print '[converting] buffer = %d MB,  %s (%s) ==> %s (%s) ' % (
-    io_buffer_size / MB, source_file, source_format, dest_file, dest_format)
+        io_buffer_size / MB, os.path.basename(source_file), source_format, os.path.basename(dest_file), dest_format)
 
     # LOCAL VARS
     cdef raptor_world *world = NULL

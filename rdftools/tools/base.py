@@ -12,7 +12,7 @@ class RdfTool(object):
     def _run(self, *args, **kwargs):
         pass
 
-    @log_time(None)
+    # @log_time(None)
     def __call__(self, *args, **kwargs):
         return self._run(*args, **kwargs)
 
@@ -31,7 +31,7 @@ class ParserVisitorTool(RdfTool):
     def get_results(self, *args, **kwargs):
         return None
 
-    @log_time(None)
+    # @log_time(None)
     def _run(self, *args, **kwargs):
         parse(self.source_file, self.on_visit)
         return self.get_results(*args, **kwargs)

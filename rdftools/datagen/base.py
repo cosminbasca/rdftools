@@ -41,11 +41,11 @@ class DataGenerator(object):
         pass
 
     def __call__(self, *args, **kwargs):
-        print 'prepare ... '
+        print '[preparing ... ]'
         self._prepare(*args, **kwargs)
-        print 'generate ... '
+        print '[generating ... ]'
         self._generate(*args, **kwargs)
-        print 'done'
+        print '[complete]'
 
 
 class LubmGenerator(DataGenerator):
@@ -60,12 +60,11 @@ class LubmGenerator(DataGenerator):
     def _prepare(self, *args, **kwargs):
         # prepare the lubm data
         lubm_generator = Lubm()
-        print 'generate the LUBM data ... '
+        print 'prepare LUBM for %s universities'%self._universities
         lubm_generator(self._universities, self._index)
 
     def _generate(self, *args, **kwargs):
         universities_rdf = [f for f in os.listdir(self.output_path) if os.path.isfile(f) and f.startswith('University')]
-        print 'universities = %s' % universities_rdf
         self._create_distribution(universities_rdf)
 
     def site_path(self, site_num):
