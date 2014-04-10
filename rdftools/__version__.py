@@ -1,4 +1,4 @@
 __author__ = 'basca'
 
-version = (0, 3, 16)
+version = (0, 3, 18)
 str_version = '.'.join(['%s' % v for v in version])

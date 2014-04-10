@@ -20,10 +20,11 @@ __email__ = 'basca@ifi.uzh.ch; cosmin.basca@gmail.com'
 cdef inline void serialize_handler(void *user_data, raptor_statement*statement):
     raptor_serializer_serialize_statement(<raptor_serializer*> user_data, statement)
 
-cpdef convert(char*source_file, char*dest_format, char*base_uri=NULL):
+cpdef convert(char*source_file, char*dest_format, bint verbose=False, char*base_uri=NULL):
     source_format = get_parser_type(source_file)
     dest_file = '%s.%s' % (os.path.splitext(source_file)[0], get_rdfext(dest_format))
-    print 'converting [%s] (%s) ====> [%s] (%s)' % (source_file, source_format, dest_file, dest_format)
+    if verbose:
+        print 'converting [%s] (%s) ====> [%s] (%s)' % (source_file, source_format, dest_file, dest_format)
 
     # LOCAL VARS
     cdef raptor_world *world = NULL
@@ -48,10 +49,8 @@ cpdef convert(char*source_file, char*dest_format, char*base_uri=NULL):
     raptor_parser_set_statement_handler(rdf_parser, rdf_serializer, <raptor_statement_handler> serialize_handler)
 
     # START
-    # print 'Start parsing...'
     raptor_parser_parse_file(rdf_parser, uri, r_base_uri)
 
-    # print 'Done converting'
     raptor_free_parser(rdf_parser)
     raptor_serializer_serialize_end(rdf_serializer)
     raptor_free_serializer(rdf_serializer)
@@ -69,11 +68,13 @@ cpdef convert(char*source_file, char*dest_format, char*base_uri=NULL):
 # chunked conversion
 #
 #-----------------------------------------------------------------------------------------------------------------------
-cpdef convert_chunked(char*source_file, char*dest_format, long io_buffer_size=160 * MB, char*base_uri=NULL):
+cpdef convert_chunked(char*source_file, char*dest_format, long io_buffer_size=160 * MB, bint verbose=False,
+                      char*base_uri=NULL):
     source_format = get_parser_type(source_file)
     dest_file = '%s.%s' % (os.path.splitext(source_file)[0], get_rdfext(dest_format))
-    print '[converting] buffer = %d MB,  %s (%s) ==> %s (%s) ' % (
-        io_buffer_size / MB, os.path.basename(source_file), source_format, os.path.basename(dest_file), dest_format)
+    if verbose:
+        print '[converting] buffer = %d MB,  %s (%s) ==> %s (%s) ' % (
+            io_buffer_size / MB, os.path.basename(source_file), source_format, os.path.basename(dest_file), dest_format)
 
     # LOCAL VARS
     cdef raptor_world *world = NULL
@@ -98,7 +99,6 @@ cpdef convert_chunked(char*source_file, char*dest_format, long io_buffer_size=16
     raptor_parser_set_statement_handler(rdf_parser, rdf_serializer, <raptor_statement_handler> serialize_handler)
 
     # START
-    # print '[start] ...'
     raptor_parser_parse_start(rdf_parser, r_base_uri)
     with open(source_file, 'r+b') as SRC:
         while True:
@@ -107,12 +107,10 @@ cpdef convert_chunked(char*source_file, char*dest_format, long io_buffer_size=16
                 break
             #while chunk[len(chunk)-1] != '\n':
             #    chunk += SRC.read(1)
-            # print '.',
             sys.stdout.flush()
             raptor_parser_parse_chunk(rdf_parser, <unsigned char*> chunk, len(chunk), 0)
     raptor_parser_parse_chunk(rdf_parser, NULL, 0, 1)
 
-    # print '[done]'
     raptor_free_parser(rdf_parser)
     raptor_serializer_serialize_end(rdf_serializer)
     raptor_free_serializer(rdf_serializer)
@@ -192,11 +190,12 @@ cdef inline void parse_visitor_handle(void *user_data, raptor_statement*statemen
         to_str(statement.graph)
     )
 
-cpdef parse(char*source_file, object visitor, char*base_uri=NULL):
+cpdef parse(char*source_file, object visitor, bint verbose=False, char*base_uri=NULL):
     assert hasattr(visitor, '__call__'), 'visitor must be callable'
 
     source_format = get_parser_type(source_file)
-    print 'parsing [%s] (%s)' % (source_file, source_format)
+    if verbose:
+        print 'parsing [%s] (%s)' % (source_file, source_format)
 
     # LOCAL VARS
     cdef raptor_world *world = NULL
@@ -216,10 +215,8 @@ cpdef parse(char*source_file, object visitor, char*base_uri=NULL):
     raptor_parser_set_statement_handler(rdf_parser, <void*> visitor, <raptor_statement_handler> parse_visitor_handle)
 
     # START
-    print '[start parsing ...]'
     raptor_parser_parse_file(rdf_parser, uri, r_base_uri)
 
-    print '[done parsing]'
     raptor_free_parser(rdf_parser)
 
     raptor_free_memory(uri_string)

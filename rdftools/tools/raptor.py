@@ -34,7 +34,7 @@ class RaptorRdf(RdfTool):
         'nquads'
     ]
 
-    def _run(self, source, destination_format='ntriples', buffer_size=32, clear=False):
+    def _run(self, source, destination_format='ntriples', buffer_size=32, clear=False, verbose=False):
         buffer_size = buffer_size * MB
         files = []
         src = os.path.abspath(source)
@@ -48,13 +48,14 @@ class RaptorRdf(RdfTool):
             print 'will remove original files after conversion'
 
         def job_finished(res):
-            # print '|',
-            # sys.stdout.flush()
+            print '.',
+            sys.stdout.flush()
             pass
 
         pool = Pool()
         for src in files:
-            pool.apply_async(convert_chunked, (src, destination_format, buffer_size), callback=job_finished)
+            pool.apply_async(convert_chunked, (src, destination_format, buffer_size, False),
+                             callback=job_finished)
 
         pool.close()
         pool.join()
