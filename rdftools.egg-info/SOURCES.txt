@@ -17,6 +17,12 @@ rdftools.egg-info/dependency_links.txt
 rdftools.egg-info/not-zip-safe
 rdftools.egg-info/requires.txt
 rdftools.egg-info/top_level.txt
+rdftools/datagen/__init__.py
+rdftools/datagen/base.py
+rdftools/datagen/lubm_horizontal.py
+rdftools/datagen/lubm_seed_propagation.py
+rdftools/datagen/lubm_uni2many.py
+rdftools/datagen/lubm_uni2one.py
 rdftools/tools/__init__.py
 rdftools/tools/base.py
 rdftools/tools/encode.py
@@ -41,6 +47,7 @@ rdftools/tools/nxparser/classpath/nxparser-1.2.3.jar
 rdftools/tools/rdf2rdf/__init__.py
 rdftools/tools/rdf2rdf/classpath/rdf2rdf-1.0.1-2.3.1.jar
 scripts/genlubm.py
+scripts/genlubmdistro.py
 scripts/genvoid.py
 scripts/genvoid2.py
 scripts/ntround.py
