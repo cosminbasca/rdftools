@@ -51,9 +51,8 @@ class DataGenerator(object):
 class LubmGenerator(DataGenerator):
     __metaclass__ = ABCMeta
 
-    def __init__(self, output_path, sites, temp_folder=None, universities=10, index=0, **kwargs):
+    def __init__(self, output_path, sites, universities=10, index=0, **kwargs):
         super(LubmGenerator, self).__init__(output_path, sites, **kwargs)
-        self.temp_folder = temp_folder if temp_folder else mkdtemp()
         self._universities = universities
         self._index = index
 
@@ -76,8 +75,7 @@ class LubmGenerator(DataGenerator):
         pass
 
     def __call__(self, *args, **kwargs):
-        with working_directory(self.temp_folder):
-            print 'generating data [working directory = %s]' % (sh.pwd())
-            super(LubmGenerator, self).__call__(*args, **kwargs)
+        print 'generating data [working directory = %s]' % (sh.pwd())
+        super(LubmGenerator, self).__call__(*args, **kwargs)
 
 

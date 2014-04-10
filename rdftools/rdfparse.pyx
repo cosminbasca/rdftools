@@ -106,7 +106,7 @@ cpdef convert_chunked(char*source_file, char*dest_format, long io_buffer_size=16
                 break
             #while chunk[len(chunk)-1] != '\n':
             #    chunk += SRC.read(1)
-            print '.',
+            # print '.',
             sys.stdout.flush()
             raptor_parser_parse_chunk(rdf_parser, <unsigned char*> chunk, len(chunk), 0)
     raptor_parser_parse_chunk(rdf_parser, NULL, 0, 1)

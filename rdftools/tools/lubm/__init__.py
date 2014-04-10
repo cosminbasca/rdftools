@@ -3,7 +3,7 @@ import io
 import sh
 import sys
 import re
-from multiprocessing import Pool
+from multiprocessing import Pool, cpu_count
 from rdftools.tools.base import RdfTool
 from rdftools.tools.raptor import RaptorRdf
 
@@ -82,11 +82,11 @@ class Lubm(RdfTool):
             # sys.stdout.flush()
             pass
 
-        max_unis = 10
+        unis_per_worker = 10
 
         pool = Pool()
-        for idx in xrange(index, num_universities + index, max_unis):
-            pool.apply_async(gen_uni, (max_unis, idx, generator_seed), callback=job_finished)
+        for idx in xrange(index, num_universities + index, unis_per_worker):
+            pool.apply_async(gen_uni, (unis_per_worker, idx, generator_seed), callback=job_finished)
 
         pool.close()
         pool.join()

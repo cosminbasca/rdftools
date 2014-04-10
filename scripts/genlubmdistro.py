@@ -31,8 +31,6 @@ def main():
                         help='the lubm ontology')
     parser.add_argument('--sites', dest='sites', action='store', type=long, default=1,
                         help='the number of sites')
-    parser.add_argument('--tmp', dest='tmp', action='store', type=str, default=None,
-                        help='the location of the temporary directory')
     parser.add_argument('--version', dest='version', action='store_true',
                         help='the current version')
 
@@ -42,8 +40,7 @@ def main():
         print 'using rdftools version %s' % str_version
     else:
         print 'setup distro runner'
-        distro = Distros[args.distro](args.output, args.sites, temp_folder=args.tmp, universities=args.univ,
-                                      index=args.index)
+        distro = Distros[args.distro](args.output, args.sites, universities=args.univ, index=args.index)
         print 'run distribution process'
         distro()
         print 'done'
