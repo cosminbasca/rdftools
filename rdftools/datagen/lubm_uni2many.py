@@ -45,12 +45,13 @@ class LubmUni2Many(LubmGenerator):
         site_files = [io.open(self.site_path(i), mode='w+', buffering=1024 * 1024 * 16) for i in xrange(self.num_sites)]
 
         for i, uni_rdf in enumerate(universities_rdf):
-            print '[distributing] university %s to sites: %s'%(uni_rdf, uni_site_distros[i])
-            # site_index = HashPartitioner(uni_rdf, num_sites=self.sites, permutation=self._permutation)()
-            # with io.open(uni_rdf, mode='r', buffering=1024 * 1024 * 16) as UNI:
-            #     for i, triple in enumerate(UNI):
-            #         site = site_index[i]
-            #         site_files[site].write('%s'%triple)
+            num_triples = long(sh.wc('-l', uni_rdf).strip().replace(uni_rdf, ''))
+            print '[distributing] university %s to sites: %s, with %s triples'%(uni_rdf, uni_site_distros[i], num_triples)
+            site_index = np.random.choice(uni_site_distros[i], num_triples, p=sorted_p)
+            with io.open(uni_rdf, mode='r', buffering=1024 * 1024 * 16) as UNI:
+                for j, triple in enumerate(UNI):
+                    site = site_index[j]
+                    site_files[site].write('%s'%triple)
 
         # close site files
         [site_rdf.close() for site_rdf in site_files]
