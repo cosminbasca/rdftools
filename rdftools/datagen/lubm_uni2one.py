@@ -7,9 +7,9 @@ __author__ = 'basca'
 
 class LubmUni2One(LubmGenerator):
     def _create_distribution(self, universities_rdf, **kwargs):
-        sites_index = np.random.random_integers(0, self._sites-1, len(universities_rdf))
+        sites_index = np.random.random_integers(0, self._num_sites-1, len(universities_rdf))
         # print 'site index = ', sites_index
-        for i in xrange(self._sites):
+        for i in xrange(self._num_sites):
             unis = np.where(sites_index == i)[0]
             print 'site %s, universities = %s'%(i, unis)
 

@@ -44,11 +44,11 @@ class LubmHorizontal(LubmGenerator):
 
     def _create_distribution(self, universities_rdf, **kwargs):
         # open site files
-        site_files = [io.open(self.site_path(i), mode='w+', buffering=1024 * 1024 * 16) for i in xrange(self.sites)]
+        site_files = [io.open(self.site_path(i), mode='w+', buffering=1024 * 1024 * 16) for i in xrange(self.num_sites)]
 
         for uni_rdf in universities_rdf:
             print '[distributing] university %s by %s'%(uni_rdf, self._permutation)
-            site_index = HashPartitioner(uni_rdf, num_sites=self.sites, permutation=self._permutation)()
+            site_index = HashPartitioner(uni_rdf, num_sites=self.num_sites, permutation=self._permutation)()
             with io.open(uni_rdf, mode='r', buffering=1024 * 1024 * 16) as UNI:
                 for i, triple in enumerate(UNI):
                     site = site_index[i]

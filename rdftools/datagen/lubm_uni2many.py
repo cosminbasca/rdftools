@@ -1,5 +1,7 @@
 from base import LubmGenerator
 import numpy as np
+import io
+import sh
 
 __author__ = 'basca'
 
@@ -9,9 +11,9 @@ DISTRIBUTIONS = {
     'd2': np.array([1.0 / 16, 3.0 / 16, 8.0 / 16, 3.0 / 16, 1.0 / 16]),
 }
 
-is_valid_distribution = lambda distro: np.sum(distro) == 0
+is_valid_distribution = lambda distro: np.sum(distro) == 1.0
 
-# use this: http://docs.scipy.org/doc/numpy/reference/generated/numpy.random.choice.html#numpy.random.choice
+
 
 class LubmUni2Many(LubmGenerator):
     def __call__(self, p=None):
@@ -24,6 +26,31 @@ class LubmUni2Many(LubmGenerator):
         super(LubmUni2Many, self).__call__(p=p)
 
     def _create_distribution(self, universities_rdf, p=None):
-        base_sites = np.random.random_integers(0, self._sites - 1, len(universities_rdf))
-        sorted_p = np.sort(p)[1:] # the remainder (not the base sites)
+        num_unis = len(universities_rdf)
+        base_sites = np.random.random_integers(0, self._num_sites - 1, num_unis)
+        print 'base sites = ',base_sites
+        sorted_p = np.sort(p)
+        num_extra_sites = len(sorted_p) - 1
 
+        sites = np.arange(self._num_sites)
+
+        uni_site_distros = [
+            # get the disrtribution of sites for that uni, base_sites[i] = the base university
+            [base_sites[i]] + list(
+                np.random.choice(sites[sites != base_sites[i]], num_extra_sites, replace=False))
+            for i in xrange(num_unis)
+        ]
+
+        # open the site files
+        site_files = [io.open(self.site_path(i), mode='w+', buffering=1024 * 1024 * 16) for i in xrange(self.num_sites)]
+
+        for i, uni_rdf in enumerate(universities_rdf):
+            print '[distributing] university %s to sites: %s'%(uni_rdf, uni_site_distros[i])
+            # site_index = HashPartitioner(uni_rdf, num_sites=self.sites, permutation=self._permutation)()
+            # with io.open(uni_rdf, mode='r', buffering=1024 * 1024 * 16) as UNI:
+            #     for i, triple in enumerate(UNI):
+            #         site = site_index[i]
+            #         site_files[site].write('%s'%triple)
+
+        # close site files
+        [site_rdf.close() for site_rdf in site_files]

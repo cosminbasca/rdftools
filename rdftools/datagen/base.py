@@ -22,11 +22,11 @@ class DataGenerator(object):
 
     def __init__(self, output_path, sites, **kwargs):
         self._output_path = output_path
-        self._sites = sites
+        self._num_sites = sites
 
     @property
-    def sites(self):
-        return self._sites
+    def num_sites(self):
+        return self._num_sites
 
     @property
     def output_path(self):

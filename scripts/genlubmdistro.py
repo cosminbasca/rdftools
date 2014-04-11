@@ -4,7 +4,7 @@ __email__ = 'basca@ifi.uzh.ch; cosmin.basca@gmail.com'
 
 import argparse
 from rdftools.__version__ import str_version
-from rdftools.datagen import LubmUni2One, LubmHorizontal, LubmSeedPropagation, LubmUni2Many
+from rdftools.datagen import LubmUni2One, LubmHorizontal, LubmSeedPropagation, LubmUni2Many, DISTRIBUTIONS
 
 Distros = {
     'uni2one': LubmUni2One,
@@ -29,6 +29,8 @@ def main():
                         help='the seed')
     parser.add_argument('--ontology', dest='ontology', action='store', type=str, default=None,
                         help='the lubm ontology')
+    parser.add_argument('--pdist', dest='pdist', action='store', type=str, default='d1',
+                        help='the probabilities used for the uni2many distribution, valid choices are %s ' % DISTRIBUTIONS.keys())
     parser.add_argument('--sites', dest='sites', action='store', type=long, default=1,
                         help='the number of sites')
     parser.add_argument('--clean', dest='clean', action='store_true',
@@ -45,7 +47,10 @@ def main():
         distro = Distros[args.distro](args.output, args.sites, universities=args.univ, index=args.index,
                                       clean=args.clean)
         print 'run distribution process'
-        distro()
+        if args.distro == 'uni2many':
+            distro(p=DISTRIBUTIONS[args.pdist])
+        else:
+            distro()
         print 'done'
 
 
