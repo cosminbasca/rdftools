@@ -42,7 +42,7 @@ class LubmHorizontal(LubmGenerator):
         super(LubmHorizontal, self).__init__(output_path, sites, **kwargs)
         self._permutation = permutation
 
-    def _create_distribution(self, universities_rdf):
+    def _create_distribution(self, universities_rdf, **kwargs):
         # open site files
         site_files = [io.open(self.site_path(i), mode='w+', buffering=1024 * 1024 * 16) for i in xrange(self.sites)]
 

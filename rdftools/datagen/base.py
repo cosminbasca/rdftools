@@ -33,18 +33,18 @@ class DataGenerator(object):
         return self._output_path
 
     @abstractmethod
-    def _prepare(self, *args, **kwargs):
+    def _prepare(self, **kwargs):
         pass
 
     @abstractmethod
-    def _generate(self, *args, **kwargs):
+    def _generate(self, **kwargs):
         pass
 
-    def __call__(self, *args, **kwargs):
+    def __call__(self, **kwargs):
         print '[preparing ... ]'
-        self._prepare(*args, **kwargs)
+        self._prepare(**kwargs)
         print '[generating ... ]'
-        self._generate(*args, **kwargs)
+        self._generate(**kwargs)
         print '[complete]'
 
 
@@ -57,26 +57,26 @@ class LubmGenerator(DataGenerator):
         self._index = index
         self._clean = clean
 
-    def _prepare(self, *args, **kwargs):
+    def _prepare(self, **kwargs):
         # prepare the lubm data
         lubm_generator = Lubm()
         print 'prepare LUBM for %s universities'%self._universities
         lubm_generator(self._universities, self._index)
 
-    def _generate(self, *args, **kwargs):
+    def _generate(self, **kwargs):
         universities_rdf = [f for f in os.listdir(self.output_path) if os.path.isfile(f) and f.startswith('University')]
-        self._create_distribution(universities_rdf)
+        self._create_distribution(universities_rdf, **kwargs)
 
     def site_path(self, site_num):
         return os.path.join(self.output_path, 'site_%s.nt' % site_num)
 
     @abstractmethod
-    def _create_distribution(self, universities_rdf):
+    def _create_distribution(self, universities_rdf, **kwargs):
         pass
 
-    def __call__(self, *args, **kwargs):
+    def __call__(self, **kwargs):
         print 'generating data [working directory = %s]' % (sh.pwd().strip())
-        super(LubmGenerator, self).__call__(*args, **kwargs)
+        super(LubmGenerator, self).__call__(**kwargs)
         [os.remove(os.path.join(self.output_path, 'University%s.nt' % i)) for i in xrange(self._universities)]
 
 
