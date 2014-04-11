@@ -24,5 +24,5 @@ class LubmUni2Many(LubmGenerator):
 
     def _create_distribution(self, universities_rdf, p=None):
         base_sites = np.random.random_integers(0, self._sites - 1, len(universities_rdf))
-        sorted_p = np.sort(p)
+        sorted_p = np.sort(p)[1:] # the remainder (not the base sites)
 
