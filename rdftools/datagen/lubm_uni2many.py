@@ -11,6 +11,7 @@ DISTRIBUTIONS = {
 
 is_valid_distribution = lambda distro: np.sum(distro) == 0
 
+# use this: http://docs.scipy.org/doc/numpy/reference/generated/numpy.random.choice.html#numpy.random.choice
 
 class LubmUni2Many(LubmGenerator):
     def __call__(self, p=None):
