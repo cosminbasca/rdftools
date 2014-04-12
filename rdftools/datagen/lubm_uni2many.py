@@ -6,13 +6,18 @@ import sh
 __author__ = 'basca'
 
 DISTRIBUTIONS = {
-    # 'd1': np.array([ 1.0/6.0, 2.0/3.0, 1.0/6.0 ]),
-    'd1': np.array([1.0 / 4.0, 2.0 / 4.0, 1.0 / 4.0]),
-    'd2': np.array([1.0 / 16, 3.0 / 16, 8.0 / 16, 3.0 / 16, 1.0 / 16]),
+    'd1': np.array([1.0,
+                    2.0,
+                    1.0]) / 4.0,
+
+    'd2': np.array([1.0,
+                    3.0,
+                    8.0,
+                    3.0,
+                    1.0]) / 16.0,
 }
 
 is_valid_distribution = lambda distro: np.sum(distro) == 1.0
-
 
 
 class LubmUni2Many(LubmGenerator):
@@ -28,7 +33,7 @@ class LubmUni2Many(LubmGenerator):
     def _create_distribution(self, universities_rdf, p=None):
         num_unis = len(universities_rdf)
         base_sites = np.random.random_integers(0, self._num_sites - 1, num_unis)
-        print 'base sites = ',base_sites
+        print 'base sites = ', base_sites
         sorted_p = np.sort(p)
         num_extra_sites = len(sorted_p) - 1
 
@@ -46,12 +51,13 @@ class LubmUni2Many(LubmGenerator):
 
         for i, uni_rdf in enumerate(universities_rdf):
             num_triples = long(sh.wc('-l', uni_rdf).strip().replace(uni_rdf, ''))
-            print '[distributing] university %s to sites: %s, with %s triples'%(uni_rdf, uni_site_distros[i], num_triples)
+            print '[distributing] university %s to sites: %s, with %s triples' % (
+            uni_rdf, uni_site_distros[i], num_triples)
             site_index = np.random.choice(uni_site_distros[i], num_triples, p=sorted_p)
             with io.open(uni_rdf, mode='r', buffering=1024 * 1024 * 16) as UNI:
                 for j, triple in enumerate(UNI):
                     site = site_index[j]
-                    site_files[site].write('%s'%triple)
+                    site_files[site].write('%s' % triple)
 
         # close site files
         [site_rdf.close() for site_rdf in site_files]
