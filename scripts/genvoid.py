@@ -12,7 +12,7 @@ def main():
     parser = argparse.ArgumentParser(description='generate void statistics for RDF files')
 
     parser.add_argument('source', metavar='SOURCE', type=str,
-                        help='the source file or location (of files) to be converted')
+                        help='the source file to be analized')
     parser.add_argument('--version', dest='version', action='store_true',
                         help='the current version')
 

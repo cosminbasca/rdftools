@@ -8,8 +8,8 @@ __author__ = 'basca'
 def main():
     parser = argparse.ArgumentParser(description='generate a VoiD descriptor using the nxparser java package')
 
-    parser.add_argument('--data', dest='data', action='store', type=str, default=None,
-                        help='the input data file to pass the NX void generator')
+    parser.add_argument('source', metavar='SOURCE', type=str,
+                        help='the source file to be analized')
     parser.add_argument('--dataset_id', dest='dataset_id', action='store', type=str, default=None,
                         help='dataset id')
     parser.add_argument('--version', dest='version', action='store_true',
@@ -21,7 +21,7 @@ def main():
         print 'using rdftools version %s' % str_version
     else:
         void_generator = NxVoid()
-        void_generator(args.data, args.dataset_id)
+        void_generator(args.source, args.dataset_id)
         print 'done'
 
 
