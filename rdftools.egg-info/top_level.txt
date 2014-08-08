@@ -1,1 +1,3 @@
 rdftools
+rdftools/datagen
+rdftools/tools

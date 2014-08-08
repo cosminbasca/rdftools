@@ -1,10 +1,28 @@
-Metadata-Version: 1.0
+Metadata-Version: 1.1
 Name: rdftools
-Version: 0.3.22
-Summary: collection of RDF scripts and tools
+Version: 0.4.1
+Summary: A ollection of RDF scripts and tools
 Home-page: UNKNOWN
 Author: Cosmin Basca
-Author-email: basca@ifi.uzh.ch
+Author-email: cosmin.basca@gmail.com; basca@ifi.uzh.ch
 License: UNKNOWN
-Description: UNKNOWN
+Description: the rdftools module contains a wrapper around the RAPTOR2 RDF library
+        the followin scripts are provided:
+        
+        - rdfconvert.py
+            convert RDF from various formats to other formats
+        
+        - genlubm.py
+            call the LUBM generator, the classes can be located at LUBM_PATH (can also be set as an env var!)
+            - LUBM 1.7 (patched) is bundled with the script, so no need to setup the path before running, just call the script in your desired location
+             :)
+        
+        # more tools to come
 Platform: UNKNOWN
+Classifier: Intended Audience :: Developers
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Cython
+Classifier: Programming Language :: C
+Classifier: Topic :: Software Development

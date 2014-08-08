@@ -2,9 +2,9 @@ MANIFEST.in
 README
 libutil.py
 setup.py
-setup_du.py
 rdftools/__init__.py
 rdftools/__version__.py
+rdftools/cli.py
 rdftools/gcityhash.pxd
 rdftools/gcityhash.pyx
 rdftools/raptor.pxd
@@ -14,7 +14,7 @@ rdftools/util.py
 rdftools.egg-info/PKG-INFO
 rdftools.egg-info/SOURCES.txt
 rdftools.egg-info/dependency_links.txt
-rdftools.egg-info/not-zip-safe
+rdftools.egg-info/entry_points.txt
 rdftools.egg-info/requires.txt
 rdftools.egg-info/top_level.txt
 rdftools/datagen/__init__.py
@@ -46,11 +46,3 @@ rdftools/tools/nxparser/__init__.py
 rdftools/tools/nxparser/classpath/nxparser-1.2.3.jar
 rdftools/tools/rdf2rdf/__init__.py
 rdftools/tools/rdf2rdf/classpath/rdf2rdf-1.0.1-2.3.1.jar
-scripts/genlubm.py
-scripts/genlubmdistro.py
-scripts/genvoid.py
-scripts/genvoid2.py
-scripts/ntround.py
-scripts/rdfconvert.py
-scripts/rdfconvert2.py
-scripts/rdfencode.py
