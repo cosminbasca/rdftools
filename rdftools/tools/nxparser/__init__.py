@@ -17,7 +17,8 @@ def dest_file_name(src, dst_format):
 
 
 class NxVoid(RdfTool):
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
+        super(NxVoid, self).__init__(*args, **kwargs)
         global _CLASSPATH
         self._classpath = _CLASSPATH
 
@@ -56,18 +57,18 @@ class NxVoid(RdfTool):
         :return: None
         """
         if source is None:
-            print 'source files cannot be None'
+            self._log.error('source files cannot be None')
             return
 
         gateway = JavaGateway.launch_gateway(classpath='.:%s/%s' % (self.classpath, self.jar))
         jvm = gateway.jvm
-        print 'get VoiD object...'
+        self._log.debug('get VoiD object...')
         stats_engine = jvm.org.semanticweb.yars.stats.VoiD()
 
-        print 'get input'
+        self._log.debug('get input')
         _input = jvm.java.io.FileInputStream(source)
-        print 'get output'
+        self._log.debug('get output')
         _output = jvm.java.io.FileOutputStream('%s.void.xml' % source)
 
-        print 'gen void'
+        self._log.info('gen void')
         stats_engine.analyseVoid(_input, dataset_id, _output)

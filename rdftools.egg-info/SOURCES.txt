@@ -7,6 +7,8 @@ rdftools/__version__.py
 rdftools/cli.py
 rdftools/gcityhash.pxd
 rdftools/gcityhash.pyx
+rdftools/log.py
+rdftools/logging.ini
 rdftools/raptor.pxd
 rdftools/raptorutil.py
 rdftools/rdfparse.pyx

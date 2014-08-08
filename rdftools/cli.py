@@ -3,9 +3,16 @@ from pprint import pformat
 from rdftools.__version__ import str_version
 from rdftools.tools import Lubm, NxVoid, Void, NtFloatRounder, RaptorRdf, Rdf2Rdf, RdfEncoder
 from rdftools.datagen import LubmUni2One, LubmHorizontal, LubmSeedPropagation, LubmUni2Many, DISTRIBUTIONS
+from rdftools.log import logger
 
 __author__ = 'basca'
 
+Distros = {
+    'uni2one': LubmUni2One,
+    'horizontal': LubmHorizontal,
+    'seedprop': LubmSeedPropagation,
+    'uni2many': LubmUni2Many,
+}
 
 def genlubm():
     parser = argparse.ArgumentParser(
@@ -25,20 +32,12 @@ def genlubm():
     args = parser.parse_args()
 
     if args.version:
-        print 'using rdftools version %s' % str_version
+        logger.info('using rdftools version {0}'.format(str_version))
     else:
         lubm_generator = Lubm(ontology=args.ontology)
-        print 'using LUBM classpath = ', lubm_generator.classpath
+        logger.info('using LUBM classpath: {0}'.format(lubm_generator.classpath))
         lubm_generator(args.univ, args.index, args.seed)
-        print 'done'
-
-
-Distros = {
-    'uni2one': LubmUni2One,
-    'horizontal': LubmHorizontal,
-    'seedprop': LubmSeedPropagation,
-    'uni2many': LubmUni2Many,
-}
+        logger.info('done')
 
 
 def genlubmdistro():
@@ -69,17 +68,17 @@ def genlubmdistro():
     args = parser.parse_args()
 
     if args.version:
-        print 'using rdftools version %s' % str_version
+        logger.info('using rdftools version {0}'.format(str_version))
     else:
-        print 'setup distro runner'
+        logger.info('setup distro runner')
         distro = Distros[args.distro](args.output, args.sites, universities=args.univ, index=args.index,
                                       clean=args.clean)
-        print 'run distribution process'
+        logger.info('run distribution process')
         if args.distro == 'uni2many':
             distro(p=DISTRIBUTIONS[args.pdist])
         else:
             distro()
-        print 'done'
+        logger.info('done')
 
 
 def genvoid():
@@ -94,14 +93,11 @@ def genvoid():
     args = parser.parse_args()
 
     if args.version:
-        print 'using version %s' % str_version
+        logger.info('using version {0}'.format(str_version))
     else:
         void_generator = Void(args.source)
         stats = void_generator()
-        print '-----------------------------------------------------------------------------'
-        print 'Collected Statistics (VoID)'
-        print pformat(stats)
-        print '-----------------------------------------------------------------------------'
+        logger.info('Collected Statistics (VoID): \n{0}'.format(pformat(stats)))
 
 
 def genvoid2():
@@ -118,11 +114,11 @@ def genvoid2():
     args = parser.parse_args()
 
     if args.version:
-        print 'using rdftools version %s' % str_version
+        logger.info('using rdftools version {0}'.format(str_version))
     else:
         void_generator = NxVoid()
         void_generator(args.source, args.dataset_id)
-        print 'done'
+        logger.info('done')
 
 
 def ntround():
@@ -169,12 +165,12 @@ def rdfconvert():
     args = parser.parse_args()
 
     if args.version:
-        print 'using version %s' % str_version
+        logger.info('using version {0}'.format(str_version))
     else:
         rdf_converter = RaptorRdf()
         rdf_converter(args.source, destination_format=args.dst_format, buffer_size=args.buffer_size,
                       clear=args.clear)
-        print 'done'
+        logger.info('done')
 
 
 def rdfconvert2():
@@ -194,11 +190,11 @@ def rdfconvert2():
     args = parser.parse_args()
 
     if args.version:
-        print 'using rdftools version %s' % str_version
+        logger.info('using rdftools version {0}'.format(str_version))
     else:
         rdf_converter = Rdf2Rdf()
         rdf_converter(args.source, args.dst_format, clear_source=args.clear)
-        print 'done'
+        logger.info('done')
 
 
 def rdfencode():
@@ -212,8 +208,8 @@ def rdfencode():
     args = parser.parse_args()
 
     if args.version:
-        print 'using version %s' % str_version
+        logger.info('using version {0}'.format(str_version))
     else:
         encoder = RdfEncoder(args.source)
         encoder()
-        print 'done'
+        logger.info('done')

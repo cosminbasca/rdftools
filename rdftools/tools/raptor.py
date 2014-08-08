@@ -43,9 +43,8 @@ class RaptorRdf(RdfTool):
                      supported(f) and get_parser_type(f) != destination_format]
         elif os.path.exists(src):
             files = [src]
-        # print 'To process : ', files
         if clear:
-            print 'will remove original files after conversion'
+            self._log.warn('will remove original files after conversion')
 
         def job_finished(res):
             print '.',

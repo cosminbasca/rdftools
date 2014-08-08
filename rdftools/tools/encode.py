@@ -3,6 +3,7 @@ import sys
 from cybloom import ScalableBloomFilter
 from random import randint
 from rdftools.gcityhash import city64
+from rdftools.log import logger
 from rdftools.raptorutil import KB
 from rdftools.tools.base import ParserVisitorTool
 from void import INIT_CAPACITY_MED, FP_ERR_RATE, MIL
@@ -22,7 +23,7 @@ def encode(keys, key_literals, value):
         else:
             # a possible collision
             if not key_literals.check(mapping):
-                print '[collision detected]'
+                logger.warn('[collision detected]')
                 _key += randint(0, MIL)
             else:
                 return key
@@ -45,8 +46,7 @@ class RdfEncoder(ParserVisitorTool):
 
     def on_visit(self, s, p, o, c):
         if self.t_count % 50000 == 0 and self.t_count > 0:
-            print '[processed %d triples]' % self.t_count
-            sys.stdout.flush()
+            self._log.info('[processed {0} triples]'.format(self.t_count))
 
         self.write('%s %s %s\n' % (
             encode(self.keys, self.key_literals, s),

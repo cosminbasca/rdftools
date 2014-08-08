@@ -79,8 +79,7 @@ class Void(ParserVisitorTool):
 
     def on_visit(self, s, p, o, c):
         if self.t_count % 50000 == 0 and self.t_count > 0:
-            print '[processed %d triples]' % self.t_count
-            sys.stdout.flush()
+            self._log.info('[processed {0} triples]'.format(self.t_count))
 
         self.sbf_subjects_add(s)
         self.sbf_objects_add(o)

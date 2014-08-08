@@ -18,7 +18,8 @@ def gen_uni(num_unis, idx, seed):
 
 
 class Lubm(RdfTool):
-    def __init__(self, ontology=None):
+    def __init__(self, ontology=None, *args, **kwargs):
+        super(Lubm, self).__init__(*args, **kwargs)
         global _CLASSPATH
         self._classpath = _CLASSPATH
         self._ontology = ontology if ontology else 'http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl'
@@ -58,14 +59,13 @@ class Lubm(RdfTool):
         :param index: the index at whitch the generation process starts
         :param generator_seed:  a seed used by the generator
         """
-        print '[generate] Lubm num_unis=%s, index=%s'%(num_universities, index)
+        self._log.info('[generate] Lubm num_unis={0}, index={1}'.format(num_universities, index))
         sys.stdout.flush()
         output = sh.java('-cp', self.classpath, 'edu.lehigh.swat.bench.uba.Generator', '-univ', num_universities,
                          '-index', index,
                          '-seed', generator_seed, '-onto', self.ontology)
         if output.exit_code:
-            print 'an error occured, while running lubm'
-            print output
+            self._log.error('an error occured, while running lubm, output: \n{0}'.format(output))
 
     def _run(self, num_universities, index=0, generator_seed=0):
         """
@@ -78,8 +78,6 @@ class Lubm(RdfTool):
         """
 
         def job_finished(res):
-            # print '.',
-            # sys.stdout.flush()
             pass
 
         unis_per_worker = 10
@@ -92,23 +90,23 @@ class Lubm(RdfTool):
         pool.join()
 
         # convert all to ntriples
-        print 'converting to ntriples ... '
+        self._log.info('converting to ntriples ... ')
         rdf_converter = RaptorRdf()
         rdf_converter('.', destination_format='ntriples', buffer_size=16, clear=True)
 
         # now concatenate all files belonging to 1 university together
         files = os.listdir('.')
         sfiles = ' '.join(files)
-        uni_files = lambda uni: re.findall('University%d_[0-9]+\.nt'%uni, sfiles)
+        uni_files = lambda uni: re.findall(r'University%d_[0-9]+\.nt' % uni, sfiles)
         for uni in xrange(num_universities):
             ufiles = uni_files(uni)
 
-            with io.open('University%d.nt'%uni, 'w+') as UNI:
+            with io.open('University%d.nt' % uni, 'w+') as UNI:
                 for upart in ufiles:
                     with io.open(upart, 'r+') as UPART:
                         UNI.write(UPART.read())
                     sh.rm(upart)
 
-        print 'done'
+        self._log.info('done')
 
 

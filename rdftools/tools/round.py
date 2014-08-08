@@ -14,7 +14,8 @@ def round_file(nt_file, rounded_nt_file, prec):
 
 
 class NtFloatRounder(RdfTool):
-    def __init__(self, precision=0):
+    def __init__(self, precision=0, *args, **kwargs):
+        super(NtFloatRounder, self).__init__(*args, **kwargs)
         self._round_pattern = '"%.' + str(precision) + 'f"' if precision > 0 else '"%d"'
         self._numeric_pattern = re.compile('"-?(0\.\d*[1-9]\d*|[1-9]\d*(\.\d+)?)"')
 
@@ -32,22 +33,21 @@ class NtFloatRounder(RdfTool):
             return self._round_pattern % float(val.group(0)[1:-1])
 
         try:
-            print 'rounding "%s" -> "%s"' % (ntfile, round_ntfile)
+            self._log.info('rounding "{0}" -> "{1}"'.format(ntfile, round_ntfile))
             with open(ntfile, 'r+') as NTFILE:
                 with open(round_ntfile, 'w+') as ROUND_NTFILE:
                     for line in NTFILE:
                         try:
                             r_line = re.sub(self.numeric_pattern, repl, line)
                         except Exception, e:
-                            print line
+                            self._log.error('line: {0}'.format(line))
                             raise e
                         ROUND_NTFILE.write(r_line)
 
         except Exception:
-            print '[fail]'
-            print traceback.format_exc()
+            self._log.error('[fail] traceback: \n{0}'.format(traceback.format_exc()))
         else:
-            print '[ok]'
+            self._log.info('[ok]')
 
     def _run(self, path, prefix='rounded', precision=0):
         """

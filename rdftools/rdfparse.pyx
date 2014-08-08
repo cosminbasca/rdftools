@@ -24,7 +24,7 @@ cpdef convert(char*source_file, char*dest_format, bint verbose=False, char*base_
     source_format = get_parser_type(source_file)
     dest_file = '%s.%s' % (os.path.splitext(source_file)[0], get_rdfext(dest_format))
     if verbose:
-        print 'converting [%s] (%s) ====> [%s] (%s)' % (source_file, source_format, dest_file, dest_format)
+        print 'converting [{0}] ({1}) ====> [{2}] ({3})'.format(source_file, source_format, dest_file, dest_format)
 
     # LOCAL VARS
     cdef raptor_world *world = NULL
@@ -73,8 +73,10 @@ cpdef convert_chunked(char*source_file, char*dest_format, long io_buffer_size=16
     source_format = get_parser_type(source_file)
     dest_file = '%s.%s' % (os.path.splitext(source_file)[0], get_rdfext(dest_format))
     if verbose:
-        print '[converting] buffer = %d MB,  %s (%s) ==> %s (%s) ' % (
-            io_buffer_size / MB, os.path.basename(source_file), source_format, os.path.basename(dest_file), dest_format)
+        print '[converting] buffer = {0} MB,  {1} ({2}) ==> {3} ({4}) '.format(io_buffer_size / MB,
+                                                                               os.path.basename(source_file),
+                                                                               source_format,
+                                                                               os.path.basename(dest_file), dest_format)
 
     # LOCAL VARS
     cdef raptor_world *world = NULL
@@ -195,7 +197,7 @@ cpdef parse(char*source_file, object visitor, bint verbose=False, char*base_uri=
 
     source_format = get_parser_type(source_file)
     if verbose:
-        print 'parsing [%s] (%s)' % (source_file, source_format)
+        print 'parsing [{0}] ({1})'.format(source_file, source_format)
 
     # LOCAL VARS
     cdef raptor_world *world = NULL

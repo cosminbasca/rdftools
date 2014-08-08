@@ -30,7 +30,8 @@ def convert_file(source, dst_format, clr_src=False):
 
 
 class Rdf2Rdf(RdfTool):
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
+        super(Rdf2Rdf, self).__init__(*args, **kwargs)
         global _CLASSPATH
         self._classpath = _CLASSPATH
 
@@ -71,10 +72,9 @@ class Rdf2Rdf(RdfTool):
         """
         output = sh.java('-jar', self.jar, source, destination_format)
         if output.exit_code or output.strip('\n').strip().split('\n')[0].find('Exception:') >= 0:
-            print "an error occured!"
-            print output
+            self._log.error("an error occured, output:\n {0}".format(output))
         elif clear_source:
-            print 'REMOVE : ', source
+            self._log.warn('REMOVE: {0}'.format(source))
             os.remove(source)
 
     def _run(self, source, destination_format, clear_source=False):
@@ -92,12 +92,12 @@ class Rdf2Rdf(RdfTool):
             files = [os.path.join(src, f) for f in os.listdir(src) if to_process(f, destination_format)]
         elif os.path.exists(src):
             files = [src]
-        print 'to process : ', files
+        self._log.info('to process: {0}'.format(files))
         if clear_source:
-            print 'will remove original files after conversion'
+            self._log.warn('will remove original files after conversion')
 
         def job_finished(res):
-            print '[done]',
+            print '.',
             sys.stdout.flush()
 
         pool = Pool()
