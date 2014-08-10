@@ -80,9 +80,10 @@ class Lubm(RdfTool):
         def job_finished(res):
             pass
 
+        num_workers = cpu_count()
+        pool = Pool(processes=num_workers)
 
-        pool = Pool()
-        unis_per_worker = 10 if num_universities > pool._processes else num_universities / pool._processes
+        unis_per_worker = num_universities if num_universities <= 10 else num_universities / num_workers
         for idx in xrange(index, num_universities + index, unis_per_worker):
             pool.apply_async(gen_uni, (unis_per_worker, idx, generator_seed), callback=job_finished)
 

@@ -4,23 +4,11 @@ import sh
 
 __author__ = 'basca'
 
-# ================================================================================================
-#
-# enum simulation
-#
-# ================================================================================================
-def enum(*sequential, **named):
-    enums = dict(zip(sequential, range(len(sequential))), **named)
-    reverse = dict((value, key) for key, value in enums.iteritems())
-    enums['reverse_mapping'] = reverse
-    return type('Enum', (), enums)
-
-
-# ================================================================================================
+# ----------------------------------------------------------------------------------------------------------------------
 #
 # utility functions
 #
-# ================================================================================================
+# ----------------------------------------------------------------------------------------------------------------------
 def log_time(logger=None):
     def wrapper(func):
         def wrapper_func(*arg, **kwargs):
@@ -40,8 +28,24 @@ def log_time(logger=None):
 
 
 @contextmanager
-def working_directory(dir):
+def working_directory(directory):
     _cwd = sh.pwd()
-    sh.cd(dir)
+    sh.cd(directory)
     yield
     sh.cd(_cwd)
+
+
+def interval_split(num_splits, size, threshold=10):
+    step = size / num_splits
+    if step < threshold:
+        for i in xrange(0, size, step):
+            yield i, step
+    else:
+        for i in xrange(0, size, step):
+            yield i, step if (i + step) < size else size - (i + step)
+
+
+if __name__ == '__main__':
+    print list(interval_split(4, 40))
+    print list(interval_split(4, 11))
+    print list(interval_split(4, 12))
