@@ -4,6 +4,7 @@ import sh
 import sys
 import re
 from multiprocessing import Pool, cpu_count
+from rdftools import interval_split
 from rdftools.tools.base import RdfTool
 from rdftools.tools.raptor import RaptorRdf
 
@@ -83,8 +84,8 @@ class Lubm(RdfTool):
         num_workers = cpu_count()
         pool = Pool(processes=num_workers)
 
-        unis_per_worker = num_universities if num_universities <= 10 else num_universities / num_workers
-        for idx in xrange(index, num_universities + index, unis_per_worker):
+        for start, unis_per_worker in interval_split(num_workers, num_universities, threshold=10):
+            idx = start + index
             pool.apply_async(gen_uni, (unis_per_worker, idx, generator_seed), callback=job_finished)
 
         pool.close()

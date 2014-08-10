@@ -36,16 +36,7 @@ def working_directory(directory):
 
 
 def interval_split(num_splits, size, threshold=10):
-    step = size / num_splits
-    if step < threshold:
-        for i in xrange(0, size, step):
-            yield i, step
-    else:
-        for i in xrange(0, size, step):
-            yield i, step if (i + step) < size else size - (i + step)
+    step = threshold if size / num_splits < threshold else size / num_splits
+    for i in xrange(0, size, step):
+        yield i, step - 1 if (i + step - 1) < size else size - i
 
-
-if __name__ == '__main__':
-    print list(interval_split(4, 40))
-    print list(interval_split(4, 11))
-    print list(interval_split(4, 12))
