@@ -42,6 +42,14 @@ class Lubm(RdfTool):
         return 'LUBM_PATH'
 
     @property
+    def jar(self):
+        """
+        the jar representing the nxparser library
+        :return: the jar representing the nxparser library
+        """
+        return 'nxparser-1.7.jar'
+
+    @property
     def classpath(self):
         """
         the classpath of the bundled lubm, if the 'LUBM_PATH' env var is set, the path is taken from there

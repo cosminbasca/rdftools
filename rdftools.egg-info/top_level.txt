@@ -1,3 +1,6 @@
 rdftools
-rdftools/datagen
 rdftools/tools
+rdftools/tools/lubm
+rdftools/tools/rdf2rdf
+rdftools/datagen
+rdftools/tools/nxparser
