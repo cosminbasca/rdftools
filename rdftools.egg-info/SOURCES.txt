@@ -1,6 +1,5 @@
 MANIFEST.in
 README
-libutil.py
 setup.py
 rdftools/__init__.py
 rdftools/__version__.py

@@ -86,6 +86,7 @@ class Lubm(RdfTool):
 
         for start, unis_per_worker in interval_split(num_workers, num_universities, threshold=10):
             idx = start + index
+            self._log.debug(">>>>>> {0}, {1}, {2}".format(unis_per_worker, idx, generator_seed))
             pool.apply_async(gen_uni, (unis_per_worker, idx, generator_seed), callback=job_finished)
 
         pool.close()

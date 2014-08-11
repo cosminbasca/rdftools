@@ -11,6 +11,7 @@ import os
 import sh
 from abc import ABCMeta, abstractmethod
 from tempfile import mkdtemp
+from rdftools.log import get_logger
 from rdftools.tools import Lubm, RaptorRdf
 from rdftools.util import working_directory
 
@@ -23,6 +24,7 @@ class DataGenerator(object):
     def __init__(self, output_path, sites, **kwargs):
         self._output_path = output_path
         self._num_sites = sites
+        self._log = get_logger(owner=self)
 
     @property
     def num_sites(self):
@@ -41,11 +43,11 @@ class DataGenerator(object):
         pass
 
     def __call__(self, **kwargs):
-        print '[preparing ... ]'
+        self._log.info('preparing ... ')
         self._prepare(**kwargs)
-        print '[generating ... ]'
+        self._log.info('generating ... ')
         self._generate(**kwargs)
-        print '[complete]'
+        self._log.info('complete')
 
 
 class LubmGenerator(DataGenerator):
@@ -60,8 +62,8 @@ class LubmGenerator(DataGenerator):
     def _prepare(self, **kwargs):
         # prepare the lubm data
         lubm_generator = Lubm()
-        print 'prepare LUBM for %s universities'%self._universities
-        lubm_generator(self._universities, self._index)
+        self._log.info('prepare LUBM for {0} universities'.format(self._universities))
+        lubm_generator(self._universities, index=self._index)
 
     def _generate(self, **kwargs):
         universities_rdf = [f for f in os.listdir(self.output_path) if os.path.isfile(f) and f.startswith('University')]
@@ -75,7 +77,7 @@ class LubmGenerator(DataGenerator):
         pass
 
     def __call__(self, **kwargs):
-        print 'generating data [working directory = %s]' % (sh.pwd().strip())
+        self._log.info('generating data [working directory = {0}]'.format(sh.pwd().strip()))
         super(LubmGenerator, self).__call__(**kwargs)
         [os.remove(os.path.join(self.output_path, 'University%s.nt' % i)) for i in xrange(self._universities)]
 
