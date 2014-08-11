@@ -47,7 +47,7 @@ class Lubm(RdfTool):
         the jar representing the nxparser library
         :return: the jar representing the nxparser library
         """
-        return 'nxparser-1.7.jar'
+        return 'uba1.7.jar'
 
     @property
     def classpath(self):
@@ -70,7 +70,8 @@ class Lubm(RdfTool):
         """
         self._log.info('[generate] Lubm num_unis={0}, index={1}'.format(num_universities, index))
         sys.stdout.flush()
-        output = sh.java('-cp', self.classpath, 'edu.lehigh.swat.bench.uba.Generator', '-univ', num_universities,
+        output = sh.java('-cp', '{0}/{1}'.format(self.classpath, self.jar), 'edu.lehigh.swat.bench.uba.Generator',
+                         '-univ', num_universities,
                          '-index', index,
                          '-seed', generator_seed, '-onto', self.ontology)
         if output.exit_code:
@@ -94,7 +95,6 @@ class Lubm(RdfTool):
 
         for start, unis_per_worker in interval_split(num_workers, num_universities, threshold=10):
             idx = start + index
-            self._log.debug(">>>>>> {0}, {1}, {2}".format(unis_per_worker, idx, generator_seed))
             pool.apply_async(gen_uni, (unis_per_worker, idx, generator_seed), callback=job_finished)
 
         pool.close()

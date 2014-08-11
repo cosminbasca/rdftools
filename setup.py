@@ -89,7 +89,7 @@ setup(
               '{0}/datagen'.format(NAME),
     ],
     package_data={
-        '{0}/tools/lubm'.format(NAME): ['classpath/edu/lehigh/swat/bench/uba', ],
+        '{0}/tools/lubm'.format(NAME): ['classpath/*', ],
         '{0}/tools/nxparser'.format(NAME): ['classpath/*', ],
         '{0}/tools/rdf2rdf'.format(NAME): ['classpath/*', ],
         '{0}'.format(NAME): ['*.ini', ],
