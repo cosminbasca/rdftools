@@ -7,3 +7,5 @@ from rdfparse import *
 from gcityhash import *
 from tools import *
 import log
+
+log.set_level('critical', name='py4j')

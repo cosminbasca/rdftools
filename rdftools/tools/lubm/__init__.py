@@ -7,6 +7,7 @@ from multiprocessing import Pool, cpu_count
 from rdftools import interval_split
 from rdftools.tools.base import RdfTool
 from rdftools.tools.raptor import RaptorRdf
+from py4j.java_gateway import JavaGateway
 
 __author__ = 'basca'
 
@@ -69,13 +70,17 @@ class Lubm(RdfTool):
         :param generator_seed:  a seed used by the generator
         """
         self._log.info('[generate] Lubm num_unis={0}, index={1}'.format(num_universities, index))
-        sys.stdout.flush()
-        output = sh.java('-cp', '{0}/{1}'.format(self.classpath, self.jar), 'edu.lehigh.swat.bench.uba.Generator',
-                         '-univ', num_universities,
-                         '-index', index,
-                         '-seed', generator_seed, '-onto', self.ontology)
-        if output.exit_code:
-            self._log.error('an error occured, while running lubm, output: \n{0}'.format(output))
+        gateway = JavaGateway.launch_gateway(classpath='.:%s/%s' % (self.classpath, self.jar))
+        jvm = gateway.jvm
+        generator = jvm.edu.lehigh.swat.bench.uba.Generator()
+        generator.start(int(num_universities), int(index), int(generator_seed), False, self.ontology)
+
+        # output = sh.java('-cp', '{0}/{1}'.format(self.classpath, self.jar), 'edu.lehigh.swat.bench.uba.Generator',
+        #                  '-univ', num_universities,
+        #                  '-index', index,
+        #                  '-seed', generator_seed, '-onto', self.ontology)
+        # if output.exit_code:
+        #     self._log.error('an error occured, while running lubm, output: \n{0}'.format(output))
 
     def _run(self, num_universities, index=0, generator_seed=0):
         """
@@ -101,6 +106,7 @@ class Lubm(RdfTool):
         pool.join()
 
         # convert all to ntriples
+
         self._log.info('converting to ntriples ... ')
         rdf_converter = RaptorRdf()
         rdf_converter('.', destination_format='ntriples', buffer_size=16, clear=True)
