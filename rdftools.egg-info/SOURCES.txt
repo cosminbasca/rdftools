@@ -1,5 +1,6 @@
 MANIFEST.in
 README
+requirements.txt
 setup.py
 rdftools/__init__.py
 rdftools/__version__.py
