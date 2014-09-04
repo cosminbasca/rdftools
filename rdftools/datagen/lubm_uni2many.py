@@ -36,6 +36,12 @@ DISTRIBUTIONS = {
 is_valid_distribution = lambda distro: np.sum(distro) == 1.0
 
 
+"""
+distribution process:
+1) choose a distribution (normal) for a university
+2) distribute the data of the university to some machines given that uni
+obs: see substitution smapling
+"""
 class LubmUni2Many(LubmGenerator):
     def __call__(self, p=None):
         if p is None:

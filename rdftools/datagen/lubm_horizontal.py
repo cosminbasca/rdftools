@@ -37,6 +37,11 @@ class HashPartitioner(ParserVisitorTool):
         return self.site_index
 
 
+"""
+distribution process:
+
+1) horizontal partitioning of all data (based on stars)
+"""
 class LubmHorizontal(LubmGenerator):
     def __init__(self, output_path, sites, permutation='s', **kwargs):
         super(LubmHorizontal, self).__init__(output_path, sites, **kwargs)

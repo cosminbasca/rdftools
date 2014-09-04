@@ -5,6 +5,11 @@ import io
 __author__ = 'basca'
 
 
+"""
+distribution process:
+
+1) each uni is distributed to one host
+"""
 class LubmUni2One(LubmGenerator):
     def _create_distribution(self, universities_rdf, **kwargs):
         sites_index = np.random.random_integers(0, self._num_sites-1, len(universities_rdf))

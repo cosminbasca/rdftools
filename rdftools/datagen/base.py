@@ -1,12 +1,3 @@
-"""
-an Lubm data generator that follows several data modes of distribution
-
-data mode 1: each uni is distributed to one host
-data mode 2: horizontal partitioning of all data (based on stars)
-data mode 3: randoly distribute a seed of resources to hosts, propagate from that point on (keep seed specific stuff on the same host)
-data mode 4: choose a distribution (normal) for a university and distribute the data in the university to some machines given that uni
-see substitution smapling
-"""
 import os
 import sh
 from abc import ABCMeta, abstractmethod
