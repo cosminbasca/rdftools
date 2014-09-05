@@ -18,6 +18,8 @@ def genlubm():
     parser = argparse.ArgumentParser(
         description='rdftools v{0}, lubm dataset generator wrapper (bundled) - requires java'.format(str_version))
 
+    parser.add_argument('output', metavar='OUTPUT', type=str,
+                        help='the location in which to save the generated distributions')
     parser.add_argument('--univ', dest='univ', action='store', type=long, default=1,
                         help='number of universities to generate')
     parser.add_argument('--index', dest='index', action='store', type=long, default=0,
@@ -34,7 +36,7 @@ def genlubm():
     if args.version:
         logger.info('using rdftools version {0}'.format(str_version))
     else:
-        lubm_generator = Lubm(ontology=args.ontology)
+        lubm_generator = Lubm(ontology=args.ontology, path=args.output)
         logger.info('using LUBM classpath: {0}'.format(lubm_generator.classpath))
         lubm_generator(args.univ, args.index, args.seed)
         logger.info('done')

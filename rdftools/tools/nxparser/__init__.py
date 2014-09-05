@@ -60,7 +60,7 @@ class NxVoid(RdfTool):
             self._log.error('source files cannot be None')
             return
 
-        gateway = JavaGateway.launch_gateway(classpath='.:%s/%s' % (self.classpath, self.jar))
+        gateway = JavaGateway.launch_gateway(classpath='.:%s/%s' % (self.classpath, self.jar), die_on_exit=True)
         jvm = gateway.jvm
         self._log.debug('get VoiD object...')
         stats_engine = jvm.org.semanticweb.yars.stats.VoiD()
@@ -72,3 +72,5 @@ class NxVoid(RdfTool):
 
         self._log.info('gen void')
         stats_engine.analyseVoid(_input, dataset_id, _output)
+
+        gateway.shutdown()

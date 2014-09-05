@@ -13,7 +13,9 @@ class DataGenerator(object):
     __metaclass__ = ABCMeta
 
     def __init__(self, output_path, sites, **kwargs):
-        self._output_path = output_path
+        self._output_path = os.path.abspath(output_path)
+        if not os.path.isdir(self._output_path):
+            raise ValueError('{0} not a valid path'.format(self._output_path))
         self._num_sites = sites
         self._log = get_logger(owner=self)
 
@@ -52,12 +54,13 @@ class LubmGenerator(DataGenerator):
 
     def _prepare(self, **kwargs):
         # prepare the lubm data
-        lubm_generator = Lubm()
+        lubm_generator = Lubm(path=self._output_path)
         self._log.info('prepare LUBM for {0} universities'.format(self._universities))
         lubm_generator(self._universities, index=self._index)
 
     def _generate(self, **kwargs):
-        universities_rdf = [f for f in os.listdir(self.output_path) if os.path.isfile(f) and f.startswith('University')]
+        universities_rdf = [os.path.join(self.output_path, f) for f in os.listdir(self.output_path)
+                            if f.startswith('University')]
         self._create_distribution(universities_rdf, **kwargs)
 
     def site_path(self, site_num):
@@ -68,8 +71,9 @@ class LubmGenerator(DataGenerator):
         pass
 
     def __call__(self, **kwargs):
-        self._log.info('generating data [working directory = {0}]'.format(sh.pwd().strip()))
+        self._log.info('generating data')
         super(LubmGenerator, self).__call__(**kwargs)
-        [os.remove(os.path.join(self.output_path, 'University%s.nt' % i)) for i in xrange(self._universities)]
+        if self._clean:
+            [os.remove(os.path.join(self.output_path, 'University%s.nt' % i)) for i in xrange(self._universities)]
 
 
