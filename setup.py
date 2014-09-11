@@ -79,6 +79,7 @@ setup(
         'Programming Language :: Python',
         'Programming Language :: Cython',
         'Programming Language :: C',
+        'Programming Language :: Java',
         'Topic :: Software Development'
     ],
     packages=[NAME,
