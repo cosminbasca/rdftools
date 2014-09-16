@@ -1,7 +1,7 @@
 from collections import defaultdict
 from base import LubmGenerator, UniTriplesDistribution
 import numpy as np
-from log import logger
+from rdftools.log import logger
 import io
 import sh
 
