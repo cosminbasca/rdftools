@@ -4,3 +4,4 @@ pyyaml>=3.11
 cybloom>=0.7.3
 sh>=1.09
 rdflib>=4.1.2
+natsort>=3.2.0

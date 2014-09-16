@@ -2,7 +2,8 @@ import argparse
 from pprint import pformat
 from rdftools.__version__ import str_version
 from rdftools.tools import Lubm, NxVoid, Void, NtFloatRounder, RaptorRdf, Rdf2Rdf, RdfEncoder
-from rdftools.datagen import LubmUni2One, LubmHorizontal, LubmSeedPropagation, LubmUni2Many, DISTRIBUTIONS
+from rdftools.datagen import LubmUni2One, LubmHorizontal, LubmSeedPropagation, LubmUni2Many, DISTRIBUTIONS, \
+    LubmGenerator
 from rdftools.log import logger
 
 __author__ = 'basca'
@@ -13,6 +14,7 @@ Distros = {
     'seedprop': LubmSeedPropagation,
     'uni2many': LubmUni2Many,
 }
+
 
 def genlubm():
     parser = argparse.ArgumentParser(
@@ -58,7 +60,7 @@ def genlubmdistro():
                         help='the seed')
     parser.add_argument('--ontology', dest='ontology', action='store', type=str, default=None,
                         help='the lubm ontology')
-    parser.add_argument('--pdist', dest='pdist', action='store', type=str, default='d1',
+    parser.add_argument('--pdist', dest='pdist', action='store', type=str, default=None,
                         help='the probabilities used for the uni2many distribution, valid choices are %s ' % DISTRIBUTIONS.keys())
     parser.add_argument('--sites', dest='sites', action='store', type=long, default=1,
                         help='the number of sites')
@@ -73,13 +75,13 @@ def genlubmdistro():
         logger.info('using rdftools version {0}'.format(str_version))
     else:
         logger.info('setup distro runner')
-        distro = Distros[args.distro](args.output, args.sites, universities=args.univ, index=args.index,
-                                      clean=args.clean)
+        _DistributionClass = Distros[args.distro]
+        if not issubclass(_DistributionClass, LubmGenerator):
+            raise ValueError('_DistributionClass must be a LubmGenerator')
+        distro = _DistributionClass(args.output, args.sites, universities=args.univ, index=args.index, clean=args.clean,
+                                   pdist=DISTRIBUTIONS.get(args.pdist, None))
         logger.info('run distribution process')
-        if args.distro == 'uni2many':
-            distro(p=DISTRIBUTIONS[args.pdist])
-        else:
-            distro()
+        distro()
         logger.info('done')
 
 

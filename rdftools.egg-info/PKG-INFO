@@ -1,6 +1,6 @@
 Metadata-Version: 1.1
 Name: rdftools
-Version: 0.7.3
+Version: 0.8.1
 Summary: A ollection of RDF scripts and tools
 Home-page: UNKNOWN
 Author: Cosmin Basca
@@ -25,4 +25,5 @@ Classifier: Operating System :: OS Independent
 Classifier: Programming Language :: Python
 Classifier: Programming Language :: Cython
 Classifier: Programming Language :: C
+Classifier: Programming Language :: Java
 Classifier: Topic :: Software Development

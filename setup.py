@@ -52,10 +52,7 @@ pip_deps = [
     'cybloom>=0.7.3',
     'sh>=1.09',
     'rdflib>=4.1.2',
-]
-
-manual_deps = [
-
+    'natsort>=3.2.0 ',
 ]
 
 setup(
@@ -95,7 +92,7 @@ setup(
         '{0}/tools/rdf2rdf'.format(NAME): ['classpath/*', ],
         '{0}'.format(NAME): ['*.ini', ],
     },
-    install_requires=manual_deps + pip_deps,
+    install_requires=pip_deps,
     entry_points={
         'console_scripts': [
             '{1} = {0}.cli:{1}'.format(NAME, 'rdfconvert'),
