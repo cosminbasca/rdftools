@@ -10,6 +10,7 @@ from rdftools.tools.raptor import RaptorRdf
 
 __author__ = 'basca'
 
+UNIS_PER_WORKER = 20
 
 class Lubm(RdfTool):
     def __init__(self, ontology=None, path=None, *args, **kwargs):
@@ -45,8 +46,11 @@ class Lubm(RdfTool):
 
         pool = Pool(processes=num_workers)
 
-        for start, unis_per_worker in interval_split(num_workers, num_universities, threshold=10):
+        # for start, unis_per_worker in interval_split(num_workers, num_universities, threshold=10):
+        for start in xrange(0, num_universities, UNIS_PER_WORKER):
             idx = start + index
+            unis_per_worker = UNIS_PER_WORKER if (start + UNIS_PER_WORKER) < num_universities else num_universities - start
+
             self._log.info('run lubm generator [%s, %s]', idx, unis_per_worker)
             pool.apply_async(
                 run_lubm_generator,
