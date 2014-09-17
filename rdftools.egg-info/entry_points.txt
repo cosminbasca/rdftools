@@ -1,0 +1,10 @@
+[console_scripts]
+genlubm = rdftools.cli:genlubm
+genlubmdistro = rdftools.cli:genlubmdistro
+genvoid = rdftools.cli:genvoid
+genvoid2 = rdftools.cli:genvoid2
+ntround = rdftools.cli:ntround
+rdfconvert = rdftools.cli:rdfconvert
+rdfconvert2 = rdftools.cli:rdfconvert2
+rdfencode = rdftools.cli:rdfencode
+

@@ -10,6 +10,7 @@ from rdftools.tools.raptor import RaptorRdf
 
 __author__ = 'basca'
 
+
 class Lubm(RdfTool):
     def __init__(self, ontology=None, path=None, *args, **kwargs):
         super(Lubm, self).__init__(*args, **kwargs)
@@ -44,12 +45,14 @@ class Lubm(RdfTool):
 
         for start, unis_per_worker in interval_split(num_workers, num_universities, threshold=10):
             idx = start + index
+            self._log.info('run lubm generator [%s, %s]', idx, unis_per_worker)
             pool.apply_async(
                 run_lubm_generator,
                 (unis_per_worker, idx, generator_seed, self.ontology, self._output_path),
                 callback=job_finished)
 
         pool.close()
+        self._log.info('wait for work to finalize')
         pool.join()
 
         # convert all to ntriples

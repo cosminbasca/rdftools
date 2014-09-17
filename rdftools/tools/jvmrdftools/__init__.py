@@ -36,7 +36,8 @@ def check_java(message=""):
 def run_tool(main_class, *options):
     latest_version, jar_path = latest_jar()
     command = ["java", "-classpath", jar_path, main_class] + [str(opt) for opt in options]
-    call(command, stdout=PIPE, stdin=PIPE, stderr=STDOUT, preexec_fn=os.setsid)
+    # call(command, stdout=PIPE, stdin=PIPE, stderr=STDOUT, preexec_fn=os.setsid)
+    call(command)
 
 
 # ----------------------------------------------------------------------------------------------------------------------
