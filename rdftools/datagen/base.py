@@ -1,5 +1,5 @@
 from collections import OrderedDict
-from multiprocessing import Pool
+from multiprocessing import Pool, cpu_count
 import os
 import re
 import io
@@ -51,21 +51,27 @@ class DataGenerator(object):
 class LubmGenerator(DataGenerator):
     __metaclass__ = ABCMeta
 
-    def __init__(self, output_path, sites, universities=10, index=0, clean=True, **kwargs):
+    def __init__(self, output_path, sites, universities=10, index=0, clean=True, workers=-1, **kwargs):
         super(LubmGenerator, self).__init__(output_path, sites, **kwargs)
         self._universities = universities
         self._index = index
         self._clean = clean
+        num_cpus = cpu_count()
+        self._num_workers = workers if 0 < workers < num_cpus else num_cpus
 
     @property
     def num_universities(self):
         return self._universities
 
+    @property
+    def num_workers(self):
+        return self._num_workers
+
     def _prepare(self, **kwargs):
         # prepare the lubm data
         lubm_generator = Lubm(path=self._output_path)
         self._log.info('prepare LUBM for {0} universities'.format(self._universities))
-        lubm_generator(self._universities, index=self._index)
+        lubm_generator(self._universities, index=self._index, workers=self.num_workers)
 
     def _generate(self, **kwargs):
         uni_key = 'University'
@@ -78,7 +84,7 @@ class LubmGenerator(DataGenerator):
             if f.startswith(uni_key)
         }
 
-        pool = Pool()
+        pool = Pool(processes=self.num_workers)
         for uni_id, uni_rdf in universities_rdf.iteritems():
             pool.apply_async(self.distributor(uni_id, uni_rdf),
                              kwds=self._distributor_kwargs(uni_id, uni_rdf))

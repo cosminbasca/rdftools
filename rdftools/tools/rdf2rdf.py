@@ -1,6 +1,6 @@
 import os
 import sys
-from multiprocessing import Pool
+from multiprocessing import Pool, cpu_count
 from rdftools.raptorutil import rdf_ext
 from rdftools.tools.base import RdfTool
 from rdftools.tools.jvmrdftools import run_rdf2rdf_converter
@@ -43,7 +43,7 @@ class Rdf2Rdf(RdfTool):
             self._log.warn('REMOVE: {0}'.format(source))
             os.remove(source)
 
-    def _run(self, source, destination_format, clear_source=False):
+    def _run(self, source, destination_format, clear_source=False, workers = -1):
         """
         parallel version of the `convert` method
         :param source: (rdf) files to convert (source path)
@@ -66,7 +66,11 @@ class Rdf2Rdf(RdfTool):
             print '.',
             sys.stdout.flush()
 
-        pool = Pool()
+        num_cpus = cpu_count()
+        num_workers = workers if 0 < workers < num_cpus else num_cpus
+
+        pool = Pool(processes=num_workers)
+
         for src in files:
             dst = dest_file_name(src, destination_format)
             if dst:

@@ -27,7 +27,7 @@ class Lubm(RdfTool):
         """
         return self._ontology
 
-    def _run(self, num_universities, index=0, generator_seed=0):
+    def _run(self, num_universities, index=0, generator_seed=0, workers = -1):
         """
         a paralel version of the `generate` method
 
@@ -40,7 +40,9 @@ class Lubm(RdfTool):
         def job_finished(res):
             pass
 
-        num_workers = cpu_count()
+        num_cpus = cpu_count()
+        num_workers = workers if 0 < workers < num_cpus else num_cpus
+
         pool = Pool(processes=num_workers)
 
         for start, unis_per_worker in interval_split(num_workers, num_universities, threshold=10):

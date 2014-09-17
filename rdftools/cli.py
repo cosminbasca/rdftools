@@ -30,6 +30,8 @@ def genlubm():
                         help='the seed')
     parser.add_argument('--ontology', dest='ontology', action='store', type=str, default=None,
                         help='the lubm ontology')
+    parser.add_argument('--workers', dest='workers', action='store', type=int, default=-1,
+                        help='the number of workers (default -1 : all cpus)')
     parser.add_argument('--version', dest='version', action='store_true',
                         help='the current version')
 
@@ -39,7 +41,7 @@ def genlubm():
         logger.info('using rdftools version {0}'.format(str_version))
     else:
         lubm_generator = Lubm(ontology=args.ontology, path=args.output)
-        lubm_generator(args.univ, args.index, args.seed)
+        lubm_generator(args.univ, args.index, args.seed, workers=args.workers)
         logger.info('done')
 
 
@@ -65,6 +67,8 @@ def genlubmdistro():
                         help='the number of sites')
     parser.add_argument('--clean', dest='clean', action='store_true',
                         help='delete the generated universities')
+    parser.add_argument('--workers', dest='workers', action='store', type=int, default=-1,
+                        help='the number of workers (default -1 : all cpus)')
     parser.add_argument('--version', dest='version', action='store_true',
                         help='the current version')
 
@@ -78,7 +82,7 @@ def genlubmdistro():
         if not issubclass(_DistributionClass, LubmGenerator):
             raise ValueError('_DistributionClass must be a LubmGenerator')
         distro = _DistributionClass(args.output, args.sites, universities=args.univ, index=args.index, clean=args.clean,
-                                   pdist=DISTRIBUTIONS.get(args.pdist, None))
+                                    workers=args.workers, pdist=DISTRIBUTIONS.get(args.pdist, None))
         logger.info('run distribution process')
         distro()
         logger.info('done')
@@ -187,6 +191,8 @@ def rdfconvert2():
                         help='clear the original files (delete) - this action is permanent, use with caution!')
     parser.add_argument('--dst_format', dest='dst_format', action='store', type=str, default='ntriples',
                         help='the destination format to convert to')
+    parser.add_argument('--workers', dest='workers', action='store', type=int, default=-1,
+                        help='the number of workers (default -1 : all cpus)')
     parser.add_argument('--version', dest='version', action='store_true',
                         help='the current version')
 
@@ -196,7 +202,7 @@ def rdfconvert2():
         logger.info('using rdftools version {0}'.format(str_version))
     else:
         rdf_converter = Rdf2Rdf()
-        rdf_converter(args.source, args.dst_format, clear_source=args.clear)
+        rdf_converter(args.source, args.dst_format, clear_source=args.clear, workers=args.workers)
         logger.info('done')
 
 
