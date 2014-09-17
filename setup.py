@@ -47,7 +47,6 @@ with open('README') as f:
 
 pip_deps = [
     'cython>=0.20.2',
-    'py4j>=0.8.2.1',
     'pyyaml>=3.11',
     'cybloom>=0.7.3',
     'sh>=1.09',

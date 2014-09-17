@@ -39,7 +39,6 @@ def genlubm():
         logger.info('using rdftools version {0}'.format(str_version))
     else:
         lubm_generator = Lubm(ontology=args.ontology, path=args.output)
-        logger.info('using LUBM classpath: {0}'.format(lubm_generator.classpath))
         lubm_generator(args.univ, args.index, args.seed)
         logger.info('done')
 
