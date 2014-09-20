@@ -46,12 +46,15 @@ with open('README') as f:
     DESCRIPTION = f.read()
 
 pip_deps = [
-    'cython>=0.20.2',
+    'cython>=0.21',
     'pyyaml>=3.11',
-    'cybloom>=0.7.3',
-    'sh>=1.09',
     'rdflib>=4.1.2',
-    'natsort>=3.2.0 ',
+    'natsort>=3.5.0 ',
+    'sh>=1.09',
+]
+
+manual_deps = [
+    'cybloom>=0.7.3'
 ]
 
 setup(
@@ -87,7 +90,7 @@ setup(
         '{0}/tools/jvmrdftools'.format(NAME): ['lib/*', ],
         '{0}'.format(NAME): ['*.ini', ],
     },
-    install_requires=pip_deps,
+    install_requires=pip_deps + manual_deps,
     entry_points={
         'console_scripts': [
             '{1} = {0}.cli:{1}'.format(NAME, 'rdfconvert'),
