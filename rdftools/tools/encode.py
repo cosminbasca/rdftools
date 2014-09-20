@@ -6,7 +6,7 @@ from rdftools.gcityhash import city64
 from rdftools.log import logger
 from rdftools.raptorutil import KB
 from rdftools.tools.base import ParserVisitorTool
-from void import INIT_CAPACITY_MED, FP_ERR_RATE, MIL
+from voidgen import INIT_CAPACITY_MED, FP_ERR_RATE, MIL
 
 __author__ = 'basca'
 

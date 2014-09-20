@@ -66,6 +66,14 @@ def run_nxvoid_generator(source, dataset_id, output_path, xms=XMS, xmx=XMX):
              "--output_path", output_path)
 
 
+def run_jvmvoid_generator(source, dataset_id, output_path, xms=XMS, xmx=XMX):
+    run_tool("com.rdftools.VoIDGenerator",
+             xms, xmx,
+             "--source", source,
+             "--dataset_id", dataset_id,
+             "--output_path", output_path)
+
+
 def run_rdf2rdf_converter(source, destination, xms=XMS, xmx=XMX):
     run_tool("com.rdftools.Rdf2RdfConverter",
              xms, xmx,

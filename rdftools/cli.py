@@ -1,7 +1,7 @@
 import argparse
 from pprint import pformat
 from rdftools.__version__ import str_version
-from rdftools.tools import Lubm, NxVoid, Void, NtFloatRounder, RaptorRdf, Rdf2Rdf, RdfEncoder
+from rdftools.tools import Lubm, VoIDGenNX, VoIDGen, NtFloatRounder, RaptorRdf, Rdf2Rdf, RdfEncoder, VoIDGenScala
 from rdftools.datagen import LubmUni2One, LubmHorizontal, LubmSeedPropagation, LubmUni2Many, DISTRIBUTIONS, \
     LubmGenerator
 from rdftools.log import logger
@@ -102,7 +102,7 @@ def genvoid():
     if args.version:
         logger.info('using version {0}'.format(str_version))
     else:
-        void_generator = Void(args.source)
+        void_generator = VoIDGen(args.source)
         stats = void_generator()
         logger.info('Collected Statistics (VoID): \n{0}'.format(pformat(stats)))
 
@@ -115,6 +115,8 @@ def genvoid2():
                         help='the source file to be analized')
     parser.add_argument('--dataset_id', dest='dataset_id', action='store', type=str, default=None,
                         help='dataset id')
+    parser.add_argument('--use_nx', dest='use_nx', action='store_true',
+                        help='if true (default false) use the nx parser builtin void generator')
     parser.add_argument('--version', dest='version', action='store_true',
                         help='the current version')
 
@@ -123,7 +125,7 @@ def genvoid2():
     if args.version:
         logger.info('using rdftools version {0}'.format(str_version))
     else:
-        void_generator = NxVoid()
+        void_generator = VoIDGenNX() if args.use_nx else VoIDGenScala()
         void_generator(args.source, args.dataset_id)
         logger.info('done')
 

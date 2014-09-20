@@ -29,10 +29,11 @@ rdftools/tools/__init__.py
 rdftools/tools/base.py
 rdftools/tools/encode.py
 rdftools/tools/lubm.py
-rdftools/tools/nxparser.py
 rdftools/tools/raptor.py
 rdftools/tools/rdf2rdf.py
 rdftools/tools/round.py
-rdftools/tools/void.py
+rdftools/tools/voidgen.py
+rdftools/tools/voidgen_nx.py
+rdftools/tools/voidgen_scala.py
 rdftools/tools/jvmrdftools/__init__.py
-rdftools/tools/jvmrdftools/lib/jvmrdftools-assembly-0.1.0.jar
+rdftools/tools/jvmrdftools/lib/jvmrdftools-assembly-0.1.1.jar
