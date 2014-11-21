@@ -7,6 +7,7 @@ from rdftools.tools.jvmrdftools import run_rdf2rdf_converter
 
 __author__ = 'basca'
 
+
 def dest_file_name(src, dst_format):
     ext = os.path.splitext(src)[-1]
     dst_ext = rdf_ext.get(dst_format, [None])[0]
@@ -43,7 +44,7 @@ class Rdf2Rdf(RdfTool):
             self._log.warn('REMOVE: {0}'.format(source))
             os.remove(source)
 
-    def _run(self, source, destination_format, clear_source=False, workers = -1):
+    def _run(self, source, destination_format, clear_source=False, workers=-1):
         """
         parallel version of the `convert` method
         :param source: (rdf) files to convert (source path)
