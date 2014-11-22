@@ -36,4 +36,4 @@ rdftools/tools/voidgen.py
 rdftools/tools/voidgen_nx.py
 rdftools/tools/voidgen_scala.py
 rdftools/tools/jvmrdftools/__init__.py
-rdftools/tools/jvmrdftools/lib/jvmrdftools-assembly-0.1.1.jar
+rdftools/tools/jvmrdftools/lib/jvmrdftools-assembly-0.1.2.jar
