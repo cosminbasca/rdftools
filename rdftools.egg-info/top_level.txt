@@ -1,4 +1,0 @@
-rdftools
-rdftools/datagen
-rdftools/tools
-rdftools/tools/jvmrdftools
