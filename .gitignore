@@ -6,3 +6,5 @@ rdftools/*.c
 rdftools/*.so
 .idea
 .DS_Store
+
+*.cpp
