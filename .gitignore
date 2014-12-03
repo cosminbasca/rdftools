@@ -1,0 +1,8 @@
+build/*
+dist/*
+rdftools.egg-info/*
+rdftools/*.pyc
+rdftools/*.c
+rdftools/*.so
+.idea
+.DS_Store
