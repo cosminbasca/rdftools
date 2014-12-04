@@ -33,6 +33,15 @@ $ pip install https://github.com/cosminbasca/rdftools
 
 Also have a look at the build.sh, clean.sh, test.sh scripts included in the codebase 
 
+To include the latest JVM RDF tools update to the latest of [jvmrdftools](https://github.com/cosminbasca/jvmrdftools) and create an assembly:
+
+```sh
+$ sbt compile assembly
+```
+
+copy the resulting jar from the target folder to the *lib* folder inside the *rdftools.tools.jvmrdftools* module and reinstall the python package.
+
+
 Thanks a lot to
 ---------------
 * [University of Zurich](http://www.ifi.uzh.ch/ddis.html) and the [Swiss National Science Foundation](http://www.snf.ch/en/Pages/default.aspx) for generously funding the research that led to this software.
