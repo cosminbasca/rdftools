@@ -9,7 +9,7 @@ rdftools is a python wrapper over a number of RDF related tools
 
 Important Notes
 ---------------
-This software is the product of research carried out at the [University of Zurich](http://www.ifi.uzh.ch/ddis.html) and comes with no warrenty whatsoever. Have fun!
+This software is the product of research carried out at the [University of Zurich](http://www.ifi.uzh.ch/ddis.html) and comes with no warranty whatsoever. Have fun!
 
 TODO's
 ------
