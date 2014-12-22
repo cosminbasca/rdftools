@@ -105,7 +105,7 @@ setup(
     ],
     package_data={
         '{0}/tools/jvmrdftools'.format(NAME): ['lib/*', ],
-        '{0}'.format(NAME): ['*.ini', ],
+        '{0}'.format(NAME): ['*.ini', '*.pxd', ],
     },
     install_requires=pip_deps + manual_deps,
     entry_points={

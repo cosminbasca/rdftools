@@ -19,7 +19,7 @@ from cpython cimport *
 from libc.stdio cimport *
 from libc.stdlib cimport *
 from libc.string cimport *
-from raptor cimport *
+from rdftools.raptor cimport *
 
 import io
 import sys
