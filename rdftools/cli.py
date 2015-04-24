@@ -7,7 +7,7 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#        http://www.apache.org/licenses/LICENSE-2.0
+# http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,6 +22,7 @@ from rdftools.tools import Lubm, VoIDGenNX, VoIDGen, NtFloatRounder, RaptorRdf, 
 from rdftools.datagen import LubmUni2One, LubmHorizontal, LubmSeedPropagation, LubmUni2Many, DISTRIBUTIONS, \
     LubmGenerator
 from rdftools.log import logger
+import numpy as np
 
 __author__ = 'basca'
 
@@ -79,7 +80,8 @@ def genlubmdistro():
     parser.add_argument('--ontology', dest='ontology', action='store', type=str, default=None,
                         help='the lubm ontology')
     parser.add_argument('--pdist', dest='pdist', action='store', type=str, default=None,
-                        help='the probabilities used for the uni2many distribution, valid choices are %s ' % DISTRIBUTIONS.keys())
+                        help='the probabilities used for the uni2many distribution, valid choices are {0} or file '
+                             'with probabilities split by line'.format(DISTRIBUTIONS.keys()))
     parser.add_argument('--sites', dest='sites', action='store', type=long, default=1,
                         help='the number of sites')
     parser.add_argument('--clean', dest='clean', action='store_true',
@@ -98,8 +100,15 @@ def genlubmdistro():
         _DistributionClass = Distros[args.distro]
         if not issubclass(_DistributionClass, LubmGenerator):
             raise ValueError('_DistributionClass must be a LubmGenerator')
+        pdist = DISTRIBUTIONS.get(args.pdist, None)
+        if not pdist:
+            try:
+                with open(args.dist, 'r+') as PDIST_FILE:
+                    pdist = np.array(map(float, PDIST_FILE.readlines()))
+            except Exception:
+                logger.error('failed to read distribution from {0}'.format(args.dist))
         distro = _DistributionClass(args.output, args.sites, universities=args.univ, index=args.index, clean=args.clean,
-                                    workers=args.workers, pdist=DISTRIBUTIONS.get(args.pdist, None))
+                                    workers=args.workers, pdist=pdist)
         logger.info('run distribution process')
         distro()
         logger.info('done')
