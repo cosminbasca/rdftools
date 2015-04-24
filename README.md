@@ -148,7 +148,7 @@ usage: genlubmdistro [-h] [--distro DISTRO] [--univ UNIV] [--index INDEX]
                      [--sites SITES] [--clean] [--workers WORKERS] [--version]
                      OUTPUT
 
-rdftools v0.9.2, lubm dataset generator wrapper (bundled) - requires java
+rdftools v0.9.4, lubm dataset generator wrapper (bundled) - requires java
 
 positional arguments:
   OUTPUT               the location in which to save the generated
@@ -163,7 +163,8 @@ optional arguments:
   --seed SEED          the seed
   --ontology ONTOLOGY  the lubm ontology
   --pdist PDIST        the probabilities used for the uni2many distribution,
-                       valid choices are ['3S', '7S', '5S']
+                       valid choices are ['3S', '7S', '5S'] or file with
+                       probabilities split by line
   --sites SITES        the number of sites
   --clean              delete the generated universities
   --workers WORKERS    the number of workers (default -1 : all cpus)
