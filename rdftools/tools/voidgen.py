@@ -17,10 +17,9 @@
 #
 import io
 import os
-import sys
 from yaml import dump
-from cybloom import ScalableBloomFilter
 from collections import defaultdict
+from rdftools.tools.bloom import ScalableBloomFilter, check, add
 from rdftools.tools.base import ParserVisitorTool
 
 __author__ = 'basca'
@@ -32,19 +31,18 @@ INIT_CAPACITY_MED = 10 * MIL  # 10 million
 INIT_CAPACITY_LOW = 10000  # 10K
 INIT_CAPACITY_XTRA_LOW = 1000  # 10K
 
-#-----------------------------------------------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------------------------------------------------
 #
 # analyze void from file, returns a VoID dict stats
 #
-#-----------------------------------------------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------------------------------------------------
 class UniqueCounter(object):
     def __init__(self, init_capacity, err_rate=FP_ERR_RATE):
         self.unique_count = 0
         self.sbf = ScalableBloomFilter(init_capacity, err_rate)
-        self._add = self.sbf.add
 
     def add(self, item):
-        if not self._add(item):
+        if add(self.sbf, item):
             self.unique_count += 1
 
 
@@ -78,7 +76,7 @@ class VoIDGen(ParserVisitorTool):
         self.part_classes_add = self.part_classes.add
         self.part_properties_add = self.part_properties.add
 
-        #TODO: some of these stats require a min sketch counter - not unique - implement this later...
+        # TODO: some of these stats require a min sketch counter - not unique - implement this later...
         self.stats = {
             'properties': 0,
             'triples': 0,
@@ -105,7 +103,6 @@ class VoIDGen(ParserVisitorTool):
         self.part_properties_add(p, '%s %s' % (s, o))
         self.t_count += 1
 
-
     def get_results(self):
         self.stats['triples'] = self.t_count
         self.stats['properties'] = len(self.part_properties)
@@ -119,4 +116,3 @@ class VoIDGen(ParserVisitorTool):
             dump(self.stats, OUT)
 
         return self.stats
-

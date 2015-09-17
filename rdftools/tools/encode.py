@@ -16,25 +16,26 @@
 # limitations under the License.
 #
 import io
-import sys
-from cybloom import ScalableBloomFilter
+from warnings import warn
 from random import randint
 from rdftools.gcityhash import city64
 from rdftools.log import logger
 from rdftools.raptorutil import KB
 from rdftools.tools.base import ParserVisitorTool
+from rdftools.tools.bloom import ScalableBloomFilter, check, add
 from voidgen import INIT_CAPACITY_MED, FP_ERR_RATE, MIL
 
 __author__ = 'basca'
+
 
 def encode(keys, key_literals, value):
     _key = city64(value)
     while True:
         key = '%d' % _key
         mapping = '%s->%s' % (key, value)
-        if not keys.check(key):
+        if not check(keys, key):
             # no collision
-            keys.add(key)
+            add(keys, key)
             key_literals.add(mapping)
             return key
         else:

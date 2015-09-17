@@ -25,3 +25,4 @@ from tools import *
 import log
 
 log.set_level('critical', name='py4j')
+log.set_level('critical', name='sh')

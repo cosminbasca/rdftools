@@ -47,8 +47,10 @@ NAME = 'rdftools'
 
 
 def extension(name, libs, language='c', options=None, c_sources=None):
-    if not c_sources: c_sources = []
-    if not options: options = []
+    if not c_sources:
+        c_sources = []
+    if not options:
+        options = []
     extension_name = '{0}.{1}'.format(NAME, name)
     extension_path = '{0}/{1}.pyx'.format(NAME, '/'.join(name.split('.')))
     return Extension(extension_name, [extension_path, ] + c_sources, language=language, libraries=list(libs),
@@ -63,15 +65,12 @@ with open('README.md') as f:
     DESCRIPTION = f.read()
 
 pip_deps = [
-    'cython>=0.21',
+    'cython>=0.23',
     'pyyaml>=3.11',
-    'rdflib>=4.1.2',
-    'natsort>=3.5.0 ',
-    'sh>=1.09',
-]
-
-manual_deps = [
-    'cybloom>=0.7.3'
+    'rdflib>=4.2.1',
+    'natsort>=4.0.3 ',
+    'sh>=1.11',
+    'pybloom>=1.1',
 ]
 
 setup(
@@ -102,12 +101,12 @@ setup(
               '{0}/tools'.format(NAME),
               '{0}/tools/jvmrdftools'.format(NAME),
               '{0}/datagen'.format(NAME),
-    ],
+              ],
     package_data={
         '{0}/tools/jvmrdftools'.format(NAME): ['lib/*', ],
         '{0}'.format(NAME): ['*.ini', '*.pxd', ],
     },
-    install_requires=pip_deps + manual_deps,
+    install_requires=pip_deps,
     entry_points={
         'console_scripts': [
             '{1} = {0}.cli:{1}'.format(NAME, 'rdfconvert'),
